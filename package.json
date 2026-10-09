@@ -19,11 +19,27 @@
     "requires": {
       "CRM_GENERIC_SRV": {
         "kind": "odata-v2",
-        "model": "srv/external/CRM_GENERIC_SRV"
+        "model": "srv/external/CRM_GENERIC_SRV",
+        "[production]": {
+          "credentials": {
+            "destination": "Solman_Prod",
+            "path": "/sap/opu/odata/SALM"
+          }
+        },
+        "csrf": true,
+        "csrfInBatch": true
       },
       "MC_SRV": {
         "kind": "odata-v2",
-        "model": "srv/external/MC_SRV"
+        "model": "srv/external/MC_SRV",
+        "[production]": {
+          "credentials": {
+            "destination": "Solman_Prod",
+            "path": "/sap/opu/odata/SALM"
+          }
+        },
+        "csrf": true,
+        "csrfInBatch": true
       }
     }
   }
