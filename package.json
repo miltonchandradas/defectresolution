@@ -25,7 +25,7 @@
         "[production]": {
           "credentials": {
             "destination": "Solman_Prod",
-            "path": "/sap/opu/odata/SALM"
+            "path": "/sap/opu/odata/salm/CRM_GENERIC_SRV"
           }
         },
         "csrf": true,
@@ -37,7 +37,7 @@
         "[production]": {
           "credentials": {
             "destination": "Solman_Prod",
-            "path": "/sap/opu/odata/SALM"
+            "path": "/sap/opu/odata/salm/MC_SRV"
           }
         },
         "csrf": true,

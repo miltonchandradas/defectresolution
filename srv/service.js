@@ -22,7 +22,7 @@ export default cds.service.impl(async function () {
         cds.log.warn('Startup defect fetch returned no rows', { defectId: '8000197596' });
       }
     } catch (error) {
-      cds.log.error('Startup defect fetch failed', error);
+      console.error('Startup defect fetch failed', error);
     }
   });
 
