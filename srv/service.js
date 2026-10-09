@@ -1,15 +1,15 @@
 import cds from '@sap/cds';
+import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 
 const LOG = cds.log('defectresolution');
+const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
 
 export default cds.service.impl(async function () {
   const { DefectHeader } = this.entities;
-  const MC_Service = await cds.connect.to('MC_SRV');
 
   cds.spawn({ after: 30000 }, async () => {
     try {
-      const defects = await getDefectsForType(MC_Service, 'S1DM', '8000197596');
-      const defect = defects[0];
+      const defect = await fetchSolmanDefectDetails('8000197596');
 
       if (defect) {
         LOG.info('Startup defect fetch succeeded', {
@@ -46,31 +46,55 @@ export default cds.service.impl(async function () {
       return [];
     }
 
-    const defects = await getDefectsForType(MC_Service, typeId, defectId);
+    const defect = await fetchSolmanDefectDetails(defectId, typeId);
 
-    return defects.map((item) => ({
-      guid: item.Guid,
-      id: item.Id,
-      typeId: item.TypeId ?? typeId,
-      reporter: item.Reporter,
-      status: item.Status,
-      createdAt: item.CreatedAt,
-      changedAt: item.ChangedAt,
-    }));
+    return defect ? [{
+      guid: defect.Guid,
+      id: defect.Id,
+      typeId: defect.TypeId ?? typeId,
+      reporter: defect.Reporter,
+      status: defect.Status,
+      createdAt: defect.CreatedAt,
+      changedAt: defect.ChangedAt,
+    }] : [];
   });
 });
 
-async function getDefectsForType(MC_Service, typeId, defectId) {
-  const path = `/DocTypeSet('${typeId}')/DocTypeDefects?$filter=${encodeURIComponent(`Id eq '${defectId}'`)}&$expand=DefectStatuses&$format=json`;
+async function fetchSolmanDefectDetails(defectId, typeId = 'S1DM') {
+  const trimmedDefectId = String(defectId || '').trim();
 
-  const response = await MC_Service.send({
-    method: 'GET',
-    path,
-    headers: { Accept: 'application/json' }
-  });
+  if (!trimmedDefectId) {
+    return null;
+  }
 
-  const defects = response?.d?.results ?? response?.value ?? [];
-  return Array.isArray(defects) ? defects : [defects];
+  const defectLookupUrl =
+    `/sap/opu/odata/SALM/MC_SRV/DocTypeSet('${typeId}')/DocTypeDefects` +
+    `?$filter=${encodeURIComponent(`Id eq '${trimmedDefectId}'`)}&$expand=DefectStatuses`;
+
+  const defectLookupResponse = await executeHttpRequest(
+    { destinationName: SOLMAN_DESTINATION_NAME },
+    {
+      method: 'get',
+      url: defectLookupUrl,
+      headers: {
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  const defectEntries = extractODataResults(defectLookupResponse?.data);
+  const defectEntry = defectEntries[0];
+
+  return defectEntry ?? null;
+}
+
+function extractODataResults(payload) {
+  if (!payload) {
+    return [];
+  }
+
+  const results = payload?.d?.results ?? payload?.value ?? payload?.results ?? [];
+  return Array.isArray(results) ? results : [results];
 }
 
 function extractFilterValue(req, propertyName) {

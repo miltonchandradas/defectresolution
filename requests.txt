@@ -1,1 +1,1 @@
-https://smrci10.worldbank.org:51001/sap/opu/odata/salm/MC_SRV/DocTypeSet('S1DM')/DocTypeDefects?$filter=Id%20eq%20%278000197596%27&$expand=DefectStatuses&$format=json
+https://smrci10.worldbank.org:51001/sap/opu/odata/salm/MC_SRV/DocTypeSet('S1DM')/DocTypeDefects?$filter=Id eq '8000197596'&$expand=DefectStatuses&$format=json
