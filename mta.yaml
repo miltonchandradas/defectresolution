@@ -17,6 +17,8 @@ modules:
     parameters:
       instances: 1
       buildpack: nodejs_buildpack
+      env:
+        STARTUP_DEFECT_IDS: "8000197596"
     build-parameters:
       builder: npm-ci
     provides:

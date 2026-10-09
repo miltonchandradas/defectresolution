@@ -3,27 +3,48 @@ import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 
 const LOG = cds.log('defectresolution');
 const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
+const STARTUP_DEFECT_IDS = parseStartupDefectIds(
+  process.env.STARTUP_DEFECT_IDS ?? '8000197596'
+);
 
 export default cds.service.impl(async function () {
-  const { DefectHeader } = this.entities;
+  const { DefectHeader, DefectNotes } = this.entities;
 
   cds.spawn({ after: 30000 }, async () => {
-    try {
-      const defect = await fetchSolmanDefectDetails('8000197596');
+    if (!STARTUP_DEFECT_IDS.length) {
+      LOG.warn('Startup defect fetch skipped because no defect IDs are configured');
+      return;
+    }
 
-      if (defect) {
-        LOG.info('Startup defect fetch succeeded', {
-          guid: defect.Guid,
-          id: defect.Id,
-          typeId: defect.TypeId ?? 'S1DM',
-          status: defect.Status,
-          reporter: defect.Reporter,
+    for (const startupDefectId of STARTUP_DEFECT_IDS) {
+      try {
+        const defect = await fetchSolmanDefectDetails(startupDefectId);
+
+        if (defect) {
+          LOG.info('Startup defect fetch succeeded', {
+            guid: defect.Guid,
+            id: defect.Id,
+            typeId: defect.TypeId ?? 'S1DM',
+            status: defect.Status,
+            reporter: defect.Reporter,
+          });
+
+          const notes = await fetchSolmanNotesByGuid(defect.Guid, defect.TypeId ?? 'S1DM');
+          LOG.info('Startup defect notes fetch succeeded', {
+            guid: defect.Guid,
+            defectId: defect.Id,
+            notesCount: notes.length,
+            notes,
+          });
+        } else {
+          LOG.warn('Startup defect fetch returned no rows', { defectId: startupDefectId });
+        }
+      } catch (error) {
+        LOG.error('Startup defect fetch failed', {
+          defectId: startupDefectId,
+          error: error?.message ?? error,
         });
-      } else {
-        LOG.warn('Startup defect fetch returned no rows', { defectId: '8000197596' });
       }
-    } catch (error) {
-      LOG.error('Startup defect fetch failed', error);
     }
   });
 
@@ -41,14 +62,7 @@ export default cds.service.impl(async function () {
       extractFilterValue(req, 'id') ??
       extractFilterValue(req, 'Id');
 
-    const typeId =
-      params?.typeId ??
-      params?.TypeId ??
-      req.data?.typeId ??
-      req.data?.TypeId ??
-      req._queryOptions?.typeId ??
-      req._queryOptions?.TypeId ??
-      'S1DM';
+    const typeId ='S1DM';
 
     if (!defectId) {
       return [];
@@ -65,6 +79,45 @@ export default cds.service.impl(async function () {
       createdAt: defect.CreatedAt,
       changedAt: defect.ChangedAt,
     }] : [];
+  });
+
+  this.on('READ', DefectNotes, async (req) => {
+    const params = Array.isArray(req.params) ? req.params[0] : req.params ?? {};
+    const guid =
+      params?.guid ??
+      params?.Guid ??
+      req.data?.guid ??
+      req.data?.Guid ??
+      req._queryOptions?.guid ??
+      req._queryOptions?.Guid ??
+      extractFilterValue(req, 'guid') ??
+      extractFilterValue(req, 'Guid');
+
+    const processType =
+      params?.processType ??
+      params?.ProcessType ??
+      req.data?.processType ??
+      req.data?.ProcessType ??
+      req._queryOptions?.processType ??
+      req._queryOptions?.ProcessType ??
+      extractFilterValue(req, 'processType') ??
+      extractFilterValue(req, 'ProcessType') ??
+      'S1DM';
+
+    if (!guid) {
+      return [];
+    }
+
+    const notes = await fetchSolmanNotesByGuid(guid, processType);
+
+    return notes.map((note) => ({
+      guid: note.WsGuid,
+      textType: note.TextType,
+      textTypeId: note.TextTypeId,
+      textDate: note.TextDate,
+      textSender: note.TextSender,
+      textValue: note.TextValue,
+    }));
   });
 });
 
@@ -96,6 +149,32 @@ async function fetchSolmanDefectDetails(defectId, typeId = 'S1DM') {
   return defectEntry ?? null;
 }
 
+async function fetchSolmanNotesByGuid(guid, processType = 'S1DM') {
+  const normalizedGuid = normalizeGuidLiteral(guid);
+
+  if (!normalizedGuid) {
+    return [];
+  }
+
+  const notesUrl =
+    `/sap/opu/odata/SALM/CRM_GENERIC_SRV/WORKSPACESET(` +
+    `Guid=guid'${normalizedGuid}',ProcessType='${processType}')/BTTEXTSet` +
+    `?sap-language=EN&$filter=${encodeURIComponent('ConfigId eq 5')}`;
+
+  const notesResponse = await executeHttpRequest(
+    { destinationName: SOLMAN_DESTINATION_NAME },
+    {
+      method: 'get',
+      url: notesUrl,
+      headers: {
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  return extractODataResults(notesResponse?.data);
+}
+
 function extractODataResults(payload) {
   if (!payload) {
     return [];
@@ -116,4 +195,20 @@ function extractFilterValue(req, propertyName) {
   );
 
   return match ? match[1] : undefined;
+}
+
+function parseStartupDefectIds(rawValue) {
+  return String(rawValue || '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function normalizeGuidLiteral(value) {
+  const trimmed = String(value || '').trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  return trimmed.replace(/^guid'/i, '').replace(/'$/, '');
 }
