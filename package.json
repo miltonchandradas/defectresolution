@@ -6,10 +6,12 @@
     "@sap/cds": "^10",
     "@sap-cloud-sdk/connectivity": "^4",
     "@sap-cloud-sdk/http-client": "^4",
-    "@sap-cloud-sdk/resilience": "^4"
+    "@sap-cloud-sdk/resilience": "^4",
+    "@sap/xssec": "^4"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^3"
+    "@cap-js/sqlite": "^3",
+    "@sap/cds-dk": "^10"
   },
   "scripts": {
     "start": "cds-serve"
@@ -40,6 +42,9 @@
         },
         "csrf": true,
         "csrfInBatch": true
+      },
+      "[production]": {
+        "auth": "xsuaa"
       }
     }
   }
