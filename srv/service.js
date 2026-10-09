@@ -29,20 +29,28 @@ export default cds.service.impl(async function () {
             reporter: defect.Reporter,
           });
 
-          const notes = await fetchSolmanNotesByGuid(defect.Guid, defect.TypeId ?? 'S1DM');
-          LOG.info('Startup defect notes fetch succeeded', {
-            guid: defect.Guid,
-            defectId: defect.Id,
-            notesCount: notes.length,
-            notes,
-          });
+          try {
+            const notes = await fetchSolmanNotesByGuid(defect.Guid, defect.TypeId ?? 'S1DM');
+            LOG.info('Startup defect notes fetch succeeded', {
+              guid: defect.Guid,
+              defectId: defect.Id,
+              notesCount: notes.length,
+              notes,
+            });
+          } catch (error) {
+            LOG.error('Startup defect notes fetch failed', {
+              guid: defect.Guid,
+              defectId: defect.Id,
+              ...extractHttpErrorDetails(error),
+            });
+          }
         } else {
           LOG.warn('Startup defect fetch returned no rows', { defectId: startupDefectId });
         }
       } catch (error) {
         LOG.error('Startup defect fetch failed', {
           defectId: startupDefectId,
-          error: error?.message ?? error,
+          ...extractHttpErrorDetails(error),
         });
       }
     }
@@ -210,5 +218,27 @@ function normalizeGuidLiteral(value) {
     return '';
   }
 
-  return trimmed.replace(/^guid'/i, '').replace(/'$/, '');
+  const unwrapped = trimmed.replace(/^guid'/i, '').replace(/'$/, '');
+  const hexOnly = unwrapped.replace(/-/g, '');
+
+  if (/^[0-9a-fA-F]{32}$/.test(hexOnly)) {
+    const canonical =
+      `${hexOnly.slice(0, 8)}-${hexOnly.slice(8, 12)}-${hexOnly.slice(12, 16)}-` +
+      `${hexOnly.slice(16, 20)}-${hexOnly.slice(20)}`;
+    return canonical.toUpperCase();
+  }
+
+  return unwrapped;
+}
+
+function extractHttpErrorDetails(error) {
+  const status = error?.response?.status;
+  const responseData = error?.response?.data;
+  const message = error?.message ?? String(error);
+
+  return {
+    status,
+    error: message,
+    responseData,
+  };
 }
