@@ -1,8 +1,9 @@
-const cds = require('@sap/cds');
+import cds from '@sap/cds';
+
 const { SELECT } = cds.ql;
 
-module.exports = async (srv) => {
-  const { DefectHeader } = srv.entities;
+export default cds.service.impl(async function () {
+  const { DefectHeader } = this.entities;
   const MC_Service = await cds.connect.to('MC_SRV');
 
   cds.spawn({ after: 30000 }, async () => {
@@ -25,7 +26,7 @@ module.exports = async (srv) => {
     }
   });
 
-  srv.on('READ', DefectHeader, async (req) => {
+  this.on('READ', DefectHeader, async (req) => {
     const params = Array.isArray(req.params) ? req.params[0] : req.params ?? {};
     const defectId =
       params?.id ??
@@ -57,7 +58,7 @@ module.exports = async (srv) => {
       changedAt: item.ChangedAt,
     }));
   });
-};
+});
 
 async function getDefectsForType(MC_Service, typeId, defectId) {
   const result = await MC_Service.run(
