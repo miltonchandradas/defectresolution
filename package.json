@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "@sap/cds": "^10"
+    "@sap/cds": "^10",
+    "@sap-cloud-sdk/connectivity": "^4",
+    "@sap-cloud-sdk/http-client": "^4",
+    "@sap-cloud-sdk/resilience": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^3"
@@ -11,5 +14,17 @@
   "scripts": {
     "start": "cds-serve"
   },
-  "private": true
+  "private": true,
+  "cds": {
+    "requires": {
+      "CRM_GENERIC_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/CRM_GENERIC_SRV"
+      },
+      "MC_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/MC_SRV"
+      }
+    }
+  }
 }
