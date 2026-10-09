@@ -1,0 +1,1082 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="SALM_DROP_DOC_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="DocumentContent" m:HasStream="true" sap:label="Content of SolDoc document" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="BranchId"/>
+                </Key>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="DocumentSignature" sap:label="Signature data of SolDoc document" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocumentSignatureId"/>
+                </Key>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AuthGroupId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentSignatureId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjType" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false" sap:label="SMUD Node Object Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Password" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="New password" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AuthGroupName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Comment" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Message" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Timestamp" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="TestCaseClassification" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="TestCaseClassificationId"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TestCaseClassificationId" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TestCaseClassificationValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsSeletced" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Language" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="LanguageId"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LanguageId" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LanguageText" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LanguageIsoValue" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsPrimary" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="CharmWP_WI_BR" sap:label="CRM Object" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SolutionId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SolDocPath" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureAssignmentPermitted" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="OnlyAssignmentPermitted" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmStatusKey" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="User status" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsAutoDocCreationAsked" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SolutionName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AttachmentsNotChangeable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsKpiEnabled" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Message" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ScopeIds" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ContentLanguage" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ContentLanguageIso" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequestKpiTime" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsChangeDocument" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="relevantStructures" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_Structures" FromRole="FromRole_CharmWP_WI_BR_Structures" ToRole="ToRole_CharmWP_WI_BR_Structures"/>
+                <NavigationProperty Name="requiredStructuresKpi" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_KpiStructures" FromRole="FromRole_CharmWP_WI_BR_KpiStructures" ToRole="ToRole_CharmWP_WI_BR_KpiStructures"/>
+                <NavigationProperty Name="missingDocuments" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_MissingDocuments" FromRole="FromRole_CharmWP_WI_BR_MissingDocuments" ToRole="ToRole_CharmWP_WI_BR_MissingDocuments"/>
+                <NavigationProperty Name="usageOfAttachments" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_UsageOfAttachments" FromRole="FromRole_CharmWP_WI_BR_UsageOfAttachments" ToRole="ToRole_CharmWP_WI_BR_UsageOfAttachments"/>
+                <NavigationProperty Name="soldocLanguages" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_Languages" FromRole="FromRole_CharmWP_WI_BR_Languages" ToRole="ToRole_CharmWP_WI_BR_Languages"/>
+                <NavigationProperty Name="attachedDeltaDocuments" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_Documents" FromRole="FromRole_CharmWP_WI_BR_Documents" ToRole="ToRole_CharmWP_WI_BR_Documents"/>
+                <NavigationProperty Name="requiredDocuments" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_RequiredDocuments" FromRole="FromRole_CharmWP_WI_BR_RequiredDocuments" ToRole="ToRole_CharmWP_WI_BR_RequiredDocuments"/>
+                <NavigationProperty Name="relevantStructuresChange" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_StructuresChange" FromRole="FromRole_CharmWP_WI_BR_StructuresChange" ToRole="ToRole_CharmWP_WI_BR_StructuresChange"/>
+                <NavigationProperty Name="allStructureAssignments" Relationship="SALM_DROP_DOC_SRV.CharmWP_WI_BR_AllStructureAssignments" FromRole="FromRole_CharmWP_WI_BR_AllStructureAssignments" ToRole="ToRole_CharmWP_WI_BR_AllStructureAssignments"/>
+            </EntityType>
+            <EntityType Name="RelevantStructure" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                </Key>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Branch ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Branchname" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureType" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false" sap:label="Element Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Structure" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectLink" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Link to SolDoc" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectOrigin" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BusinessScenario" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BusinessProcess" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LibaryName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsDeleteable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Source" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Change Status" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ConflictStatus" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="POSITIVE, NEGATIVE, NEUTRAL or ERROR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsStructureDeleteable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ScopeName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Scope" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ContentLanguage" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <NavigationProperty Name="requiredDocumentsKpi" Relationship="SALM_DROP_DOC_SRV.KpiStructure_KpiRequiredDocuments" FromRole="FromRole_KpiStructure_KpiRequiredDocuments" ToRole="ToRole_KpiStructure_KpiRequiredDocuments"/>
+                <NavigationProperty Name="usageOfDocuments" Relationship="SALM_DROP_DOC_SRV.Structure_UsageOfDocuments" FromRole="FromRole_Structure_UsageOfDocuments" ToRole="ToRole_Structure_UsageOfDocuments"/>
+                <NavigationProperty Name="documents" Relationship="SALM_DROP_DOC_SRV.Structures_Documents" FromRole="FromRole_Structures_Documents" ToRole="ToRole_Structures_Documents"/>
+                <NavigationProperty Name="allStatus" Relationship="SALM_DROP_DOC_SRV.Structures_Status" FromRole="FromRole_Structures_Status" ToRole="ToRole_Structures_Status"/>
+                <NavigationProperty Name="documentsChange" Relationship="SALM_DROP_DOC_SRV.Structure_DocumentsChange" FromRole="FromRole_Structure_DocumentsChange" ToRole="ToRole_Structure_DocumentsChange"/>
+                <NavigationProperty Name="allDocumentAssignments" Relationship="SALM_DROP_DOC_SRV.Structure_AllDocumentAssignments" FromRole="FromRole_Structure_AllDocumentAssignments" ToRole="ToRole_Structure_AllDocumentAssignments"/>
+            </EntityType>
+            <EntityType Name="Document" sap:label="DropDoc-relevant SolDoc document" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="StructureId"/>
+                </Key>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="weblink" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentVersionId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Assigned" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Assign" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="AssignmentPermitted" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Assignment permitted" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectLink" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Link to SolDoc" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Branchname" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Branch Name" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="BusinessProcess" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Busiiness Process" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BusinessScenario" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Business Scenario" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreateAuthor" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Created By" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="CreateDate" Type="Edm.String" Nullable="false" MaxLength="14" sap:unicode="false" sap:label="Created On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Description" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ObjType" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false" sap:label="SMUD Node Object Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocType" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false" sap:label="Document Type Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Document Type" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DocumentBranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentGroupKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DownloadPath" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Element" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Element Type Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementTypeValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Element Type" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ElementValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Element" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Filecontent" Type="Edm.Binary" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Filename" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Filename" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Filesize" Type="Edm.Int32" Nullable="false" sap:unicode="false" sap:label="Filesize" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Filetype" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Filetype" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsAtCurrentStructure" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Origin" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="Language" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LastAuthor" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Changed By" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LastChangeDate" Type="Edm.String" Nullable="false" MaxLength="14" sap:unicode="false" sap:label="Changed At" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LibaryName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Locked" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Locked" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Mimetype" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Object Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectOrigin" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Priority" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Priority" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Relevant" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Relevant" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="SearchGlobal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Status Code" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StatusValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Status" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="StructureType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Schema" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Deleteable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Source" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UpdateMethod" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentCategoryId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Change Status" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="OwnerId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ResponsibleId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AdditionalProperties" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ConflictStatus" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Conflict" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RealStructureId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <NavigationProperty Name="documentTypes" Relationship="SALM_DROP_DOC_SRV.Document_DocTypeValueHelp" FromRole="FromRole_Document_DocTypeValueHelp" ToRole="ToRole_Document_DocTypeValueHelp"/>
+                <NavigationProperty Name="documentContent" Relationship="SALM_DROP_DOC_SRV.Document_DocumentContent" FromRole="FromRole_Document_DocumentContent" ToRole="ToRole_Document_DocumentContent"/>
+                <NavigationProperty Name="documentTestCaseClassifications" Relationship="SALM_DROP_DOC_SRV.Document_TestCaseClassifications" FromRole="FromRole_Document_TestCaseClassifications" ToRole="ToRole_Document_TestCaseClassifications"/>
+                <NavigationProperty Name="documentStatus" Relationship="SALM_DROP_DOC_SRV.Document_DocumentStatus" FromRole="FromRole_Document_DocumentStatus" ToRole="ToRole_Document_DocumentStatus"/>
+                <NavigationProperty Name="documentGroups" Relationship="SALM_DROP_DOC_SRV.Document_DocumentGroup" FromRole="FromRole_Document_DocumentGroup" ToRole="ToRole_Document_DocumentGroup"/>
+                <NavigationProperty Name="documentAuthGroups" Relationship="SALM_DROP_DOC_SRV.Document_AuthorizationGroup" FromRole="FromRole_Document_AuthorizationGroup" ToRole="ToRole_Document_AuthorizationGroup"/>
+                <NavigationProperty Name="documentSignatures" Relationship="SALM_DROP_DOC_SRV.Document_DocumentSignature" FromRole="FromRole_Document_DocumentSignature" ToRole="ToRole_Document_DocumentSignature"/>
+                <NavigationProperty Name="documentAuthorizations" Relationship="SALM_DROP_DOC_SRV.Document_DocumentAuthorization" FromRole="FromRole_Document_DocumentAuthorization" ToRole="ToRole_Document_DocumentAuthorization"/>
+            </EntityType>
+            <EntityType Name="RequiredDocumentTypeStatus" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocumentTypeStatusId"/>
+                    <PropertyRef Name="DocTypeValue"/>
+                    <PropertyRef Name="Kpi"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentTypeStatusId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequiredDocType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Availability" Type="Edm.Boolean" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CurrentStatus" Type="Edm.String" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="KpiText" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Kpi" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Rating" Type="Edm.Boolean" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ExpectedStatusKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ExpectedStatus" Type="Edm.String" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="OverallRelevant" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="statusDetailsUnderStructure" Relationship="SALM_DROP_DOC_SRV.KpiDocument_KpiUnderStructureDetails" FromRole="FromRole_KpiDocument_KpiUnderStructureDetails" ToRole="ToRole_KpiDocument_KpiUnderStructureDetails"/>
+                <NavigationProperty Name="statusDetailsUnderDocument" Relationship="SALM_DROP_DOC_SRV.KpiDocument_KpiUnderDocumentDetails" FromRole="FromRole_KpiDocument_KpiUnderDocumentDetails" ToRole="ToRole_KpiDocument_KpiUnderDocumentDetails"/>
+            </EntityType>
+            <EntityType Name="DocumentStatus" sap:label="Status data of SolDoc document" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="SchemaKey"/>
+                    <PropertyRef Name="StatusKey"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SchemaKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StatusKey" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Document Status" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SchemaValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StatusValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SignatureRequired" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Error" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ErrorMessage" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Source" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="DocTypeValueHelp" sap:label="Value Help Entry for Doc Type in Document Creation popup" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocTypeKey"/>
+                </Key>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsAvailable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Source" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="elementTypes" Relationship="SALM_DROP_DOC_SRV.DocTypeValueHelp_ElementTypeValueHelp" FromRole="FromRole_DocTypeValueHelp_ElementTypeValueHelp" ToRole="ToRole_DocTypeValueHelp_ElementTypeValueHelp"/>
+            </EntityType>
+            <EntityType Name="ElementTypeValueHelp" sap:label="Value Help Entry for Element Type in Document Creation popup" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocTypeKey"/>
+                    <PropertyRef Name="ElementTypeKey"/>
+                </Key>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementTypeValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Source" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="elements" Relationship="SALM_DROP_DOC_SRV.ElementTypeValueHelp_ElementValueHelp" FromRole="FromRole_ElementTypeValueHelp_ElementValueHelp" ToRole="ToRole_ElementTypeValueHelp_ElementValueHelp"/>
+            </EntityType>
+            <EntityType Name="ElementValueHelp" sap:label="Value Help Entry for Element in Document Creation popup" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocTypeKey"/>
+                    <PropertyRef Name="ElementTypeKey"/>
+                    <PropertyRef Name="ElementKey"/>
+                </Key>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Source" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="DocumentGroup" sap:label="Node group of SolDoc element" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocId"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentGroupKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentGroupValue" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Action" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ElementTypeKey" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="SoldocNode" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="CrmId"/>
+                </Key>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="soldocDocuments" Relationship="SALM_DROP_DOC_SRV.SoldocNode_Documents" FromRole="FromRole_SoldocNode_Documents" ToRole="ToRole_SoldocNode_Documents"/>
+            </EntityType>
+            <EntityType Name="AuthorizationGroup" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="AuthGroupId"/>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                </Key>
+                <Property Name="AuthGroupId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="NextStatusKey" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="New doc status requiring signature" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="ObjType" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false" sap:label="SMUD Node Object Type" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="AuthGroupName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CancelOnly" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="This user already signed" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ErrorMessage" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="DocumentAuthorization" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="StructureId"/>
+                    <PropertyRef Name="DocId"/>
+                    <PropertyRef Name="RoleKey"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RoleKey" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="e.g. _SMD_RESPONSIBLE or TEAMMEMBERID" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="RejectionReason" Type="Edm.String" sap:unicode="false" sap:label="Reason, if changing property RoleKey is not possible" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BusinessPartnerId" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="LastName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FullName" Type="Edm.String" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Email" Type="Edm.String" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="MoveSource" sap:label="Source Work Item of a Move Operation" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="SourceCrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                </Key>
+                <Property Name="SourceCrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="targets" Relationship="SALM_DROP_DOC_SRV.MoveSource_MoveTarget" FromRole="FromRole_MoveSource_MoveTarget" ToRole="ToRole_MoveSource_MoveTarget" sap:label="Target CrmObjects of Move Operation"/>
+            </EntityType>
+            <EntityType Name="MoveTarget" sap:label="Target Work Iteem of a Move Operation" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="CrmId"/>
+                    <PropertyRef Name="BranchId"/>
+                </Key>
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MoveElementIds" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <ComplexType Name="ScopeExtensionChangedElement">
+                <Property Name="CrmId" Type="Edm.String" Nullable="false" MaxLength="32" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="22" sap:label="ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" MaxLength="22" sap:label="ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ObjectName" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ParentStructure" Type="Edm.String" Nullable="false" MaxLength="22" sap:label="ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocId" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocumentVersionId" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocType" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DocTypeValue" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeStatus" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="N = New, U = Updated" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Assigned" Type="Edm.Boolean" Nullable="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsStructure" Type="Edm.Boolean" Nullable="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </ComplexType>
+            <ComplexType Name="DocAutoCreationStatus">
+                <Property Name="AutoCreationAvailable" Type="Edm.Boolean" Nullable="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </ComplexType>
+            <ComplexType Name="AllowedElementType">
+                <Property Name="ElementTypeId" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Selectable" Type="Edm.Boolean" Nullable="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </ComplexType>
+            <ComplexType Name="HiddenTestCasesReturn">
+                <Property Name="HiddenTestCasesExist" Type="Edm.Boolean" Nullable="false" sap:label="'X'=yes, else no" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Message" Type="Edm.String" Nullable="false" sap:label="Message" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </ComplexType>
+            <ComplexType Name="DocKpiStatus">
+                <Property Name="DocKpiStatusOverall" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="POSITIVE, NEGATIVE, NEUTRAL or ERROR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Message" Type="Edm.String" Nullable="false" sap:label="Description of KPI Overall Status" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </ComplexType>
+            <ComplexType Name="AssignedStructureId">
+                <Property Name="StructureId" Type="Edm.String" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </ComplexType>
+            <Association Name="CharmWP_WI_BR_KpiStructures" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_KpiStructures"/>
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_KpiStructures"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_KpiStructures">
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_KpiStructures">
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_MissingDocuments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_MissingDocuments"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_MissingDocuments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_MissingDocuments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_MissingDocuments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_UsageOfAttachments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_UsageOfAttachments"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_UsageOfAttachments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_UsageOfAttachments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_UsageOfAttachments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_Languages" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_Languages"/>
+                <End Type="SALM_DROP_DOC_SRV.Language" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_Languages"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_Languages">
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_Languages">
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_Documents" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_Documents"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_Documents"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_Documents">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_Documents">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_RequiredDocuments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_RequiredDocuments"/>
+                <End Type="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_RequiredDocuments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_RequiredDocuments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_RequiredDocuments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_StructuresChange" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_StructuresChange"/>
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_StructuresChange"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_StructuresChange">
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_StructuresChange">
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_AllStructureAssignments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_AllStructureAssignments"/>
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_AllStructureAssignments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_AllStructureAssignments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_AllStructureAssignments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="CharmWP_WI_BR_Structures" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.CharmWP_WI_BR" Multiplicity="1" Role="FromRole_CharmWP_WI_BR_Structures"/>
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="*" Role="ToRole_CharmWP_WI_BR_Structures"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_CharmWP_WI_BR_Structures">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_CharmWP_WI_BR_Structures">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="ElementTypeValueHelp_ElementValueHelp" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.ElementTypeValueHelp" Multiplicity="1" Role="FromRole_ElementTypeValueHelp_ElementValueHelp"/>
+                <End Type="SALM_DROP_DOC_SRV.ElementValueHelp" Multiplicity="*" Role="ToRole_ElementTypeValueHelp_ElementValueHelp"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_ElementTypeValueHelp_ElementValueHelp">
+                        <PropertyRef Name="ElementTypeKey"/>
+                        <PropertyRef Name="DocTypeKey"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_ElementTypeValueHelp_ElementValueHelp">
+                        <PropertyRef Name="ElementTypeKey"/>
+                        <PropertyRef Name="DocTypeKey"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_DocTypeValueHelp" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_DocTypeValueHelp"/>
+                <End Type="SALM_DROP_DOC_SRV.DocTypeValueHelp" Multiplicity="*" Role="ToRole_Document_DocTypeValueHelp"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_DocTypeValueHelp">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_DocTypeValueHelp">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_DocumentContent" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_DocumentContent"/>
+                <End Type="SALM_DROP_DOC_SRV.DocumentContent" Multiplicity="1" Role="ToRole_Document_DocumentContent"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_DocumentContent">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_DocumentContent">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_TestCaseClassifications" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_TestCaseClassifications"/>
+                <End Type="SALM_DROP_DOC_SRV.TestCaseClassification" Multiplicity="*" Role="ToRole_Document_TestCaseClassifications"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_TestCaseClassifications">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_TestCaseClassifications">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_DocumentStatus" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_DocumentStatus"/>
+                <End Type="SALM_DROP_DOC_SRV.DocumentStatus" Multiplicity="*" Role="ToRole_Document_DocumentStatus"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_DocumentStatus">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_DocumentStatus">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_DocumentGroup" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_DocumentGroup"/>
+                <End Type="SALM_DROP_DOC_SRV.DocumentGroup" Multiplicity="*" Role="ToRole_Document_DocumentGroup"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_DocumentGroup">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_DocumentGroup">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_AuthorizationGroup" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_AuthorizationGroup"/>
+                <End Type="SALM_DROP_DOC_SRV.AuthorizationGroup" Multiplicity="*" Role="ToRole_Document_AuthorizationGroup"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_AuthorizationGroup">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_AuthorizationGroup">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_DocumentSignature" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_DocumentSignature"/>
+                <End Type="SALM_DROP_DOC_SRV.DocumentSignature" Multiplicity="*" Role="ToRole_Document_DocumentSignature"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_DocumentSignature">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_DocumentSignature">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Document_DocumentAuthorization" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="1" Role="FromRole_Document_DocumentAuthorization"/>
+                <End Type="SALM_DROP_DOC_SRV.DocumentAuthorization" Multiplicity="*" Role="ToRole_Document_DocumentAuthorization"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Document_DocumentAuthorization">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Document_DocumentAuthorization">
+                        <PropertyRef Name="DocId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="KpiDocument_KpiUnderDocumentDetails" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" Multiplicity="1" Role="FromRole_KpiDocument_KpiUnderDocumentDetails"/>
+                <End Type="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" Multiplicity="*" Role="ToRole_KpiDocument_KpiUnderDocumentDetails"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_KpiDocument_KpiUnderDocumentDetails">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="Kpi"/>
+                        <PropertyRef Name="DocumentTypeStatusId"/>
+                        <PropertyRef Name="DocTypeValue"/>
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_KpiDocument_KpiUnderDocumentDetails">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="Kpi"/>
+                        <PropertyRef Name="DocumentTypeStatusId"/>
+                        <PropertyRef Name="DocTypeValue"/>
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="KpiDocument_KpiUnderStructureDetails" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" Multiplicity="1" Role="FromRole_KpiDocument_KpiUnderStructureDetails"/>
+                <End Type="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" Multiplicity="*" Role="ToRole_KpiDocument_KpiUnderStructureDetails"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_KpiDocument_KpiUnderStructureDetails">
+                        <PropertyRef Name="DocTypeValue"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="Kpi"/>
+                        <PropertyRef Name="DocumentTypeStatusId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_KpiDocument_KpiUnderStructureDetails">
+                        <PropertyRef Name="DocTypeValue"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="Kpi"/>
+                        <PropertyRef Name="DocumentTypeStatusId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="SoldocNode_Documents" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.SoldocNode" Multiplicity="1" Role="FromRole_SoldocNode_Documents"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_SoldocNode_Documents"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_SoldocNode_Documents">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_SoldocNode_Documents">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="DocTypeValueHelp_ElementTypeValueHelp" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.DocTypeValueHelp" Multiplicity="1" Role="FromRole_DocTypeValueHelp_ElementTypeValueHelp"/>
+                <End Type="SALM_DROP_DOC_SRV.ElementTypeValueHelp" Multiplicity="*" Role="ToRole_DocTypeValueHelp_ElementTypeValueHelp"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_DocTypeValueHelp_ElementTypeValueHelp">
+                        <PropertyRef Name="DocTypeKey"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_DocTypeValueHelp_ElementTypeValueHelp">
+                        <PropertyRef Name="DocTypeKey"/>
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="DocId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="MoveSource_MoveTarget" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.MoveSource" Multiplicity="1" Role="FromRole_MoveSource_MoveTarget"/>
+                <End Type="SALM_DROP_DOC_SRV.MoveTarget" Multiplicity="*" Role="ToRole_MoveSource_MoveTarget"/>
+            </Association>
+            <Association Name="KpiStructure_KpiRequiredDocuments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="1" Role="FromRole_KpiStructure_KpiRequiredDocuments"/>
+                <End Type="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" Multiplicity="*" Role="ToRole_KpiStructure_KpiRequiredDocuments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_KpiStructure_KpiRequiredDocuments">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_KpiStructure_KpiRequiredDocuments">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Structure_UsageOfDocuments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="1" Role="FromRole_Structure_UsageOfDocuments"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_Structure_UsageOfDocuments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Structure_UsageOfDocuments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Structure_UsageOfDocuments">
+                        <PropertyRef Name="BranchId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="StructureId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Structures_Documents" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="1" Role="FromRole_Structures_Documents"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_Structures_Documents"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Structures_Documents">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Structures_Documents">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Structures_Status" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="1" Role="FromRole_Structures_Status"/>
+                <End Type="SALM_DROP_DOC_SRV.DocumentStatus" Multiplicity="*" Role="ToRole_Structures_Status"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Structures_Status">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Structures_Status">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Structure_DocumentsChange" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="1" Role="FromRole_Structure_DocumentsChange"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_Structure_DocumentsChange"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Structure_DocumentsChange">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Structure_DocumentsChange">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Structure_AllDocumentAssignments" sap:content-version="1">
+                <End Type="SALM_DROP_DOC_SRV.RelevantStructure" Multiplicity="1" Role="FromRole_Structure_AllDocumentAssignments"/>
+                <End Type="SALM_DROP_DOC_SRV.Document" Multiplicity="*" Role="ToRole_Structure_AllDocumentAssignments"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Structure_AllDocumentAssignments">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Structure_AllDocumentAssignments">
+                        <PropertyRef Name="StructureId"/>
+                        <PropertyRef Name="CrmId"/>
+                        <PropertyRef Name="BranchId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="SALM_DROP_DOC_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="DocumentContentCollection" EntityType="SALM_DROP_DOC_SRV.DocumentContent" sap:content-version="1"/>
+                <EntitySet Name="DocumentSignatureSet" EntityType="SALM_DROP_DOC_SRV.DocumentSignature" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DocumentCategorySet" EntityType="SALM_DROP_DOC_SRV.TestCaseClassification" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="TestCaseClassificationSet" EntityType="SALM_DROP_DOC_SRV.TestCaseClassification" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="LanguageSet" EntityType="SALM_DROP_DOC_SRV.Language" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="CharmWP_WI_BRSet" EntityType="SALM_DROP_DOC_SRV.CharmWP_WI_BR" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RelevantStructureSet" EntityType="SALM_DROP_DOC_SRV.RelevantStructure" sap:creatable="false" sap:updatable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DocumentSet" EntityType="SALM_DROP_DOC_SRV.Document" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RequiredDocumentTypeStatusSet" EntityType="SALM_DROP_DOC_SRV.RequiredDocumentTypeStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DocumentStatusSet" EntityType="SALM_DROP_DOC_SRV.DocumentStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DocTypeValueHelpSet" EntityType="SALM_DROP_DOC_SRV.DocTypeValueHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ElementTypeValueHelpSet" EntityType="SALM_DROP_DOC_SRV.ElementTypeValueHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ElementValueHelpSet" EntityType="SALM_DROP_DOC_SRV.ElementValueHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DocumentGroupSet" EntityType="SALM_DROP_DOC_SRV.DocumentGroup" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="SoldocNodeSet" EntityType="SALM_DROP_DOC_SRV.SoldocNode" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="AuthorizationGroupSet" EntityType="SALM_DROP_DOC_SRV.AuthorizationGroup" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DocumentAuthorizationSet" EntityType="SALM_DROP_DOC_SRV.DocumentAuthorization" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="MoveSourceSet" EntityType="SALM_DROP_DOC_SRV.MoveSource" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="MoveTargetSet" EntityType="SALM_DROP_DOC_SRV.MoveTarget" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <AssociationSet Name="KpiStructure_KpiRequiredDocumentsSet" Association="SALM_DROP_DOC_SRV.KpiStructure_KpiRequiredDocuments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RelevantStructureSet" Role="FromRole_KpiStructure_KpiRequiredDocuments"/>
+                    <End EntitySet="RequiredDocumentTypeStatusSet" Role="ToRole_KpiStructure_KpiRequiredDocuments"/>
+                </AssociationSet>
+                <AssociationSet Name="Structures_StatusSet" Association="SALM_DROP_DOC_SRV.Structures_Status" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RelevantStructureSet" Role="FromRole_Structures_Status"/>
+                    <End EntitySet="DocumentStatusSet" Role="ToRole_Structures_Status"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_MissingDocumentsSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_MissingDocuments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_MissingDocuments"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_CharmWP_WI_BR_MissingDocuments"/>
+                </AssociationSet>
+                <AssociationSet Name="ElementTypeValueHelp_ElementValueHelpSet" Association="SALM_DROP_DOC_SRV.ElementTypeValueHelp_ElementValueHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ElementTypeValueHelpSet" Role="FromRole_ElementTypeValueHelp_ElementValueHelp"/>
+                    <End EntitySet="ElementValueHelpSet" Role="ToRole_ElementTypeValueHelp_ElementValueHelp"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_AuthorizationGroupSet" Association="SALM_DROP_DOC_SRV.Document_AuthorizationGroup" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_AuthorizationGroup"/>
+                    <End EntitySet="AuthorizationGroupSet" Role="ToRole_Document_AuthorizationGroup"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_DocumentStatusSet" Association="SALM_DROP_DOC_SRV.Document_DocumentStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_DocumentStatus"/>
+                    <End EntitySet="DocumentStatusSet" Role="ToRole_Document_DocumentStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_LanguagesSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_Languages" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_Languages"/>
+                    <End EntitySet="LanguageSet" Role="ToRole_CharmWP_WI_BR_Languages"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_DocumentGroupSet" Association="SALM_DROP_DOC_SRV.Document_DocumentGroup" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_DocumentGroup"/>
+                    <End EntitySet="DocumentGroupSet" Role="ToRole_Document_DocumentGroup"/>
+                </AssociationSet>
+                <AssociationSet Name="Structure_UsageOfDocumentsSet" Association="SALM_DROP_DOC_SRV.Structure_UsageOfDocuments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RelevantStructureSet" Role="FromRole_Structure_UsageOfDocuments"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_Structure_UsageOfDocuments"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_StructuresSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_Structures" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_Structures"/>
+                    <End EntitySet="RelevantStructureSet" Role="ToRole_CharmWP_WI_BR_Structures"/>
+                </AssociationSet>
+                <AssociationSet Name="KpiDocument_KpiUnderStructureDetailsSet" Association="SALM_DROP_DOC_SRV.KpiDocument_KpiUnderStructureDetails" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequiredDocumentTypeStatusSet" Role="FromRole_KpiDocument_KpiUnderStructureDetails"/>
+                    <End EntitySet="RequiredDocumentTypeStatusSet" Role="ToRole_KpiDocument_KpiUnderStructureDetails"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeValueHelp_ElementTypeValueHelpSet" Association="SALM_DROP_DOC_SRV.DocTypeValueHelp_ElementTypeValueHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeValueHelpSet" Role="FromRole_DocTypeValueHelp_ElementTypeValueHelp"/>
+                    <End EntitySet="ElementTypeValueHelpSet" Role="ToRole_DocTypeValueHelp_ElementTypeValueHelp"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_DocTypeValueHelpSet" Association="SALM_DROP_DOC_SRV.Document_DocTypeValueHelp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_DocTypeValueHelp"/>
+                    <End EntitySet="DocTypeValueHelpSet" Role="ToRole_Document_DocTypeValueHelp"/>
+                </AssociationSet>
+                <AssociationSet Name="KpiDocument_KpiUnderDocumentDetailsSet" Association="SALM_DROP_DOC_SRV.KpiDocument_KpiUnderDocumentDetails" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequiredDocumentTypeStatusSet" Role="FromRole_KpiDocument_KpiUnderDocumentDetails"/>
+                    <End EntitySet="RequiredDocumentTypeStatusSet" Role="ToRole_KpiDocument_KpiUnderDocumentDetails"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_DocumentContent_AssocSet" Association="SALM_DROP_DOC_SRV.Document_DocumentContent" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_DocumentContent"/>
+                    <End EntitySet="DocumentContentCollection" Role="ToRole_Document_DocumentContent"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_TestCaseClassificationSet" Association="SALM_DROP_DOC_SRV.Document_TestCaseClassifications" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_TestCaseClassifications"/>
+                    <End EntitySet="TestCaseClassificationSet" Role="ToRole_Document_TestCaseClassifications"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_DocumentsSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_Documents" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_Documents"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_CharmWP_WI_BR_Documents"/>
+                </AssociationSet>
+                <AssociationSet Name="Structure_AllDocumentAssignmentsSet" Association="SALM_DROP_DOC_SRV.Structure_AllDocumentAssignments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RelevantStructureSet" Role="FromRole_Structure_AllDocumentAssignments"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_Structure_AllDocumentAssignments"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_UsageOfAttachmentsSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_UsageOfAttachments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_UsageOfAttachments"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_CharmWP_WI_BR_UsageOfAttachments"/>
+                </AssociationSet>
+                <AssociationSet Name="Structure_DocumentsChangeSet" Association="SALM_DROP_DOC_SRV.Structure_DocumentsChange" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RelevantStructureSet" Role="FromRole_Structure_DocumentsChange"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_Structure_DocumentsChange"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_StructuresChangeSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_StructuresChange" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_StructuresChange"/>
+                    <End EntitySet="RelevantStructureSet" Role="ToRole_CharmWP_WI_BR_StructuresChange"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_DocumentSignatureSet" Association="SALM_DROP_DOC_SRV.Document_DocumentSignature" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_DocumentSignature"/>
+                    <End EntitySet="DocumentSignatureSet" Role="ToRole_Document_DocumentSignature"/>
+                </AssociationSet>
+                <AssociationSet Name="MoveSource_MoveTargetSet" Association="SALM_DROP_DOC_SRV.MoveSource_MoveTarget" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="MoveSourceSet" Role="FromRole_MoveSource_MoveTarget"/>
+                    <End EntitySet="MoveTargetSet" Role="ToRole_MoveSource_MoveTarget"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_AllStructureAssignmentsSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_AllStructureAssignments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_AllStructureAssignments"/>
+                    <End EntitySet="RelevantStructureSet" Role="ToRole_CharmWP_WI_BR_AllStructureAssignments"/>
+                </AssociationSet>
+                <AssociationSet Name="Document_DocumentAuthorizationSet" Association="SALM_DROP_DOC_SRV.Document_DocumentAuthorization" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocumentSet" Role="FromRole_Document_DocumentAuthorization"/>
+                    <End EntitySet="DocumentAuthorizationSet" Role="ToRole_Document_DocumentAuthorization"/>
+                </AssociationSet>
+                <AssociationSet Name="SoldocNode_DocumentsSet" Association="SALM_DROP_DOC_SRV.SoldocNode_Documents" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="SoldocNodeSet" Role="FromRole_SoldocNode_Documents"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_SoldocNode_Documents"/>
+                </AssociationSet>
+                <AssociationSet Name="Structures_DocumentsSet" Association="SALM_DROP_DOC_SRV.Structures_Documents" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RelevantStructureSet" Role="FromRole_Structures_Documents"/>
+                    <End EntitySet="DocumentSet" Role="ToRole_Structures_Documents"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_KpiStructuresSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_KpiStructures" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_KpiStructures"/>
+                    <End EntitySet="RelevantStructureSet" Role="ToRole_CharmWP_WI_BR_KpiStructures"/>
+                </AssociationSet>
+                <AssociationSet Name="CharmWP_WI_BR_RequiredDocumentsSet" Association="SALM_DROP_DOC_SRV.CharmWP_WI_BR_RequiredDocuments" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="CharmWP_WI_BRSet" Role="FromRole_CharmWP_WI_BR_RequiredDocuments"/>
+                    <End EntitySet="RequiredDocumentTypeStatusSet" Role="ToRole_CharmWP_WI_BR_RequiredDocuments"/>
+                </AssociationSet>
+                <FunctionImport Name="ScopeExtensionChanges" ReturnType="Collection(SALM_DROP_DOC_SRV.ScopeExtensionChangedElement)" m:HttpMethod="POST" sap:label="New and changed elements compared to parent branch" sap:action-for="SALM_DROP_DOC_SRV.CharmWP_WI_BR">
+                    <Parameter Name="CrmId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                </FunctionImport>
+                <FunctionImport Name="DocumentAutoCreationStatus" ReturnType="SALM_DROP_DOC_SRV.DocAutoCreationStatus" m:HttpMethod="POST">
+                    <Parameter Name="CrmId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="StructureIds" Type="Edm.String" Mode="In"/>
+                </FunctionImport>
+                <FunctionImport Name="GetAllowedElementTypes" ReturnType="Collection(SALM_DROP_DOC_SRV.AllowedElementType)" m:HttpMethod="GET" sap:label="Get allowed elementtypes for DropDoc"/>
+                <FunctionImport Name="HiddenTestCasesExist" ReturnType="SALM_DROP_DOC_SRV.HiddenTestCasesReturn" m:HttpMethod="POST" sap:label="Are there "hidden" test cases on a structure?" sap:action-for="SALM_DROP_DOC_SRV.RelevantStructure">
+                    <Parameter Name="CrmId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="StructureId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                </FunctionImport>
+                <FunctionImport Name="DocumentKpiStatus" ReturnType="SALM_DROP_DOC_SRV.DocKpiStatus" m:HttpMethod="GET" sap:label="Overall Document KPI Status of a WP / WI / BR" sap:action-for="SALM_DROP_DOC_SRV.CharmWP_WI_BR">
+                    <Parameter Name="CrmId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                </FunctionImport>
+                <FunctionImport Name="DiagramAssignStructures" ReturnType="Collection(SALM_DROP_DOC_SRV.AssignedStructureId)" m:HttpMethod="POST" sap:label=" assign nodes from diagram">
+                    <Parameter Name="CrmId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="StructureId" Type="Edm.String" Mode="In" MaxLength="32"/>
+                    <Parameter Name="StructureType" Type="Edm.String" Mode="In" MaxLength="26"/>
+                </FunctionImport>
+            </EntityContainer>
+            <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="https://smrci10.worldbank.org:51001/sap/opu/odata/salm/DROP_DOC_SRV/$metadata"/>
+            <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="https://smrci10.worldbank.org:51001/sap/opu/odata/salm/DROP_DOC_SRV/$metadata"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

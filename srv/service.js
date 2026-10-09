@@ -44,6 +44,22 @@ export default cds.service.impl(async function () {
               ...extractHttpErrorDetails(error),
             });
           }
+
+          try {
+            const attachments = await fetchSolmanDefectAttachments(defect.Guid);
+            LOG.info('Startup defect attachments fetch succeeded', {
+              guid: defect.Guid,
+              defectId: defect.Id,
+              attachmentCount: attachments.length,
+              attachments,
+            });
+          } catch (error) {
+            LOG.error('Startup defect attachments fetch failed', {
+              guid: defect.Guid,
+              defectId: defect.Id,
+              ...extractHttpErrorDetails(error),
+            });
+          }
         } else {
           LOG.warn('Startup defect fetch returned no rows', { defectId: startupDefectId });
         }
@@ -183,6 +199,78 @@ async function fetchSolmanNotesByGuid(guid, processType = 'S1DM') {
   return extractODataResults(notesResponse?.data);
 }
 
+async function fetchSolmanDefectAttachments(guid) {
+  const crmId = compactSolmanGuid(guid);
+  if (!crmId) {
+    return [];
+  }
+
+  const attachmentsListUrl =
+    `/sap/opu/odata/SALM/DROP_DOC_SRV/CharmWP_WI_BRSet(` +
+    `CrmId=${toODataStringKey(crmId)},BranchId='0')/attachedDeltaDocuments`;
+
+  const attachmentsListResponse = await executeHttpRequest(
+    { destinationName: SOLMAN_DESTINATION_NAME },
+    {
+      method: 'get',
+      url: attachmentsListUrl,
+      headers: {
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  const attachmentEntries = extractODataResults(attachmentsListResponse?.data);
+  const downloadedAttachments = [];
+
+  for (const entry of attachmentEntries) {
+    const filename = String(entry?.Filename || entry?.FileName || 'attachment').trim() || 'attachment';
+    const entryCrmId = String(entry?.CrmId || crmId).trim();
+    const docId = String(entry?.DocId || '').trim();
+    const branchId = String(entry?.BranchId || '').trim();
+    const structureId = String(entry?.StructureId || '').trim();
+
+    if (!entryCrmId || !docId) {
+      LOG.warn('Skipping SolMan attachment due to missing document key fields', { crmId });
+      continue;
+    }
+
+    const sapClient = String(process.env.SOLMAN_SAP_CLIENT || '001').trim();
+    const sapLanguage = String(process.env.SOLMAN_SAP_LANGUAGE || 'EN').trim();
+    const downloadUrl =
+      `/sap/opu/odata/SALM/DROP_DOC_SRV/DocumentSet(` +
+      `BranchId=${toODataStringKey(branchId)},` +
+      `CrmId=${toODataStringKey(entryCrmId)},` +
+      `DocId=${toODataStringKey(docId)},` +
+      `StructureId=${toODataStringKey(structureId)})/documentContent/$value` +
+      `?sap-client=${encodeURIComponent(sapClient)}&sap-language=${encodeURIComponent(sapLanguage)}`;
+
+    const downloadResponse = await executeHttpRequest(
+      { destinationName: SOLMAN_DESTINATION_NAME },
+      {
+        method: 'get',
+        url: downloadUrl,
+        headers: {
+          Accept: '*/*',
+        },
+        responseType: 'arraybuffer',
+      }
+    );
+
+    const content = toBuffer(downloadResponse?.data);
+    const contentType = String(downloadResponse?.headers?.['content-type'] || 'application/octet-stream');
+
+    downloadedAttachments.push({
+      filename,
+      contentType,
+      size: content.length,
+      textPreview: extractAttachmentPreview(content, contentType),
+    });
+  }
+
+  return downloadedAttachments;
+}
+
 function extractODataResults(payload) {
   if (!payload) {
     return [];
@@ -210,6 +298,51 @@ function parseStartupDefectIds(rawValue) {
     .split(',')
     .map((value) => value.trim())
     .filter(Boolean);
+}
+
+function compactSolmanGuid(value) {
+  const canonical = normalizeGuidLiteral(value);
+  return canonical ? canonical.replace(/-/g, '') : '';
+}
+
+function toODataStringKey(value) {
+  const escaped = String(value ?? '').replace(/'/g, "''");
+  return `'${escaped}'`;
+}
+
+function toBuffer(data) {
+  if (Buffer.isBuffer(data)) {
+    return data;
+  }
+
+  if (data instanceof ArrayBuffer) {
+    return Buffer.from(data);
+  }
+
+  if (ArrayBuffer.isView(data)) {
+    return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+  }
+
+  if (typeof data === 'string') {
+    return Buffer.from(data, 'utf8');
+  }
+
+  if (data == null) {
+    return Buffer.alloc(0);
+  }
+
+  return Buffer.from(String(data), 'utf8');
+}
+
+function extractAttachmentPreview(content, contentType) {
+  const previewLimit = 400;
+  const normalizedType = String(contentType || '').toLowerCase();
+
+  if (normalizedType.includes('text') || normalizedType.includes('json') || normalizedType.includes('xml')) {
+    return content.toString('utf8').slice(0, previewLimit);
+  }
+
+  return `binary attachment (${content.length} bytes)`;
 }
 
 function normalizeGuidLiteral(value) {
