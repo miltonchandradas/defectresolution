@@ -1,7 +1,22 @@
+REMOTE SERVICES
+==============================================================
 cds import srv/external/ZGW_AI_SRV.edmx --as cds
 cds import srv/external/ZSB_AI_REVIEW_RUN_V4.edmx --as cds
 cds import srv/external/CRM_GENERIC_SRV.edmx --as cds
 cds import srv/external/MC_SRV.edmx --as cds
 
+
+GETTING READY FOR DEPLOYMENT
+==============================================================
 cds add xsuaa
 cds add mta
+
+DEPLOY TO CLOUD FOUNDRY
+==============================================================
+cf login
+git pull
+mbt build
+cf deploy mta_archives/defectresolution_1.0.0.mtar
+
+git pull && mbt build && cf deploy mta_archives/defectresolution_1.0.0.mtar
+
