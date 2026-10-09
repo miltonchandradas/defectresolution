@@ -13,6 +13,7 @@ export default cds.service.impl(async function () {
 
       if (defect) {
         LOG.info('Startup defect fetch succeeded', {
+          guid: defect.Guid,
           id: defect.Id,
           typeId: defect.TypeId ?? 'S1DM',
           status: defect.Status,
@@ -33,6 +34,11 @@ export default cds.service.impl(async function () {
       params?.Id ??
       req.data?.id ??
       req.data?.Id ??
+      req._queryOptions?.id ??
+      req._queryOptions?.Id ??
+      req._queryOptions?.defectId ??
+      req._queryOptions?.DefectId ??
+      extractFilterValue(req, 'id') ??
       extractFilterValue(req, 'Id');
 
     const typeId =
@@ -40,6 +46,8 @@ export default cds.service.impl(async function () {
       params?.TypeId ??
       req.data?.typeId ??
       req.data?.TypeId ??
+      req._queryOptions?.typeId ??
+      req._queryOptions?.TypeId ??
       'S1DM';
 
     if (!defectId) {
