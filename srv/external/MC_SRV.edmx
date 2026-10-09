@@ -1,0 +1,1512 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="SALM_MC_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="Probability" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Severity"/>
+                </Key>
+                <Property Name="Severity" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Impact" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ImpactId"/>
+                </Key>
+                <Property Name="ImpactId" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16"/>
+                <Property Name="ImpactDescription" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Strategy" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="RiskStrategy"/>
+                </Key>
+                <Property Name="RiskStrategy" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Risk" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Guid"/>
+                    <PropertyRef Name="riskId"/>
+                    <PropertyRef Name="TypeId"/>
+                </Key>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="riskId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="riskTitle" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ProjectId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="projectGuid" Type="Edm.String" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="projectType" Type="Edm.String" MaxLength="20" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="projectname" Type="Edm.String" MaxLength="80" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="owner" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ownerId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="processor" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="processorId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="reportedBy" Type="Edm.String" MaxLength="80" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="reportedById" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Priority" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16" sap:filterable="false"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Probability" Type="Edm.String" MaxLength="2" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Probability_text" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="SaveStatus" Type="Edm.String" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Impact" Type="Edm.String" MaxLength="2" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Impact_text" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="riskLevel" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="riskLevelNo" Type="Edm.String" MaxLength="1" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="StatusText" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="riskStrategy" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="riskStrategy_text" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="CategoryText" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectPhase" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ProjectPhaseText" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="edit_project" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_owner" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_processor" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_category" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_status" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_priority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_title" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_projectPhase" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_impact" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_probability" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_strategy" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="RiskStatuses" Relationship="SALM_MC_SRV.RiskStatus" FromRole="FromRole_RiskStatus" ToRole="ToRole_RiskStatus"/>
+                <NavigationProperty Name="RiskPriorities" Relationship="SALM_MC_SRV.RiskPriority" FromRole="FromRole_RiskPriority" ToRole="ToRole_RiskPriority"/>
+                <NavigationProperty Name="RiskProbabilities" Relationship="SALM_MC_SRV.RiskProbability" FromRole="FromRole_RiskProbability" ToRole="ToRole_RiskProbability"/>
+                <NavigationProperty Name="RiskImpacts" Relationship="SALM_MC_SRV.RiskImpact" FromRole="FromRole_RiskImpact" ToRole="ToRole_RiskImpact"/>
+                <NavigationProperty Name="RiskStrategies" Relationship="SALM_MC_SRV.RiskStrategy" FromRole="FromRole_RiskStrategy" ToRole="ToRole_RiskStrategy"/>
+                <NavigationProperty Name="RiskLevels" Relationship="SALM_MC_SRV.RiskLevel" FromRole="FromRole_RiskLevel" ToRole="ToRole_RiskLevel"/>
+                <NavigationProperty Name="ProjectPhaseSet" Relationship="SALM_MC_SRV.RiskProjectPhase" FromRole="FromRole_RiskProjectPhase" ToRole="ToRole_RiskProjectPhase"/>
+                <NavigationProperty Name="RiskProjectPhases" Relationship="SALM_MC_SRV.RiskProjectPhase" FromRole="FromRole_RiskProjectPhase" ToRole="ToRole_RiskProjectPhase"/>
+            </EntityType>
+            <EntityType Name="RISKLEVEL" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Risk_level"/>
+                </Key>
+                <Property Name="Risk_level" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Document" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="TypeId"/>
+                </Key>
+                <Property Name="ClassifAttributes" Type="SALM_MC_SRV.ClassifAttributes" Nullable="false"/>
+                <Property Name="ActReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ActReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ActualRelease" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Actual Release" sap:sortable="false"/>
+                <Property Name="Branch_id" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Branch ID" sap:filterable="false"/>
+                <Property Name="BranchName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Branch Name" sap:filterable="false"/>
+                <Property Name="BuildFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Build Finish" sap:filterable="false"/>
+                <Property Name="BusinessProcessExpert" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Business Process Expert"/>
+                <Property Name="BusinessProcessExpert_id" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Business Process Expert ID" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Category"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Category Level" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeAdvisoryBoard" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Change Advisory Board" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Transaction Last Changed Time"/>
+                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Changed By"/>
+                <Property Name="ChangeManager" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Change Manager" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="classificationkey" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Classification Key" sap:filterable="false"/>
+                <Property Name="Completion" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Completion" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="conversion" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Conversion" sap:filterable="false"/>
+                <Property Name="CreatedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Time of transaction creation"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Created By"/>
+                <Property Name="CurrentProcessor" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Current Processor" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DateTypeId" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DateValue" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Description"/>
+                <Property Name="Developer" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Developer" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DevTeam" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Dev Team"/>
+                <Property Name="DevTeam_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Bpexpert" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Category" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Completion" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Dev_Team" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Discription" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_finish_date" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Owner" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Priority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Project_Manager" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_ProjectPhase" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Requested_Release" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_start_date" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Title" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditStatus" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Effort" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Effort Point" sap:filterable="false"/>
+                <Property Name="EFFORTPOINTF" Type="Edm.String" MaxLength="12" sap:unicode="false"/>
+                <Property Name="Element" Type="Edm.String" MaxLength="22" sap:unicode="false" sap:label="Element"/>
+                <Property Name="ElementName" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="enh" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Enhancement" sap:filterable="false"/>
+                <Property Name="FinishDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Finish" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="id"/>
+                <Property Name="interface" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Interface" sap:filterable="false"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ITOperator" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="IT Operator" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Language"/>
+                <Property Name="Local" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Local Requirement"/>
+                <Property Name="LocalB" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Max Lines"/>
+                <Property Name="Owner" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Owner"/>
+                <Property Name="Owner_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Owner ID" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="PartnerFunction" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Partner Function" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerFunctionId" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerNameId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PPMResource" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="PPM Resource" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Priority" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Priority Text" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TestFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Test Completed" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PrMnd" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProductionManager" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Production Manager" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Project" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Project Name"/>
+                <Property Name="ProjectEditable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Guid" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project Id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectManager" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Project Manager"/>
+                <Property Name="ProjectManager_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectMandatory" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectPhase" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Phase Guid"/>
+                <Property Name="ProjectPhaseText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Project Phase" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Remarks" Type="Edm.String" MaxLength="255" sap:unicode="false" sap:label="Remarks" sap:sortable="false"/>
+                <Property Name="report" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Report" sap:filterable="false"/>
+                <Property Name="RequestedRelease" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Requested Release" sap:sortable="false"/>
+                <Property Name="SaveStatus" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Save Status" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SFTFinished" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="SFT Finished" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Solution_id" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Solution ID"/>
+                <Property Name="SolutionDescription" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="SOLUTION DESCRIPTION (from texts)"/>
+                <Property Name="SolutionName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Solution Name" sap:filterable="false"/>
+                <Property Name="SpecFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="SPEC Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StartDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Start" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Status"/>
+                <Property Name="Scope" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StatusText" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Status Text" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tester" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Tester" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Title"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Document Type" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="URL to CRM UI" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Value_Point" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Value Point" sap:filterable="false"/>
+                <Property Name="VALUEPOINTF" Type="Edm.String" MaxLength="12" sap:unicode="false"/>
+                <Property Name="workflow" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Workflow" sap:filterable="false"/>
+                <Property Name="WricefString" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+                <Property Name="WpId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Work package ID"/>
+                <Property Name="wpassignment" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Work Package Assignment"/>
+                <Property Name="wpurl" Type="Edm.String" Nullable="false" sap:unicode="false" sap:filterable="false"/>
+                <NavigationProperty Name="WorkPackagePriorities" Relationship="SALM_MC_SRV.WorkPackagePriority" FromRole="FromRole_WorkPackagePriority" ToRole="ToRole_WorkPackagePriority"/>
+                <NavigationProperty Name="WorkPackageStatuses" Relationship="SALM_MC_SRV.WorkPackageStatus" FromRole="FromRole_WorkPackageStatus" ToRole="ToRole_WorkPackageStatus"/>
+                <NavigationProperty Name="WorkPackageCategories" Relationship="SALM_MC_SRV.WorkPackageCategory" FromRole="FromRole_WorkPackageCategory" ToRole="ToRole_WorkPackageCategory"/>
+                <NavigationProperty Name="ProjectPhaseSet" Relationship="SALM_MC_SRV.WorkPackageProjectPhase" FromRole="FromRole_WorkPackageProjectPhase" ToRole="ToRole_WorkPackageProjectPhase"/>
+                <NavigationProperty Name="WorkPackageProjectPhases" Relationship="SALM_MC_SRV.WorkPackageProjectPhase" FromRole="FromRole_WorkPackageProjectPhase" ToRole="ToRole_WorkPackageProjectPhase"/>
+            </EntityType>
+            <EntityType Name="Priority" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Priority Guid"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Priority Description"/>
+            </EntityType>
+            <EntityType Name="Status" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="ProcessType"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Status"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Process Type"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Status Description"/>
+            </EntityType>
+            <EntityType Name="DocType" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Type Id"/>
+                <Property Name="read_auth" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="ReadAuth" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="write_auth" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="WriteAuth" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Type"/>
+                <NavigationProperty Name="DocTypeRisks" Relationship="SALM_MC_SRV.DocTypeRisk" FromRole="FromRole_DocTypeRisk" ToRole="ToRole_DocTypeRisk"/>
+                <NavigationProperty Name="DocWorkPackages" Relationship="SALM_MC_SRV.DocTypeWorkPackage" FromRole="FromRole_DocTypeWorkPackage" ToRole="ToRole_DocTypeWorkPackage"/>
+                <NavigationProperty Name="DocTypeProjects" Relationship="SALM_MC_SRV.DocTypeProject" FromRole="FromRole_DocTypeProject" ToRole="ToRole_DocTypeProject"/>
+                <NavigationProperty Name="DocTypeStatuses" Relationship="SALM_MC_SRV.DocTypeStatus" FromRole="FromRole_DocTypeStatus" ToRole="ToRole_DocTypeStatus"/>
+                <NavigationProperty Name="DocWorkItems" Relationship="SALM_MC_SRV.DocTypeWorkItem" FromRole="FromRole_DocTypeWorkItem" ToRole="ToRole_DocTypeWorkItem"/>
+                <NavigationProperty Name="DocTypePriorities" Relationship="SALM_MC_SRV.DocTypePriority" FromRole="FromRole_DocTypePriority" ToRole="ToRole_DocTypePriority"/>
+                <NavigationProperty Name="DocTypeCategories" Relationship="SALM_MC_SRV.DocTypeCategory" FromRole="FromRole_DocTypeCategory" ToRole="ToRole_DocTypeCategory"/>
+                <NavigationProperty Name="DocTypePartnerFunctions" Relationship="SALM_MC_SRV.DocTypePartnerFunction" FromRole="FromRole_DocTypePartnerFunction" ToRole="ToRole_DocTypePartnerFunction"/>
+                <NavigationProperty Name="DocTypeSolutions" Relationship="SALM_MC_SRV.DocTypeSolution" FromRole="FromRole_DocTypeSolution" ToRole="ToRole_DocTypeSolution"/>
+                <NavigationProperty Name="RequestForChangeSet" Relationship="SALM_MC_SRV.DocTypeRequest4Chg" FromRole="FromRole_DocTypeRequest4Chg" ToRole="ToRole_DocTypeRequest4Chg"/>
+                <NavigationProperty Name="DocTypeCategoryDefects" Relationship="SALM_MC_SRV.DocTypeCategoryDefect" FromRole="FromRole_DocTypeCategoryDefect" ToRole="ToRole_DocTypeCategoryDefect"/>
+                <NavigationProperty Name="DocTypeDefects" Relationship="SALM_MC_SRV.DocTypeDefect" FromRole="FromRole_DocTypeDefect" ToRole="ToRole_DocTypeDefect"/>
+                <NavigationProperty Name="RequirementSet" Relationship="SALM_MC_SRV.DocTypeRequirementSet" FromRole="FromRole_DocTypeRequirementSet" ToRole="ToRole_DocTypeRequirementSet"/>
+                <NavigationProperty Name="ChangeDocumentSet" Relationship="SALM_MC_SRV.DocTypeChgDoc" FromRole="FromRole_DocTypeChgDoc" ToRole="ToRole_DocTypeChgDoc"/>
+                <NavigationProperty Name="ApprovalProcedureSet" Relationship="SALM_MC_SRV.DocTypeApprovPro" FromRole="FromRole_DocTypeApprovPro" ToRole="ToRole_DocTypeApprovPro"/>
+            </EntityType>
+            <EntityType Name="Project" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ProjectGuid"/>
+                    <PropertyRef Name="ProjectId"/>
+                </Key>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="PPM Project GUID"/>
+                <Property Name="ProjectId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="PPM Project ID"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="PPM Project Name"/>
+                <Property Name="WsGuid" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="CRM GUID for Workpackage or workspace"/>
+                <Property Name="AllProj" Type="Edm.Boolean" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)"/>
+                <NavigationProperty Name="ProjectProjectPhases" Relationship="SALM_MC_SRV.Project_ProjectPhase" FromRole="FromRole_Project_ProjectPhase" ToRole="ToRole_Project_ProjectPhase"/>
+            </EntityType>
+            <EntityType Name="ProjectPhase" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="WaveGuid"/>
+                    <PropertyRef Name="ProjectGuid"/>
+                </Key>
+                <Property Name="WaveGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Wave GUID"/>
+                <Property Name="WaveDescription" Type="Edm.String" Nullable="false" MaxLength="132" sap:unicode="false" sap:label="Wave Display name"/>
+                <Property Name="WsGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="CRM GUID for workpackage or workitem"/>
+                <Property Name="WsType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="CRM type (WP or WI)"/>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false"/>
+                <Property Name="WaveDisabled" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="Wave_Sprints" Relationship="SALM_MC_SRV.Wave_Sprint" FromRole="FromRole_Wave_Sprint" ToRole="ToRole_Wave_Sprint"/>
+            </EntityType>
+            <EntityType Name="SPRINT" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="WaveDescription"/>
+                    <PropertyRef Name="SprintGuid"/>
+                    <PropertyRef Name="ProjectGuid"/>
+                </Key>
+                <Property Name="WaveDescription" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Wave Display name"/>
+                <Property Name="WsGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="CRM GUID for workpackage or workitem"/>
+                <Property Name="WsType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="CRM type (WP or WI)"/>
+                <Property Name="SprintGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Wave GUID"/>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="Types_Workitem" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Type Id"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Type"/>
+            </EntityType>
+            <EntityType Name="Info" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Name"/>
+                </Key>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Info Name"/>
+                <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Info Value"/>
+            </EntityType>
+            <EntityType Name="WorkItem" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="TypeId"/>
+                </Key>
+                <Property Name="ActReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ActReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ActualRelease" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Actual Release" sap:sortable="false"/>
+                <Property Name="Architect" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Architect" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Architect_edit" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Architect edit" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Architect_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Architect id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BuildFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Build Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Category"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Category Level" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Transaction Last Changed Time" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Changed By" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManager" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Change Manager" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManager_edit" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManager_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Change Manager id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="classificationkey" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Classification Key" sap:filterable="false"/>
+                <Property Name="Completion" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Completion" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreatedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Time of transaction creation" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Created By" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CurrentProcessor" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Current Processor" sap:sortable="false"/>
+                <Property Name="DateTypeId" Type="Edm.String" MaxLength="20" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DateValue" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Description"/>
+                <Property Name="DesignFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Design Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developer" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Developer"/>
+                <Property Name="Developer_edit" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developer_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="DevTeam" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Dev Team"/>
+                <Property Name="DevTeam_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="edit_category" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_completion" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_developer" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_finish_date" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_it_operator" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_priority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_project_manager" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_projectPhase" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_requested_release" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_start_date" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_status" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_tester" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_title" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FinishDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Guid" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Id"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ITOperator" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="IT Operator" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ITOperator_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerFunctionId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerNameId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Priority" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Priority"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Priority" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Project" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Project Name"/>
+                <Property Name="ProjectEditable" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Guid" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project Id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectPhase" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Phase Guid"/>
+                <Property Name="ProjectPhaseText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Project Phase" sap:filterable="false"/>
+                <Property Name="RefWP" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Referring Work Packages" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RefWPUrl" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Referring WP URL" sap:filterable="false"/>
+                <Property Name="ReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="SaveStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Save Status" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Sprint" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false"/>
+                <Property Name="SprintCompleted" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StartDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Start" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Status"/>
+                <Property Name="StatusText" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Status Text" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="storyPoint" Type="Edm.Int32" Nullable="false" sap:unicode="false" sap:label="Story Point" sap:filterable="false"/>
+                <Property Name="STORYPOINTF" Type="Edm.String" MaxLength="20" sap:unicode="false"/>
+                <Property Name="Tester" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Tester"/>
+                <Property Name="Tester_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="TestFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Test Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Title"/>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Work item GC or NC" sap:sortable="false"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Document Type" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="URL to CRM UI" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Value_Point" Type="Edm.Int32" Nullable="false" sap:unicode="false" sap:label="Value Point" sap:filterable="false"/>
+                <Property Name="VALUEPOINTF" Type="Edm.String" MaxLength="20" sap:unicode="false"/>
+                <Property Name="wpassignment" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Work Package Assignment" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="WricefString" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false"/>
+                <NavigationProperty Name="WorkItemCategories" Relationship="SALM_MC_SRV.WorkItemCategory" FromRole="FromRole_WorkItemCategory" ToRole="ToRole_WorkItemCategory"/>
+                <NavigationProperty Name="WorkItemSprints" Relationship="SALM_MC_SRV.WorkItemSprint" FromRole="FromRole_WorkItemSprint" ToRole="ToRole_WorkItemSprint"/>
+                <NavigationProperty Name="ProjectPhaseSet" Relationship="SALM_MC_SRV.WorkItemProjectPhase" FromRole="FromRole_WorkItemProjectPhase" ToRole="ToRole_WorkItemProjectPhase"/>
+                <NavigationProperty Name="WorkItemProjectPhases" Relationship="SALM_MC_SRV.WorkItemProjectPhase" FromRole="FromRole_WorkItemProjectPhase" ToRole="ToRole_WorkItemProjectPhase"/>
+                <NavigationProperty Name="WorkItemStatuses" Relationship="SALM_MC_SRV.WorkItemStatus" FromRole="FromRole_WorkItemStatus" ToRole="ToRole_WorkItemStatus"/>
+                <NavigationProperty Name="WorkItemPriorities" Relationship="SALM_MC_SRV.WorkItemPriority" FromRole="FromRole_WorkItemPriority" ToRole="ToRole_WorkItemPriority"/>
+                <NavigationProperty Name="WorkItemWricef" Relationship="SALM_MC_SRV.WorkItemWricef" FromRole="FromRole_WorkItemWricef" ToRole="ToRole_WorkItemWricef"/>
+            </EntityType>
+            <EntityType Name="Category" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="CatLevel" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Level"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Name"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Description"/>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Guid"/>
+                <Property Name="ParentGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Parent Guid"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Id"/>
+                <Property Name="AspId" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Aspect Id"/>
+                <Property Name="AspGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Aspect Guid"/>
+            </EntityType>
+            <EntityType Name="PartnerFunction" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="PartnerFunctionId"/>
+                </Key>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Process Type"/>
+                <Property Name="PartnerFunctionId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="ID"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Description"/>
+                <NavigationProperty Name="PartnerFunctionBusinessPartners" Relationship="SALM_MC_SRV.PartnerFunctionBusinessPartner" FromRole="FromRole_PartnerFunctionBusinessPartner" ToRole="ToRole_PartnerFunctionBusinessPartner"/>
+            </EntityType>
+            <EntityType Name="BusinessPartner" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="PartnerGuid"/>
+                </Key>
+                <Property Name="PartnerType" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Person or organization"/>
+                <Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="First Name"/>
+                <Property Name="LastName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Last Name"/>
+                <Property Name="PartnerGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Partner GUID"/>
+                <Property Name="Role" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Partner Function"/>
+                <Property Name="WsGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="CRM GUID"/>
+                <Property Name="FullName" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Partner Name" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RefPartner" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Partner Number"/>
+                <Property Name="RefPartnerFct" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Partner Function"/>
+                <Property Name="Partner" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Partner Number"/>
+                <Property Name="PartnerFct" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Partner Function"/>
+            </EntityType>
+            <EntityType Name="MC_Date" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DateType"/>
+                </Key>
+                <Property Name="WsGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false"/>
+                <Property Name="DateType" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false"/>
+                <Property Name="Date" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+                <Property Name="Time" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false"/>
+                <Property Name="WsApptType" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false"/>
+                <Property Name="Editable" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator"/>
+            </EntityType>
+            <EntityType Name="RequestedRelease" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ReleaseComponent"/>
+                    <PropertyRef Name="ReleaseNumber"/>
+                </Key>
+                <Property Name="CycleDescription" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Tooltip for cycle description"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="id"/>
+                <Property Name="Client" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Client"/>
+                <Property Name="ReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Sublandscape ID"/>
+                <Property Name="ReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Release Number"/>
+                <Property Name="ReleaseType" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Cycle Type"/>
+                <Property Name="GolivePostponed" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Change"/>
+                <Property Name="SmiProject" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Cycle"/>
+                <Property Name="ReleaseCrmGuid" Type="Edm.Guid" Nullable="false" sap:unicode="false" sap:label="Object GUID"/>
+                <Property Name="ReleaseCrmId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Transaction No."/>
+                <Property Name="TasklistId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Task List ID"/>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Branch ID"/>
+                <Property Name="ReleaseStatus" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Release Status"/>
+                <Property Name="MajorPredRel" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Release Number"/>
+                <Property Name="MinorPredRel" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Release Number"/>
+                <Property Name="CustomerRelease" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Release Number"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User name"/>
+                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User name"/>
+                <Property Name="DeleteFlag" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Delete"/>
+                <Property Name="ReleaseCycleDescription" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Description"/>
+                <Property Name="WS_GUID" Type="Edm.String" MaxLength="32" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="BRANCH" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="SolutionId"/>
+                </Key>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="44" sap:unicode="false"/>
+                <Property Name="SolutionId" Type="Edm.String" Nullable="false" MaxLength="44" sap:unicode="false"/>
+                <Property Name="BranchName" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false"/>
+                <Property Name="BranchType" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Branch Type"/>
+                <Property Name="ProcessType" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:label="Transaction Type"/>
+                <NavigationProperty Name="Elements" Relationship="SALM_MC_SRV.BranchElement" FromRole="FromRole_BranchElement" ToRole="ToRole_BranchElement"/>
+            </EntityType>
+            <EntityType Name="SOLUTION" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="SolutionId"/>
+                </Key>
+                <Property Name="SolutionId" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Solution ID"/>
+                <Property Name="SolutionName" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Solution Name"/>
+                <NavigationProperty Name="Branches" Relationship="SALM_MC_SRV.SolutionBranch" FromRole="FromRole_SolutionBranch" ToRole="ToRole_SolutionBranch"/>
+            </EntityType>
+            <EntityType Name="ELEMENT" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="BranchId"/>
+                    <PropertyRef Name="ElementId"/>
+                </Key>
+                <Property Name="BranchId" Type="Edm.String" Nullable="false" MaxLength="44" sap:unicode="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Max Lines"/>
+                <Property Name="Selectable" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)"/>
+                <Property Name="ElementTypeId" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false"/>
+                <Property Name="ParentId" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Parent ID"/>
+                <Property Name="ElementTypeDescr" Type="Edm.String" Nullable="false" MaxLength="120" sap:unicode="false" sap:label="Description"/>
+                <Property Name="Level" Type="Edm.Byte" Nullable="false" sap:unicode="false" sap:label="Int."/>
+                <Property Name="Path" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="ElementId" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="ID"/>
+                <Property Name="ElementName" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Name"/>
+            </EntityType>
+            <EntityType Name="ELEMENTTYPE" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ElementTypeId"/>
+                </Key>
+                <Property Name="ElementTypeId" Type="Edm.String" Nullable="false" MaxLength="26" sap:unicode="false" sap:label="Element Type ID"/>
+                <Property Name="ElementTypeDescr" Type="Edm.String" Nullable="false" MaxLength="120" sap:unicode="false" sap:label="Element Type Description"/>
+            </EntityType>
+            <EntityType Name="LANGUAGE" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="IsoLanguage"/>
+                    <PropertyRef Name="LanguageText"/>
+                </Key>
+                <Property Name="SystLanguage" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="SYSTEME LANGUAGE"/>
+                <Property Name="IsoLanguage" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="ISO LANGUAGE"/>
+                <Property Name="LanguageText" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="language text"/>
+            </EntityType>
+            <EntityType Name="WRICEF" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="KEY"/>
+                </Key>
+                <Property Name="KEY" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false"/>
+                <Property Name="VALUE" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false"/>
+                <Property Name="DOCTYPE" Type="Edm.String" MaxLength="10" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="WPASSIGNMENT" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Code"/>
+                </Key>
+                <Property Name="Code" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Code"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Description"/>
+            </EntityType>
+            <EntityType Name="ValuePoint" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="High"/>
+                    <PropertyRef Name="Low"/>
+                    <PropertyRef Name="Options"/>
+                    <PropertyRef Name="Sign"/>
+                    <PropertyRef Name="transactionType"/>
+                </Key>
+                <Property Name="High" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false"/>
+                <Property Name="Low" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false"/>
+                <Property Name="Options" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false"/>
+                <Property Name="Sign" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false"/>
+                <Property Name="transactionType" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false"/>
+                <Property Name="text" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="EffortPoint" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="High"/>
+                    <PropertyRef Name="Low"/>
+                    <PropertyRef Name="Options"/>
+                    <PropertyRef Name="Sign"/>
+                    <PropertyRef Name="transactionType"/>
+                </Key>
+                <Property Name="High" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false"/>
+                <Property Name="Low" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false"/>
+                <Property Name="Options" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false"/>
+                <Property Name="Sign" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false"/>
+                <Property Name="transactionType" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false"/>
+                <Property Name="text" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="storyPoint" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="High"/>
+                    <PropertyRef Name="Low"/>
+                    <PropertyRef Name="Options"/>
+                    <PropertyRef Name="Sign"/>
+                    <PropertyRef Name="transactionType"/>
+                </Key>
+                <Property Name="High" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false"/>
+                <Property Name="Low" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false"/>
+                <Property Name="Options" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false"/>
+                <Property Name="Sign" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false"/>
+                <Property Name="transactionType" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false"/>
+                <Property Name="text" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+            </EntityType>
+            <EntityType Name="RequestForChange" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Guid"/>
+                    <PropertyRef Name="TypeId"/>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Id"/>
+                <Property Name="PriorityId" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Priority" sap:sortable="false"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="StatusId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="SatusText" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryText" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeCycleGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="ChangeCycleNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeCycleDescription" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequesterId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="RequesterText" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManagerId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="ChangeManagerText" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ApprProcId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="ApprProcText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="StandardChange" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Standard Change" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Solution" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="saveStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditRequester" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditChgManager" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditStatus" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditCategory" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditPriority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditTitle" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditChangeCycle" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditStandardChange" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditApprProc" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="StatusSet" Relationship="SALM_MC_SRV.Request4ChgStatus" FromRole="FromRole_Request4ChgStatus" ToRole="ToRole_Request4ChgStatus"/>
+                <NavigationProperty Name="PrioritySet" Relationship="SALM_MC_SRV.Request4ChgPriority" FromRole="FromRole_Request4ChgPriority" ToRole="ToRole_Request4ChgPriority"/>
+            </EntityType>
+            <EntityType Name="ChangeCycle" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Guid"/>
+                </Key>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="CategoryDefect" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="WorkpackageF4" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ChangeDocument" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Guid"/>
+                    <PropertyRef Name="TypeId"/>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+                <Property Name="PriorityId" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="StatusId" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="SatusText" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryText" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ChangeCycleGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeCycleDescription" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developer_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+                <Property Name="Developer" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tester_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Tester" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ReleaseManager_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ReleaseManager" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManagerId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManagerText" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ActualRelease" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Actual Release"/>
+                <Property Name="ActReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ActReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="saveStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditDeveloper" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditChgManager" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditStatus" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditCategory" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditPriority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditTitle" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditChangeCycle" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditActualRelease" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="DevTeam_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="DevTeam" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditDevTeam" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditTester" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="TypeText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="EditReleaseManager" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="PrioritySet" Relationship="SALM_MC_SRV.ChgDocPriority" FromRole="FromRole_ChgDocPriority" ToRole="ToRole_ChgDocPriority"/>
+                <NavigationProperty Name="StatusSet" Relationship="SALM_MC_SRV.ChgDocStatus" FromRole="FromRole_ChgDocStatus" ToRole="ToRole_ChgDocStatus"/>
+            </EntityType>
+            <EntityType Name="TypesChgDoc" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Type Id"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Type"/>
+            </EntityType>
+            <EntityType Name="Defect" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Guid"/>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="TypeId"/>
+                </Key>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Category" sap:sortable="false"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="CreatedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="DCorrection" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="DCorrectionUrl" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DCorrectionId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="DefectCategory" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DefectCategoryId" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="EditDCorrection" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditDCategory" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditCategory" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditPriority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditProject" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditStatus" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditTitle" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditTeam" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditReporter" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditProcessor" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditTpln" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Effort" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EffortPointF" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="MsgProcessor" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="MsgProcessorId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PriorityId" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16" sap:sortable="false"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Project" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Guid" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project Id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectPhase" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="ProjectPhaseGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Phase Guid" sap:filterable="false"/>
+                <Property Name="Reporter" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="ReporterId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SaveStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Scope" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ScopeId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="StatusId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SupportTeam" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Support Team"/>
+                <Property Name="SupportTeamId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TestCase" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TestCaseId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:sortable="false"/>
+                <Property Name="TplnGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Test Plan" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TplnId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Test Plan ID" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TplnText" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="DefectProjectPhases" Relationship="SALM_MC_SRV.DefectProjectPhase" FromRole="FromRole_DefectProjectPhase" ToRole="ToRole_DefectProjectPhase"/>
+                <NavigationProperty Name="DefectStatuses" Relationship="SALM_MC_SRV.DefectStatus" FromRole="FromRole_DefectStatus" ToRole="ToRole_DefectStatus"/>
+                <NavigationProperty Name="DefectPriorities" Relationship="SALM_MC_SRV.DefectPriority" FromRole="FromRole_DefectPriority" ToRole="ToRole_DefectPriority"/>
+                <NavigationProperty Name="DefectCategoriesDefect" Relationship="SALM_MC_SRV.DefectCategoryDefect" FromRole="FromRole_DefectCategoryDefect" ToRole="ToRole_DefectCategoryDefect"/>
+                <NavigationProperty Name="DefectCategories" Relationship="SALM_MC_SRV.DefectCategory" FromRole="FromRole_DefectCategory" ToRole="ToRole_DefectCategory"/>
+            </EntityType>
+            <EntityType Name="ApprovalProcedure" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Key"/>
+                </Key>
+                <Property Name="Key" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProcessType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="DefectCorr" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="TypeId"/>
+                </Key>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="URL to CRM UI" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerFunctionId" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="WricefString" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false"/>
+                <Property Name="VALUEPOINTF" Type="Edm.String" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Value_Point" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Value" sap:filterable="false"/>
+                <Property Name="storyPoint" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Signed INT2 / int16" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Guid" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Category Level" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DateTypeId" Type="Edm.String" MaxLength="20" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerNameId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerNumber" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectEditable" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="STORYPOINTF" Type="Edm.String" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="DateValue" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Id"/>
+                <Property Name="ReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ActReleaseNumber" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ActReleaseComponent" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Guid" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectId" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project Id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectPhaseText" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Project Phase" sap:filterable="false"/>
+                <Property Name="SaveStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Save Status" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Project" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Project Name"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Document Type" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Work item GC or NC" sap:sortable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Title"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Description"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Priority" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Priority"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Priority" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Status"/>
+                <Property Name="StatusText" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Status Text" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Category"/>
+                <Property Name="StartDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Start" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="FinishDate" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Completion" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Completion" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ProjectPhase" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Project Phase Guid"/>
+                <Property Name="Sprint" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false"/>
+                <Property Name="ActualRelease" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Actual Release" sap:sortable="false"/>
+                <Property Name="DevTeam" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Dev Team"/>
+                <Property Name="DevTeam_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Developer" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Developer"/>
+                <Property Name="Developer_edit" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Developer_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="Tester" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Tester"/>
+                <Property Name="Tester_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="ITOperator" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="IT Operator" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_it_operator" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_tester" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_category" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_status" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_priority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_title" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_start_date" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_requested_release" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_project_manager" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_finish_date" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_developer" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_completion" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="edit_projectPhase" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ITOperator_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BuildFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Build Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="DesignFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Design Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="TestFinish" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Test Finish" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManager" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Change Manager" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManager_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Change Manager id" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false"/>
+                <Property Name="owner" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ownerId" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CurrentProcessor" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Current Processor" sap:sortable="false"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangeManager_edit" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SprintCompleted" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreatedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Time of transaction creation" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Created By" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Changed By" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Transaction Last Changed Time" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RefWP" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Referring Work Package" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="classificationkey" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Classification Key" sap:filterable="false"/>
+                <Property Name="wpassignment" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Work Package Assignment" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="RefWPUrl" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Referring Work Package URL" sap:filterable="false"/>
+                <Property Name="Architect" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Architect" sap:sortable="false"/>
+                <Property Name="Architect_id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Architect id" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Scope" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ScopeId"/>
+                </Key>
+                <Property Name="ScopeId" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ScopeText" Type="Edm.String" Nullable="false" MaxLength="120" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="SolutionId" Type="Edm.String" Nullable="false" MaxLength="44" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Requirement" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="TypeId"/>
+                </Key>
+                <Property Name="Branch_id" Type="Edm.String" Nullable="false" MaxLength="44" sap:unicode="false" sap:label="Branch ID"/>
+                <Property Name="BranchName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Branch Name" sap:filterable="false"/>
+                <Property Name="BusinessProcessExpert" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Business Process Expert"/>
+                <Property Name="BusinessProcessExpert_id" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Business Process Expert ID" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Category"/>
+                <Property Name="CategoryGuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CategoryLevel" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Category Level" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="ChangedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Transaction Last Changed Time"/>
+                <Property Name="ChangedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Changed By"/>
+                <Property Name="classificationkey" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Classification Key" sap:filterable="false"/>
+                <Property Name="conversion" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Conversion" sap:filterable="false"/>
+                <Property Name="CreatedAt" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Time of transaction creation"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Created By"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Description" sap:filterable="false"/>
+                <Property Name="Edit_Category" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Discription" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Bpexpert" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Owner" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Priority" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="EditStatus" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Indicator" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Edit_Title" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Effort" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Effort Point" sap:filterable="false"/>
+                <Property Name="EFFORTPOINTF" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Element" Type="Edm.String" sap:unicode="false" sap:label="Element"/>
+                <Property Name="ElementName" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="enh" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Enhancement" sap:filterable="false"/>
+                <Property Name="Guid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="id"/>
+                <Property Name="interface" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Interface" sap:filterable="false"/>
+                <Property Name="IsFinal" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Language" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Language"/>
+                <Property Name="Local" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Local Requirement" sap:sortable="false"/>
+                <Property Name="LocalB" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Boolean Variable (X=True, -=False, Space=Unknown)" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="MaxLines" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Max Lines"/>
+                <Property Name="PARA_CACHE_ID" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:filterable="false"/>
+                <Property Name="PartnerFunction" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Partner Function" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerFunctionId" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PartnerNameId" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Priority" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Priority"/>
+                <Property Name="PriorityText" Type="Edm.String" Nullable="false" MaxLength="60" sap:unicode="false" sap:label="Priority Text" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Remarks" Type="Edm.String" MaxLength="255" sap:unicode="false" sap:label="Remarks" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="report" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Report" sap:filterable="false"/>
+                <Property Name="SaveStatus" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Save Status" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Solution_id" Type="Edm.String" Nullable="false" MaxLength="22" sap:unicode="false" sap:label="Solution ID"/>
+                <Property Name="SolutionDescription" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="SOLUTION DESCRIPTION (from texts)" sap:filterable="false"/>
+                <Property Name="SolutionName" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Solution Name" sap:filterable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Status"/>
+                <Property Name="StatusText" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Status Text" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Title"/>
+                <Property Name="TypeId" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Document Type" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="URL to CRM UI" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Value_Point" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Value Point" sap:filterable="false"/>
+                <Property Name="VALUEPOINTF" Type="Edm.String" sap:unicode="false"/>
+                <Property Name="workflow" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Workflow" sap:filterable="false"/>
+                <Property Name="Owner" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Owner"/>
+                <Property Name="Owner_id" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Owner ID" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="wpassignment" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="WPASSIGNMENT"/>
+                <Property Name="WpId" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Work Package ID" sap:filterable="false"/>
+                <Property Name="wpurl" Type="Edm.String" Nullable="false" sap:unicode="false" sap:label="Work package URL" sap:filterable="false"/>
+                <Property Name="Scope" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Scope" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="WricefString" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false"/>
+                <NavigationProperty Name="RequirementPriorities" Relationship="SALM_MC_SRV.RequirementPriorities" FromRole="FromRole_RequirementPriorities" ToRole="ToRole_RequirementPriorities"/>
+                <NavigationProperty Name="RequirementStatuses" Relationship="SALM_MC_SRV.RequirementStatuses" FromRole="FromRole_RequirementStatuses" ToRole="ToRole_RequirementStatuses"/>
+                <NavigationProperty Name="REQElements" Relationship="SALM_MC_SRV.REQElement" FromRole="FromRole_REQElement" ToRole="ToRole_REQElement"/>
+            </EntityType>
+            <ComplexType Name="ClassifAttributes">
+                <Property Name="AttrName" Type="Edm.String" MaxLength="30" sap:label="Component name"/>
+                <Property Name="Key" Type="Edm.String" MaxLength="8" sap:label="Classification"/>
+                <Property Name="Value" Type="Edm.String" MaxLength="80" sap:label="Text"/>
+            </ComplexType>
+            <Association Name="RiskStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_RiskStatus"/>
+            </Association>
+            <Association Name="RiskPriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskPriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_RiskPriority"/>
+            </Association>
+            <Association Name="RiskProbability" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskProbability"/>
+                <End Type="SALM_MC_SRV.Probability" Multiplicity="*" Role="ToRole_RiskProbability"/>
+            </Association>
+            <Association Name="RiskImpact" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskImpact"/>
+                <End Type="SALM_MC_SRV.Impact" Multiplicity="*" Role="ToRole_RiskImpact"/>
+            </Association>
+            <Association Name="RiskStrategy" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskStrategy"/>
+                <End Type="SALM_MC_SRV.Strategy" Multiplicity="*" Role="ToRole_RiskStrategy"/>
+            </Association>
+            <Association Name="RiskLevel" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskLevel"/>
+                <End Type="SALM_MC_SRV.RISKLEVEL" Multiplicity="*" Role="ToRole_RiskLevel"/>
+            </Association>
+            <Association Name="RiskCategory" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskCategory"/>
+                <End Type="SALM_MC_SRV.Category" Multiplicity="*" Role="ToRole_RiskCategory"/>
+            </Association>
+            <Association Name="RiskProjectPhase" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="1" Role="FromRole_RiskProjectPhase"/>
+                <End Type="SALM_MC_SRV.ProjectPhase" Multiplicity="*" Role="ToRole_RiskProjectPhase"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_RiskProjectPhase">
+                        <PropertyRef Name="Guid"/>
+                        <PropertyRef Name="riskId"/>
+                        <PropertyRef Name="TypeId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_RiskProjectPhase">
+                        <PropertyRef Name="WaveGuid"/>
+                        <PropertyRef Name="WaveGuid"/>
+                        <PropertyRef Name="WaveGuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="PartnerFunctionBusinessPartner" sap:content-version="1">
+                <End Type="SALM_MC_SRV.PartnerFunction" Multiplicity="1" Role="FromRole_PartnerFunctionBusinessPartner"/>
+                <End Type="SALM_MC_SRV.BusinessPartner" Multiplicity="*" Role="ToRole_PartnerFunctionBusinessPartner"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_PartnerFunctionBusinessPartner">
+                        <PropertyRef Name="PartnerFunctionId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_PartnerFunctionBusinessPartner">
+                        <PropertyRef Name="PartnerGuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="DefectCategoryDefect" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Defect" Multiplicity="1" Role="FromRole_DefectCategoryDefect"/>
+                <End Type="SALM_MC_SRV.CategoryDefect" Multiplicity="*" Role="ToRole_DefectCategoryDefect"/>
+            </Association>
+            <Association Name="DefectPriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Defect" Multiplicity="1" Role="FromRole_DefectPriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_DefectPriority"/>
+            </Association>
+            <Association Name="DefectProjectPhase" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Defect" Multiplicity="1" Role="FromRole_DefectProjectPhase"/>
+                <End Type="SALM_MC_SRV.ProjectPhase" Multiplicity="*" Role="ToRole_DefectProjectPhase"/>
+            </Association>
+            <Association Name="DefectCategory" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Defect" Multiplicity="1" Role="FromRole_DefectCategory"/>
+                <End Type="SALM_MC_SRV.Category" Multiplicity="*" Role="ToRole_DefectCategory"/>
+            </Association>
+            <Association Name="DefectStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Defect" Multiplicity="1" Role="FromRole_DefectStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_DefectStatus"/>
+            </Association>
+            <Association Name="SolutionBranch" sap:content-version="1">
+                <End Type="SALM_MC_SRV.SOLUTION" Multiplicity="1" Role="FromRole_SolutionBranch"/>
+                <End Type="SALM_MC_SRV.BRANCH" Multiplicity="*" Role="ToRole_SolutionBranch"/>
+            </Association>
+            <Association Name="WorkPackagePriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Document" Multiplicity="1" Role="FromRole_WorkPackagePriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_WorkPackagePriority"/>
+            </Association>
+            <Association Name="WorkPackageStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Document" Multiplicity="1" Role="FromRole_WorkPackageStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_WorkPackageStatus"/>
+            </Association>
+            <Association Name="WorkPackageCategory" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Document" Multiplicity="1" Role="FromRole_WorkPackageCategory"/>
+                <End Type="SALM_MC_SRV.Category" Multiplicity="*" Role="ToRole_WorkPackageCategory"/>
+            </Association>
+            <Association Name="WorkPackageProjectPhase" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Document" Multiplicity="1" Role="FromRole_WorkPackageProjectPhase"/>
+                <End Type="SALM_MC_SRV.ProjectPhase" Multiplicity="*" Role="ToRole_WorkPackageProjectPhase"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_WorkPackageProjectPhase">
+                        <PropertyRef Name="TypeId"/>
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_WorkPackageProjectPhase">
+                        <PropertyRef Name="WaveGuid"/>
+                        <PropertyRef Name="WaveGuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Wave_Sprint" sap:content-version="1">
+                <End Type="SALM_MC_SRV.ProjectPhase" Multiplicity="1" Role="FromRole_Wave_Sprint"/>
+                <End Type="SALM_MC_SRV.SPRINT" Multiplicity="*" Role="ToRole_Wave_Sprint"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Wave_Sprint">
+                        <PropertyRef Name="WaveGuid"/>
+                        <PropertyRef Name="ProjectGuid"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Wave_Sprint">
+                        <PropertyRef Name="SprintGuid"/>
+                        <PropertyRef Name="ProjectGuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="Project_ProjectPhase" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Project" Multiplicity="1" Role="FromRole_Project_ProjectPhase"/>
+                <End Type="SALM_MC_SRV.ProjectPhase" Multiplicity="*" Role="ToRole_Project_ProjectPhase"/>
+            </Association>
+            <Association Name="Request4ChgStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.RequestForChange" Multiplicity="1" Role="FromRole_Request4ChgStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_Request4ChgStatus"/>
+            </Association>
+            <Association Name="Request4ChgPriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.RequestForChange" Multiplicity="1" Role="FromRole_Request4ChgPriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_Request4ChgPriority"/>
+            </Association>
+            <Association Name="DocTypeRisk" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeRisk"/>
+                <End Type="SALM_MC_SRV.Risk" Multiplicity="*" Role="ToRole_DocTypeRisk"/>
+            </Association>
+            <Association Name="DocTypeWorkPackage" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeWorkPackage"/>
+                <End Type="SALM_MC_SRV.Document" Multiplicity="*" Role="ToRole_DocTypeWorkPackage"/>
+            </Association>
+            <Association Name="DocTypeProject" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeProject"/>
+                <End Type="SALM_MC_SRV.Project" Multiplicity="*" Role="ToRole_DocTypeProject"/>
+            </Association>
+            <Association Name="DocTypeStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_DocTypeStatus"/>
+            </Association>
+            <Association Name="DocTypeWorkItem" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeWorkItem"/>
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="*" Role="ToRole_DocTypeWorkItem"/>
+            </Association>
+            <Association Name="DocTypePriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypePriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_DocTypePriority"/>
+            </Association>
+            <Association Name="DocTypeCategory" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeCategory"/>
+                <End Type="SALM_MC_SRV.Category" Multiplicity="*" Role="ToRole_DocTypeCategory"/>
+            </Association>
+            <Association Name="DocTypePartnerFunction" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypePartnerFunction"/>
+                <End Type="SALM_MC_SRV.PartnerFunction" Multiplicity="*" Role="ToRole_DocTypePartnerFunction"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_DocTypePartnerFunction">
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_DocTypePartnerFunction">
+                        <PropertyRef Name="PartnerFunctionId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="DocTypeSolution" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeSolution"/>
+                <End Type="SALM_MC_SRV.SOLUTION" Multiplicity="*" Role="ToRole_DocTypeSolution"/>
+            </Association>
+            <Association Name="DocTypeRequest4Chg" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeRequest4Chg"/>
+                <End Type="SALM_MC_SRV.RequestForChange" Multiplicity="*" Role="ToRole_DocTypeRequest4Chg"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_DocTypeRequest4Chg">
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_DocTypeRequest4Chg">
+                        <PropertyRef Name="TypeId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="DocTypeCategoryDefect" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeCategoryDefect"/>
+                <End Type="SALM_MC_SRV.CategoryDefect" Multiplicity="*" Role="ToRole_DocTypeCategoryDefect"/>
+            </Association>
+            <Association Name="DocTypeDefect" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeDefect"/>
+                <End Type="SALM_MC_SRV.Defect" Multiplicity="*" Role="ToRole_DocTypeDefect"/>
+            </Association>
+            <Association Name="DocTypeRequirementSet" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="0..1" Role="FromRole_DocTypeRequirementSet"/>
+                <End Type="SALM_MC_SRV.Requirement" Multiplicity="*" Role="ToRole_DocTypeRequirementSet"/>
+            </Association>
+            <Association Name="DocTypeChgDoc" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeChgDoc"/>
+                <End Type="SALM_MC_SRV.ChangeDocument" Multiplicity="*" Role="ToRole_DocTypeChgDoc"/>
+            </Association>
+            <Association Name="DocTypeApprovPro" sap:content-version="1">
+                <End Type="SALM_MC_SRV.DocType" Multiplicity="1" Role="FromRole_DocTypeApprovPro"/>
+                <End Type="SALM_MC_SRV.ApprovalProcedure" Multiplicity="*" Role="ToRole_DocTypeApprovPro"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_DocTypeApprovPro">
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_DocTypeApprovPro">
+                        <PropertyRef Name="ProcessType"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="WorkItemCategory" sap:content-version="1">
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="1" Role="FromRole_WorkItemCategory"/>
+                <End Type="SALM_MC_SRV.Category" Multiplicity="*" Role="ToRole_WorkItemCategory"/>
+            </Association>
+            <Association Name="WorkItemProjectPhase" sap:content-version="1">
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="1" Role="FromRole_WorkItemProjectPhase"/>
+                <End Type="SALM_MC_SRV.ProjectPhase" Multiplicity="*" Role="ToRole_WorkItemProjectPhase"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_WorkItemProjectPhase">
+                        <PropertyRef Name="Id"/>
+                        <PropertyRef Name="TypeId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_WorkItemProjectPhase">
+                        <PropertyRef Name="WaveGuid"/>
+                        <PropertyRef Name="WaveGuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="WorkItemStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="1" Role="FromRole_WorkItemStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_WorkItemStatus"/>
+            </Association>
+            <Association Name="WorkItemPriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="1" Role="FromRole_WorkItemPriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_WorkItemPriority"/>
+            </Association>
+            <Association Name="WorkItemSprint" sap:content-version="1">
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="1" Role="FromRole_WorkItemSprint"/>
+                <End Type="SALM_MC_SRV.SPRINT" Multiplicity="*" Role="ToRole_WorkItemSprint"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_WorkItemSprint">
+                        <PropertyRef Name="Id"/>
+                        <PropertyRef Name="TypeId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_WorkItemSprint">
+                        <PropertyRef Name="SprintGuid"/>
+                        <PropertyRef Name="SprintGuid"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="WorkItemWricef" sap:content-version="1">
+                <End Type="SALM_MC_SRV.WorkItem" Multiplicity="1" Role="FromRole_WorkItemWricef"/>
+                <End Type="SALM_MC_SRV.WRICEF" Multiplicity="*" Role="ToRole_WorkItemWricef"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_WorkItemWricef">
+                        <PropertyRef Name="TypeId"/>
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_WorkItemWricef">
+                        <PropertyRef Name="DOCTYPE"/>
+                        <PropertyRef Name="KEY"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="ChgDocPriority" sap:content-version="1">
+                <End Type="SALM_MC_SRV.ChangeDocument" Multiplicity="1" Role="FromRole_ChgDocPriority"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_ChgDocPriority"/>
+            </Association>
+            <Association Name="ChgDocStatus" sap:content-version="1">
+                <End Type="SALM_MC_SRV.ChangeDocument" Multiplicity="1" Role="FromRole_ChgDocStatus"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_ChgDocStatus"/>
+            </Association>
+            <Association Name="BranchElement" sap:content-version="1">
+                <End Type="SALM_MC_SRV.BRANCH" Multiplicity="0..1" Role="FromRole_BranchElement"/>
+                <End Type="SALM_MC_SRV.ELEMENT" Multiplicity="*" Role="ToRole_BranchElement"/>
+            </Association>
+            <Association Name="RequirementPriorities" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Requirement" Multiplicity="0..1" Role="FromRole_RequirementPriorities"/>
+                <End Type="SALM_MC_SRV.Priority" Multiplicity="*" Role="ToRole_RequirementPriorities"/>
+            </Association>
+            <Association Name="RequirementStatuses" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Requirement" Multiplicity="0..1" Role="FromRole_RequirementStatuses"/>
+                <End Type="SALM_MC_SRV.Status" Multiplicity="*" Role="ToRole_RequirementStatuses"/>
+            </Association>
+            <Association Name="REQElement" sap:content-version="1">
+                <End Type="SALM_MC_SRV.Requirement" Multiplicity="1" Role="FromRole_REQElement"/>
+                <End Type="SALM_MC_SRV.ELEMENT" Multiplicity="*" Role="ToRole_REQElement"/>
+            </Association>
+            <EntityContainer Name="SALM_MC_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="WorkPackageSet" EntityType="SALM_MC_SRV.Document" sap:content-version="1"/>
+                <EntitySet Name="PrioritySet" EntityType="SALM_MC_SRV.Priority" sap:content-version="1"/>
+                <EntitySet Name="StatusSet" EntityType="SALM_MC_SRV.Status" sap:content-version="1"/>
+                <EntitySet Name="DocTypeSet" EntityType="SALM_MC_SRV.DocType" sap:content-version="1"/>
+                <EntitySet Name="ProjectSet" EntityType="SALM_MC_SRV.Project" sap:content-version="1"/>
+                <EntitySet Name="ProjectPhaseSet" EntityType="SALM_MC_SRV.ProjectPhase" sap:content-version="1"/>
+                <EntitySet Name="SPRINTSet" EntityType="SALM_MC_SRV.SPRINT" sap:content-version="1"/>
+                <EntitySet Name="Types_WorkitemSet" EntityType="SALM_MC_SRV.Types_Workitem" sap:content-version="1"/>
+                <EntitySet Name="InfoSet" EntityType="SALM_MC_SRV.Info" sap:content-version="1"/>
+                <EntitySet Name="WorkItemSet" EntityType="SALM_MC_SRV.WorkItem" sap:content-version="1"/>
+                <EntitySet Name="CategorySet" EntityType="SALM_MC_SRV.Category" sap:content-version="1"/>
+                <EntitySet Name="PartnerFunctionSet" EntityType="SALM_MC_SRV.PartnerFunction" sap:content-version="1"/>
+                <EntitySet Name="BusinessPartnerSet" EntityType="SALM_MC_SRV.BusinessPartner" sap:content-version="1"/>
+                <EntitySet Name="MC_DateSet" EntityType="SALM_MC_SRV.MC_Date" sap:content-version="1"/>
+                <EntitySet Name="RequestedReleaseSet" EntityType="SALM_MC_SRV.RequestedRelease" sap:content-version="1"/>
+                <EntitySet Name="BRANCHSet" EntityType="SALM_MC_SRV.BRANCH" sap:content-version="1"/>
+                <EntitySet Name="SOLUTIONSet" EntityType="SALM_MC_SRV.SOLUTION" sap:content-version="1"/>
+                <EntitySet Name="ELEMENTSet" EntityType="SALM_MC_SRV.ELEMENT" sap:content-version="1"/>
+                <EntitySet Name="ELEMENTTYPESet" EntityType="SALM_MC_SRV.ELEMENTTYPE" sap:content-version="1"/>
+                <EntitySet Name="LANGUAGESet" EntityType="SALM_MC_SRV.LANGUAGE" sap:content-version="1"/>
+                <EntitySet Name="WRICEFSet" EntityType="SALM_MC_SRV.WRICEF" sap:content-version="1"/>
+                <EntitySet Name="WPASSIGNMENTSet" EntityType="SALM_MC_SRV.WPASSIGNMENT" sap:content-version="1"/>
+                <EntitySet Name="ValuePointSet" EntityType="SALM_MC_SRV.ValuePoint" sap:content-version="1"/>
+                <EntitySet Name="EffortPointSet" EntityType="SALM_MC_SRV.EffortPoint" sap:content-version="1"/>
+                <EntitySet Name="storyPointSet" EntityType="SALM_MC_SRV.storyPoint" sap:content-version="1"/>
+                <EntitySet Name="RequestForChangeSet" EntityType="SALM_MC_SRV.RequestForChange" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ChangeCycleSet" EntityType="SALM_MC_SRV.ChangeCycle" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="CategoryDefectSet" EntityType="SALM_MC_SRV.CategoryDefect" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="WorkpackageF4Set" EntityType="SALM_MC_SRV.WorkpackageF4" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ChangeDocumentSet" EntityType="SALM_MC_SRV.ChangeDocument" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="TypesChgDocSet" EntityType="SALM_MC_SRV.TypesChgDoc" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DefectSet" EntityType="SALM_MC_SRV.Defect" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ApprovalProcedureSet" EntityType="SALM_MC_SRV.ApprovalProcedure" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="DefectCorrSet" EntityType="SALM_MC_SRV.DefectCorr" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ScopeSet" EntityType="SALM_MC_SRV.Scope" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="RequirementSet" EntityType="SALM_MC_SRV.Requirement" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="ProbabilitySet" EntityType="SALM_MC_SRV.Probability" sap:content-version="1"/>
+                <EntitySet Name="ImpactSet" EntityType="SALM_MC_SRV.Impact" sap:content-version="1"/>
+                <EntitySet Name="StrategySet" EntityType="SALM_MC_SRV.Strategy" sap:content-version="1"/>
+                <EntitySet Name="RiskSet" EntityType="SALM_MC_SRV.Risk" sap:content-version="1"/>
+                <EntitySet Name="RISKLEVELSet" EntityType="SALM_MC_SRV.RISKLEVEL" sap:content-version="1"/>
+                <AssociationSet Name="Request4ChgStatusSet" Association="SALM_MC_SRV.Request4ChgStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequestForChangeSet" Role="FromRole_Request4ChgStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_Request4ChgStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeRequirementSetSet" Association="SALM_MC_SRV.DocTypeRequirementSet" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeRequirementSet"/>
+                    <End EntitySet="RequirementSet" Role="ToRole_DocTypeRequirementSet"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskProjectPhaseSet" Association="SALM_MC_SRV.RiskProjectPhase" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskProjectPhase"/>
+                    <End EntitySet="ProjectPhaseSet" Role="ToRole_RiskProjectPhase"/>
+                </AssociationSet>
+                <AssociationSet Name="Request4ChgPrioritySet" Association="SALM_MC_SRV.Request4ChgPriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequestForChangeSet" Role="FromRole_Request4ChgPriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_Request4ChgPriority"/>
+                </AssociationSet>
+                <AssociationSet Name="BranchElementSet" Association="SALM_MC_SRV.BranchElement" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="BRANCHSet" Role="FromRole_BranchElement"/>
+                    <End EntitySet="ELEMENTSet" Role="ToRole_BranchElement"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkItemProjectPhaseSet" Association="SALM_MC_SRV.WorkItemProjectPhase" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkItemSet" Role="FromRole_WorkItemProjectPhase"/>
+                    <End EntitySet="ProjectPhaseSet" Role="ToRole_WorkItemProjectPhase"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeWorkItemSet" Association="SALM_MC_SRV.DocTypeWorkItem" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeWorkItem"/>
+                    <End EntitySet="WorkItemSet" Role="ToRole_DocTypeWorkItem"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkPackageProjectPhaseSet" Association="SALM_MC_SRV.WorkPackageProjectPhase" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkPackageSet" Role="FromRole_WorkPackageProjectPhase"/>
+                    <End EntitySet="ProjectPhaseSet" Role="ToRole_WorkPackageProjectPhase"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskImpactSet" Association="SALM_MC_SRV.RiskImpact" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskImpact"/>
+                    <End EntitySet="ImpactSet" Role="ToRole_RiskImpact"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkItemCategorySet" Association="SALM_MC_SRV.WorkItemCategory" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkItemSet" Role="FromRole_WorkItemCategory"/>
+                    <End EntitySet="CategorySet" Role="ToRole_WorkItemCategory"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskPrioritySet" Association="SALM_MC_SRV.RiskPriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskPriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_RiskPriority"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeWorkPackageSet" Association="SALM_MC_SRV.DocTypeWorkPackage" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeWorkPackage"/>
+                    <End EntitySet="WorkPackageSet" Role="ToRole_DocTypeWorkPackage"/>
+                </AssociationSet>
+                <AssociationSet Name="RequirementPrioritiesSet" Association="SALM_MC_SRV.RequirementPriorities" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequirementSet" Role="FromRole_RequirementPriorities"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_RequirementPriorities"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeCategoryDefectSet" Association="SALM_MC_SRV.DocTypeCategoryDefect" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeCategoryDefect"/>
+                    <End EntitySet="CategoryDefectSet" Role="ToRole_DocTypeCategoryDefect"/>
+                </AssociationSet>
+                <AssociationSet Name="Wave_SprintSet" Association="SALM_MC_SRV.Wave_Sprint" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ProjectPhaseSet" Role="FromRole_Wave_Sprint"/>
+                    <End EntitySet="SPRINTSet" Role="ToRole_Wave_Sprint"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkItemSprintSet" Association="SALM_MC_SRV.WorkItemSprint" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkItemSet" Role="FromRole_WorkItemSprint"/>
+                    <End EntitySet="SPRINTSet" Role="ToRole_WorkItemSprint"/>
+                </AssociationSet>
+                <AssociationSet Name="DefectCategory_AssocSet" Association="SALM_MC_SRV.DefectCategory" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DefectSet" Role="FromRole_DefectCategory"/>
+                    <End EntitySet="CategorySet" Role="ToRole_DefectCategory"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeProjectSet" Association="SALM_MC_SRV.DocTypeProject" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeProject"/>
+                    <End EntitySet="ProjectSet" Role="ToRole_DocTypeProject"/>
+                </AssociationSet>
+                <AssociationSet Name="DefectCategoryDefect_AssocSet" Association="SALM_MC_SRV.DefectCategoryDefect" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DefectSet" Role="FromRole_DefectCategoryDefect"/>
+                    <End EntitySet="CategoryDefectSet" Role="ToRole_DefectCategoryDefect"/>
+                </AssociationSet>
+                <AssociationSet Name="REQElementSet" Association="SALM_MC_SRV.REQElement" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequirementSet" Role="FromRole_REQElement"/>
+                    <End EntitySet="ELEMENTSet" Role="ToRole_REQElement"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeApprovProSet" Association="SALM_MC_SRV.DocTypeApprovPro" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeApprovPro"/>
+                    <End EntitySet="ApprovalProcedureSet" Role="ToRole_DocTypeApprovPro"/>
+                </AssociationSet>
+                <AssociationSet Name="PartnerFunctionBusinessPartnerSet" Association="SALM_MC_SRV.PartnerFunctionBusinessPartner" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="PartnerFunctionSet" Role="FromRole_PartnerFunctionBusinessPartner"/>
+                    <End EntitySet="BusinessPartnerSet" Role="ToRole_PartnerFunctionBusinessPartner"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeCategorySet" Association="SALM_MC_SRV.DocTypeCategory" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeCategory"/>
+                    <End EntitySet="CategorySet" Role="ToRole_DocTypeCategory"/>
+                </AssociationSet>
+                <AssociationSet Name="DefectProjectPhase_AssocSet" Association="SALM_MC_SRV.DefectProjectPhase" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DefectSet" Role="FromRole_DefectProjectPhase"/>
+                    <End EntitySet="ProjectPhaseSet" Role="ToRole_DefectProjectPhase"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkItemPrioritySet" Association="SALM_MC_SRV.WorkItemPriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkItemSet" Role="FromRole_WorkItemPriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_WorkItemPriority"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeDefectSet" Association="SALM_MC_SRV.DocTypeDefect" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeDefect"/>
+                    <End EntitySet="DefectSet" Role="ToRole_DocTypeDefect"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypePartnerFunctionSet" Association="SALM_MC_SRV.DocTypePartnerFunction" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypePartnerFunction"/>
+                    <End EntitySet="PartnerFunctionSet" Role="ToRole_DocTypePartnerFunction"/>
+                </AssociationSet>
+                <AssociationSet Name="RequirementStatusesSet" Association="SALM_MC_SRV.RequirementStatuses" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RequirementSet" Role="FromRole_RequirementStatuses"/>
+                    <End EntitySet="StatusSet" Role="ToRole_RequirementStatuses"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskLevelSet" Association="SALM_MC_SRV.RiskLevel" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskLevel"/>
+                    <End EntitySet="RISKLEVELSet" Role="ToRole_RiskLevel"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkItemWricefSet" Association="SALM_MC_SRV.WorkItemWricef" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkItemSet" Role="FromRole_WorkItemWricef"/>
+                    <End EntitySet="WRICEFSet" Role="ToRole_WorkItemWricef"/>
+                </AssociationSet>
+                <AssociationSet Name="DefectPriority_AssocSet" Association="SALM_MC_SRV.DefectPriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DefectSet" Role="FromRole_DefectPriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_DefectPriority"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskProbabilitySet" Association="SALM_MC_SRV.RiskProbability" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskProbability"/>
+                    <End EntitySet="ProbabilitySet" Role="ToRole_RiskProbability"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypePrioritySet" Association="SALM_MC_SRV.DocTypePriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypePriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_DocTypePriority"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeChgDocSet" Association="SALM_MC_SRV.DocTypeChgDoc" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeChgDoc"/>
+                    <End EntitySet="ChangeDocumentSet" Role="ToRole_DocTypeChgDoc"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkPackageStatusSet" Association="SALM_MC_SRV.WorkPackageStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkPackageSet" Role="FromRole_WorkPackageStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_WorkPackageStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="ChgDocPrioritySet" Association="SALM_MC_SRV.ChgDocPriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ChangeDocumentSet" Role="FromRole_ChgDocPriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_ChgDocPriority"/>
+                </AssociationSet>
+                <AssociationSet Name="Project_ProjectPhaseSet" Association="SALM_MC_SRV.Project_ProjectPhase" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ProjectSet" Role="FromRole_Project_ProjectPhase"/>
+                    <End EntitySet="ProjectPhaseSet" Role="ToRole_Project_ProjectPhase"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeStatusSet" Association="SALM_MC_SRV.DocTypeStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_DocTypeStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskCategorySet" Association="SALM_MC_SRV.RiskCategory" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskCategory"/>
+                    <End EntitySet="CategorySet" Role="ToRole_RiskCategory"/>
+                </AssociationSet>
+                <AssociationSet Name="SolutionBranchSet" Association="SALM_MC_SRV.SolutionBranch" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="SOLUTIONSet" Role="FromRole_SolutionBranch"/>
+                    <End EntitySet="BRANCHSet" Role="ToRole_SolutionBranch"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskStrategySet" Association="SALM_MC_SRV.RiskStrategy" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskStrategy"/>
+                    <End EntitySet="StrategySet" Role="ToRole_RiskStrategy"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeSolutinSet" Association="SALM_MC_SRV.DocTypeSolution" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeSolution"/>
+                    <End EntitySet="SOLUTIONSet" Role="ToRole_DocTypeSolution"/>
+                </AssociationSet>
+                <AssociationSet Name="DefectStatus_AssocSet" Association="SALM_MC_SRV.DefectStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DefectSet" Role="FromRole_DefectStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_DefectStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkItemStatusSet" Association="SALM_MC_SRV.WorkItemStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkItemSet" Role="FromRole_WorkItemStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_WorkItemStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeRequest4ChgSet" Association="SALM_MC_SRV.DocTypeRequest4Chg" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeRequest4Chg"/>
+                    <End EntitySet="RequestForChangeSet" Role="ToRole_DocTypeRequest4Chg"/>
+                </AssociationSet>
+                <AssociationSet Name="RiskStatusSet" Association="SALM_MC_SRV.RiskStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="RiskSet" Role="FromRole_RiskStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_RiskStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkPackagePrioritySet" Association="SALM_MC_SRV.WorkPackagePriority" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkPackageSet" Role="FromRole_WorkPackagePriority"/>
+                    <End EntitySet="PrioritySet" Role="ToRole_WorkPackagePriority"/>
+                </AssociationSet>
+                <AssociationSet Name="WorkPackageCategorySet" Association="SALM_MC_SRV.WorkPackageCategory" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="WorkPackageSet" Role="FromRole_WorkPackageCategory"/>
+                    <End EntitySet="CategorySet" Role="ToRole_WorkPackageCategory"/>
+                </AssociationSet>
+                <AssociationSet Name="ChgDocStatusSet" Association="SALM_MC_SRV.ChgDocStatus" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ChangeDocumentSet" Role="FromRole_ChgDocStatus"/>
+                    <End EntitySet="StatusSet" Role="ToRole_ChgDocStatus"/>
+                </AssociationSet>
+                <AssociationSet Name="DocTypeRiskSet" Association="SALM_MC_SRV.DocTypeRisk" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="DocTypeSet" Role="FromRole_DocTypeRisk"/>
+                    <End EntitySet="RiskSet" Role="ToRole_DocTypeRisk"/>
+                </AssociationSet>
+                <FunctionImport Name="Get_Sub_Elements" ReturnType="Collection(SALM_MC_SRV.ELEMENT)" EntitySet="ELEMENTSet" m:HttpMethod="GET" sap:action-for="SALM_MC_SRV.ELEMENT">
+                    <Parameter Name="ParentLevel" Type="Edm.Byte" Mode="In"/>
+                    <Parameter Name="ParentId" Type="Edm.String" Mode="In" MaxLength="44"/>
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="44"/>
+                </FunctionImport>
+                <FunctionImport Name="UNASSIGN_BR_FROM_ELEMENT" ReturnType="Collection(SALM_MC_SRV.Requirement)" EntitySet="RequirementSet" m:HttpMethod="GET" sap:action-for="SALM_MC_SRV.Requirement">
+                    <Parameter Name="BranchId" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="elementId" Type="Edm.String" Mode="In"/>
+                    <Parameter Name="RequirementGuid" Type="Edm.String" Mode="In" MaxLength="32"/>
+                </FunctionImport>
+            </EntityContainer>
+            <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="https://smrci10.worldbank.org:51001/sap/opu/odata/salm/MC_SRV/$metadata"/>
+            <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="https://smrci10.worldbank.org:51001/sap/opu/odata/salm/MC_SRV/$metadata"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

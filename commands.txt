@@ -1,0 +1,4 @@
+cds import srv/external/ZGW_AI_SRV.edmx --as cds
+cds import srv/external/ZSB_AI_REVIEW_RUN_V4.edmx --as cds
+cds import srv/CRM_GENERIC_SRV.edmx --as cds
+cds import srv/MC_SRV.edmx --as cds
