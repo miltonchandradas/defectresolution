@@ -1,5 +1,7 @@
 import cds from '@sap/cds';
 
+const LOG = cds.log('defectresolution');
+
 export default cds.service.impl(async function () {
   const { DefectHeader } = this.entities;
   const MC_Service = await cds.connect.to('MC_SRV');
@@ -10,17 +12,17 @@ export default cds.service.impl(async function () {
       const defect = defects[0];
 
       if (defect) {
-        cds.log.info('Startup defect fetch succeeded', {
+        LOG.info('Startup defect fetch succeeded', {
           id: defect.Id,
           typeId: defect.TypeId ?? 'S1DM',
           status: defect.Status,
           reporter: defect.Reporter,
         });
       } else {
-        cds.log.warn('Startup defect fetch returned no rows', { defectId: '8000197596' });
+        LOG.warn('Startup defect fetch returned no rows', { defectId: '8000197596' });
       }
     } catch (error) {
-      console.error('Startup defect fetch failed', error);
+      LOG.error('Startup defect fetch failed', error);
     }
   });
 
