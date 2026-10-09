@@ -1,0 +1,42 @@
+@baseUrl = https://aria-bas-worldbankgroup.authentication.us21.hana.ondemand.com
+@tokenUrl = {{baseUrl}}/oauth/token
+@authorizeUrl = {{baseUrl}}/oauth/authorize
+@clientId = sb-defectresolution-ARIA-BAS-SPACE!t54337
+@clientSecret = 55bb82bc-b3d7-40ed-b6c0-9405a1c6e09a$qqPB3aHDNavcYHFxZ_vitw34kryIsMYOsPO1XmQrmp4=
+@redirectUri = http://localhost:3000/callback
+@scope = openid
+@responseType = code
+
+### 1) Authorization Code Request
+# Open this URL in a browser and sign in.
+# After login, copy the authorization code from the redirected URL.
+GET {{authorizeUrl}}?response_type={{responseType}}&client_id={{clientId}}&redirect_uri={{redirectUri}}&scope={{scope}}
+
+### 2) Token Request (Authorization Code -> Access Token)
+# Replace <AUTH_CODE> with the code returned by the browser redirect.
+# Use x-www-form-urlencoded body.
+POST {{tokenUrl}}
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic {{clientId}}:{{clientSecret}}
+
+grant_type=authorization_code&code=<AUTH_CODE>&redirect_uri={{redirectUri}}
+
+### 3) Token Request (Client Credentials -> Access Token)
+# Optional: for machine-to-machine testing if needed.
+POST {{tokenUrl}}
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic {{clientId}}:{{clientSecret}}
+
+grant_type=client_credentials
+
+### 4) Refresh Token Grant
+# Optional: exchange a refresh token for a new access token.
+POST {{tokenUrl}}
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic {{clientId}}:{{clientSecret}}
+
+grant_type=refresh_token&refresh_token=<REFRESH_TOKEN>
+
+### 5) Decode Access Token (Optional)
+# Paste the access_token value from the token response here.
+GET https://jwt.ms/#{{access_token}}

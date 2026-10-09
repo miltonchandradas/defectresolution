@@ -1,12 +1,31 @@
-import cds from '@sap/cds';
-
+const cds = require('@sap/cds');
 const { SELECT } = cds.ql;
 
-export default cds.service.impl(async function () {
-  const { DefectHeader } = this.entities;
+module.exports = async (srv) => {
+  const { DefectHeader } = srv.entities;
   const MC_Service = await cds.connect.to('MC_SRV');
 
-  this.on('READ', DefectHeader, async (req) => {
+  cds.spawn({ after: 30000 }, async () => {
+    try {
+      const defects = await getDefectsForType(MC_Service, 'S1DM', '8000197596');
+      const defect = defects[0];
+
+      if (defect) {
+        cds.log.info('Startup defect fetch succeeded', {
+          id: defect.Id,
+          typeId: defect.TypeId ?? 'S1DM',
+          status: defect.Status,
+          reporter: defect.Reporter,
+        });
+      } else {
+        cds.log.warn('Startup defect fetch returned no rows', { defectId: '8000197596' });
+      }
+    } catch (error) {
+      cds.log.error('Startup defect fetch failed', error);
+    }
+  });
+
+  srv.on('READ', DefectHeader, async (req) => {
     const params = Array.isArray(req.params) ? req.params[0] : req.params ?? {};
     const defectId =
       params?.id ??
@@ -38,7 +57,7 @@ export default cds.service.impl(async function () {
       changedAt: item.ChangedAt,
     }));
   });
-});
+};
 
 async function getDefectsForType(MC_Service, typeId, defectId) {
   const result = await MC_Service.run(
