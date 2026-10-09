@@ -1059,7 +1059,7 @@
                     <Parameter Name="StructureIds" Type="Edm.String" Mode="In"/>
                 </FunctionImport>
                 <FunctionImport Name="GetAllowedElementTypes" ReturnType="Collection(SALM_DROP_DOC_SRV.AllowedElementType)" m:HttpMethod="GET" sap:label="Get allowed elementtypes for DropDoc"/>
-                <FunctionImport Name="HiddenTestCasesExist" ReturnType="SALM_DROP_DOC_SRV.HiddenTestCasesReturn" m:HttpMethod="POST" sap:label="Are there "hidden" test cases on a structure?" sap:action-for="SALM_DROP_DOC_SRV.RelevantStructure">
+                <FunctionImport Name="HiddenTestCasesExist" ReturnType="SALM_DROP_DOC_SRV.HiddenTestCasesReturn" m:HttpMethod="POST" sap:label="Are there hidden test cases on a structure?" sap:action-for="SALM_DROP_DOC_SRV.RelevantStructure">
                     <Parameter Name="CrmId" Type="Edm.String" Mode="In" MaxLength="32"/>
                     <Parameter Name="BranchId" Type="Edm.String" Mode="In" MaxLength="32"/>
                     <Parameter Name="StructureId" Type="Edm.String" Mode="In" MaxLength="32"/>

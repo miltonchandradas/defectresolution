@@ -45,6 +45,10 @@
       },
       "[production]": {
         "auth": "xsuaa"
+      },
+      "DROP_DOC_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/DROP_DOC_SRV"
       }
     }
   }
