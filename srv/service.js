@@ -1,7 +1,5 @@
 import cds from '@sap/cds';
 
-const { SELECT } = cds.ql;
-
 export default cds.service.impl(async function () {
   const { DefectHeader } = this.entities;
   const MC_Service = await cds.connect.to('MC_SRV');
@@ -61,19 +59,15 @@ export default cds.service.impl(async function () {
 });
 
 async function getDefectsForType(MC_Service, typeId, defectId) {
-  const result = await MC_Service.run(
-    SELECT.from('MC_SRV.DocTypeSet', (dt) => {
-      dt.where({ Id: typeId });
-      dt.expand('DocTypeDefects', (defects) => {
-        defects.filter({ Id: defectId });
-        defects.expand('DefectStatuses');
-      });
-    })
-  );
+  const path = `/DocTypeSet('${typeId}')/DocTypeDefects?$filter=${encodeURIComponent(`Id eq '${defectId}'`)}&$expand=DefectStatuses&$format=json`;
 
-  const docType = Array.isArray(result) ? result[0] : result;
-  const defects = docType?.DocTypeDefects ?? [];
+  const response = await MC_Service.send({
+    method: 'GET',
+    path,
+    headers: { Accept: 'application/json' }
+  });
 
+  const defects = response?.d?.results ?? response?.value ?? [];
   return Array.isArray(defects) ? defects : [defects];
 }
 
