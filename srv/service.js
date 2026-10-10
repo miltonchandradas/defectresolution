@@ -9,6 +9,7 @@ const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
 const LLM_MODEL_NAME = String(process.env.LLM_MODEL_NAME || 'gpt-5.5').trim();
 const RESOURCE_GROUP = String(process.env.RESOURCE_GROUP || 'default').trim();
 const MAX_TOKENS = Number.parseInt(String(process.env.MAX_TOKENS || '100000'), 10);
+const MAX_ATTACHMENT_TEXT_CHARS = Number.parseInt(String(process.env.MAX_ATTACHMENT_TEXT_CHARS || '4000'), 10);
 const STARTUP_DEFECT_IDS = parseStartupDefectIds(
   process.env.STARTUP_DEFECT_IDS ?? '8000197596'
 );
@@ -242,12 +243,17 @@ async function fetchSolmanDefectAttachments(guid) {
 
     const content = toBuffer(downloadResponse?.data);
     const contentType = String(downloadResponse?.headers?.['content-type'] || 'application/octet-stream');
+    const textPreview = await extractSolmanAttachmentText({
+      filename,
+      contentType,
+      content,
+    });
 
     downloadedAttachments.push({
       filename,
       contentType,
       size: content.length,
-      textPreview: extractAttachmentPreview(content, contentType),
+      textPreview,
     });
   }
 
@@ -564,13 +570,92 @@ function toBuffer(data) {
 
 function extractAttachmentPreview(content, contentType) {
   const previewLimit = 400;
-  const normalizedType = String(contentType || '').toLowerCase();
+  const text = decodeText(content);
+  return text ? text.slice(0, previewLimit) : `binary attachment (${content.length} bytes)`;
+}
 
-  if (normalizedType.includes('text') || normalizedType.includes('json') || normalizedType.includes('xml')) {
-    return content.toString('utf8').slice(0, previewLimit);
+async function extractSolmanAttachmentText({ filename, contentType, content }) {
+  const normalizedType = String(contentType || '').toLowerCase();
+  const extension = path.extname(String(filename || '')).toLowerCase();
+
+  if (isPlainTextContent(normalizedType, extension)) {
+    return truncateText(decodeText(content) || 'No text could be decoded from plain-text attachment.');
   }
 
-  return `binary attachment (${content.length} bytes)`;
+  if (normalizedType.includes('pdf') || extension === '.pdf') {
+    try {
+      const pdfParseModule = await import('pdf-parse');
+      const pdfParse = pdfParseModule.default || pdfParseModule;
+      const pdf = await pdfParse(content);
+      return truncateText((pdf?.text || '').trim() || 'No extractable text found in PDF.');
+    } catch (error) {
+      return `PDF text extraction failed: ${error?.message ?? String(error)}`;
+    }
+  }
+
+  if (
+    normalizedType.includes('wordprocessingml') ||
+    extension === '.docx' ||
+    extension === '.docm'
+  ) {
+    try {
+      const mammothModule = await import('mammoth');
+      const mammoth = mammothModule.default || mammothModule;
+      const result = await mammoth.extractRawText({ buffer: content });
+      return truncateText((result?.value || '').trim() || 'No extractable text found in DOCX document.');
+    } catch (error) {
+      return `DOCX text extraction failed: ${error?.message ?? String(error)}`;
+    }
+  }
+
+  if (
+    normalizedType.includes('spreadsheetml') ||
+    normalizedType.includes('excel') ||
+    extension === '.xlsx' ||
+    extension === '.xls' ||
+    extension === '.csv'
+  ) {
+    try {
+      const xlsxModule = await import('xlsx');
+      const xlsx = xlsxModule.default || xlsxModule;
+      const workbook = xlsx.read(content, { type: 'buffer' });
+      const sheetsText = workbook.SheetNames.map((sheetName) => {
+        const sheet = workbook.Sheets[sheetName];
+        const csv = xlsx.utils.sheet_to_csv(sheet);
+        return `Sheet: ${sheetName}\n${csv}`.trim();
+      }).join('\n\n');
+      return truncateText(sheetsText || 'No extractable text found in spreadsheet.');
+    } catch (error) {
+      return `Spreadsheet text extraction failed: ${error?.message ?? String(error)}`;
+    }
+  }
+
+  return `Text extraction not supported for attachment type '${contentType || extension || 'unknown'}'.`;
+}
+
+function isPlainTextContent(contentType, extension) {
+  return (
+    String(contentType || '').includes('text') ||
+    String(contentType || '').includes('json') ||
+    String(contentType || '').includes('xml') ||
+    ['.txt', '.log', '.json', '.xml', '.csv', '.md'].includes(String(extension || ''))
+  );
+}
+
+function decodeText(content) {
+  try {
+    return Buffer.from(content).toString('utf8').replace(/\u0000/g, '').trim();
+  } catch {
+    return '';
+  }
+}
+
+function truncateText(text) {
+  const normalized = String(text || '').trim();
+  const max = Number.isFinite(MAX_ATTACHMENT_TEXT_CHARS) && MAX_ATTACHMENT_TEXT_CHARS > 0
+    ? MAX_ATTACHMENT_TEXT_CHARS
+    : 4000;
+  return normalized.length > max ? `${normalized.slice(0, max)}\n\n[Truncated ${normalized.length - max} chars]` : normalized;
 }
 
 function normalizeGuidLiteral(value) {
