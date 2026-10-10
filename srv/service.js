@@ -591,20 +591,8 @@ async function extractSolmanAttachmentText({ filename, contentType, content }) {
   if (normalizedType.includes('pdf') || extension === '.pdf') {
     try {
       const pdfParseModule = await import('pdf-parse');
-      const PDFParseClass = pdfParseModule?.PDFParse;
-
-      if (typeof PDFParseClass !== 'function') {
-        throw new Error('Unsupported pdf-parse module shape: PDFParse class not found');
-      }
-
-      const parser = new PDFParseClass({ data: content });
-      try {
-        const textResult = await parser.getText();
-        const extracted = String(textResult?.text || '').trim();
-        return truncateText(extracted || 'No extractable text found in PDF.');
-      } finally {
-        await parser.destroy();
-      }
+      const extracted = await extractPdfTextFromModule(pdfParseModule, content);
+      return truncateText(extracted || 'No extractable text found in PDF.');
     } catch (error) {
       return `PDF text extraction failed: ${error?.message ?? String(error)}`;
     }
@@ -673,6 +661,33 @@ function truncateText(text) {
     ? MAX_ATTACHMENT_TEXT_CHARS
     : 4000;
   return normalized.length > max ? `${normalized.slice(0, max)}\n\n[Truncated ${normalized.length - max} chars]` : normalized;
+}
+
+async function extractPdfTextFromModule(pdfParseModule, content) {
+  const PDFParseClass = pdfParseModule?.PDFParse;
+  if (typeof PDFParseClass === 'function') {
+    const parser = new PDFParseClass({ data: content });
+    try {
+      const textResult = await parser.getText();
+      return String(textResult?.text || '').trim();
+    } finally {
+      await parser.destroy();
+    }
+  }
+
+  const defaultExport = pdfParseModule?.default;
+  if (typeof defaultExport === 'function') {
+    const parsed = await defaultExport(content);
+    return String(parsed?.text || '').trim();
+  }
+
+  if (typeof pdfParseModule === 'function') {
+    const parsed = await pdfParseModule(content);
+    return String(parsed?.text || '').trim();
+  }
+
+  const exportKeys = Object.keys(pdfParseModule || {});
+  throw new Error(`Unsupported pdf-parse module shape. Available exports: ${exportKeys.join(', ')}`);
 }
 
 function normalizeGuidLiteral(value) {
