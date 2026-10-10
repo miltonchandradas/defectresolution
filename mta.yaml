@@ -20,7 +20,7 @@ modules:
       env:
         STARTUP_DEFECT_IDS: "8000197596"
         LLM_MODEL_NAME: "gpt-5.5"
-        MAX_TOKENS: 100000
+        MAX_TOKENS: "100000"
         RESOURCE_GROUP: "default"
     build-parameters:
       builder: npm-ci

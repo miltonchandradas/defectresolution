@@ -6,9 +6,9 @@ import path from 'node:path';
 
 const LOG = cds.log('defectresolution');
 const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
-const LLM_MODEL_NAME = String(process.env.LLM_MODEL_NAME || '').trim();
-const RESOURCE_GROUP = String(process.env.RESOURCE_GROUP || '').trim();
-const MAX_TOKENS = Number.parseInt(String(process.env.MAX_TOKENS || '512'), 10);
+const LLM_MODEL_NAME = String(process.env.LLM_MODEL_NAME || 'gpt-5.5').trim();
+const RESOURCE_GROUP = String(process.env.RESOURCE_GROUP || 'default').trim();
+const MAX_TOKENS = Number.parseInt(String(process.env.MAX_TOKENS || '100000'), 10);
 const STARTUP_DEFECT_IDS = parseStartupDefectIds(
   process.env.STARTUP_DEFECT_IDS ?? '8000197596'
 );
@@ -394,12 +394,11 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
 }
 
 function createOrchestrationClient() {
-  if (!LLM_MODEL_NAME || !RESOURCE_GROUP) {
-    LOG.warn('Orchestration client not initialized because required env vars are missing', {
-      hasModelName: Boolean(LLM_MODEL_NAME),
-      hasResourceGroup: Boolean(RESOURCE_GROUP),
+  if (!process.env.LLM_MODEL_NAME || !process.env.RESOURCE_GROUP) {
+    LOG.warn('Orchestration env vars are missing; using defaults', {
+      modelName: LLM_MODEL_NAME,
+      resourceGroup: RESOURCE_GROUP,
     });
-    return null;
   }
 
   const maxTokens = Number.isFinite(MAX_TOKENS) && MAX_TOKENS > 0 ? MAX_TOKENS : 512;
