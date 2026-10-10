@@ -275,6 +275,12 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
 
   const renderedPrompt = renderPromptTemplate(promptTemplate, placeholderValues);
 
+  LOG.info('Rendered defect prompt for LLM', {
+    defectId: defect?.Id,
+    guid: defect?.Guid,
+    prompt: renderedPrompt,
+  });
+
   const orchestrationResponse = await orchestrationClient.chatCompletion({
     messages: [
       {
