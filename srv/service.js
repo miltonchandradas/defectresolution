@@ -591,9 +591,20 @@ async function extractSolmanAttachmentText({ filename, contentType, content }) {
   if (normalizedType.includes('pdf') || extension === '.pdf') {
     try {
       const pdfParseModule = await import('pdf-parse');
-      const pdfParse = pdfParseModule.default || pdfParseModule;
-      const pdf = await pdfParse(content);
-      return truncateText((pdf?.text || '').trim() || 'No extractable text found in PDF.');
+      const PDFParseClass = pdfParseModule?.PDFParse;
+
+      if (typeof PDFParseClass !== 'function') {
+        throw new Error('Unsupported pdf-parse module shape: PDFParse class not found');
+      }
+
+      const parser = new PDFParseClass({ data: content });
+      try {
+        const textResult = await parser.getText();
+        const extracted = String(textResult?.text || '').trim();
+        return truncateText(extracted || 'No extractable text found in PDF.');
+      } finally {
+        await parser.destroy();
+      }
     } catch (error) {
       return `PDF text extraction failed: ${error?.message ?? String(error)}`;
     }
