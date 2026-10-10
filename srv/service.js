@@ -267,14 +267,15 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
     DEFECT_ATTACHMENTS: formatDefectAttachments(attachments),
   };
 
+  const renderedPrompt = renderPromptTemplate(promptTemplate, placeholderValues);
+
   const orchestrationResponse = await orchestrationClient.chatCompletion({
     messages: [
       {
         role: 'user',
-        content: promptTemplate,
+        content: renderedPrompt,
       },
     ],
-    placeholderValues,
   });
 
   const llmResponse = orchestrationResponse.getContent() || '';
@@ -287,6 +288,17 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
   });
 
   return llmResponse;
+}
+
+function renderPromptTemplate(template, placeholderValues) {
+  let rendered = String(template || '');
+
+  for (const [key, value] of Object.entries(placeholderValues || {})) {
+    const token = `{{${key}}}`;
+    rendered = rendered.replaceAll(token, String(value ?? ''));
+  }
+
+  return rendered;
 }
 
 async function processDefectForOrchestration(defectId, processType = 'S1DM', mode = 'Startup') {
