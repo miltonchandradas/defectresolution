@@ -401,7 +401,7 @@ function createOrchestrationClient() {
     });
   }
 
-  const maxTokens = Number.isFinite(MAX_TOKENS) && MAX_TOKENS > 0 ? MAX_TOKENS : 512;
+  const maxTokens = Number.isFinite(MAX_TOKENS) && MAX_TOKENS > 0 ? MAX_TOKENS : 100000;
 
   return new OrchestrationClient(
     {
@@ -581,13 +581,29 @@ function normalizeGuidLiteral(value) {
 }
 
 function extractHttpErrorDetails(error) {
-  const status = error?.response?.status;
-  const responseData = error?.response?.data;
-  const message = error?.message ?? String(error);
+  const response =
+    error?.response ??
+    error?.cause?.response ??
+    error?.originalError?.response ??
+    error?.rootCause?.response;
+
+  const status = response?.status;
+  const statusText = response?.statusText;
+  const responseHeaders = response?.headers;
+  const responseData =
+    response?.data ??
+    response?.body ??
+    error?.data ??
+    error?.body;
+  const code = error?.code ?? error?.cause?.code;
+  const message = error?.message ?? error?.cause?.message ?? String(error);
 
   return {
     status,
+    statusText,
+    code,
     error: message,
+    responseHeaders,
     responseData,
   };
 }
