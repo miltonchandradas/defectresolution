@@ -26,7 +26,7 @@ Your task is to review the provided SAP defect information and identify all SAP 
 2. Identify SAP transaction codes (T-codes), including:
    - Standard SAP transaction codes, such as SE38, SE80, VA01, ME21N, FB03, and F110.
    - Custom transaction codes, such as ZREPORT01 and YFI_POST.
-   - Transaction codes mentioned in sentences, tables, error messages, screenshots, or technical logs.
+   - Transaction codes mentioned in sentences, tables, error messages, and technical logs.
 
 3. Identify ABAP program names, including:
    - Standard SAP programs, such as RFBIBL00 and SAPMV45A.
@@ -34,12 +34,11 @@ Your task is to review the provided SAP defect information and identify all SAP 
    - Executable reports, module pool programs, and include programs when explicitly identified as ABAP programs.
 
 4. Review attachment content, including:
-   - PDF documents.
-   - Microsoft Word documents.
-   - Excel spreadsheets.
-   - Text files and logs.
-   - Screenshots or images.
-   - ABAP code snippets.
+   - Extracted text from PDF documents.
+   - Extracted text from Microsoft Word documents.
+   - Extracted text from Excel spreadsheets.
+   - Extracted text from text files and logs.
+   - Extracted text from ABAP code snippets.
 
 5. Extraction rules:
    - Extract only transaction codes and ABAP programs explicitly mentioned in the supplied input.
@@ -55,9 +54,9 @@ Your task is to review the provided SAP defect information and identify all SAP 
    - If no T-codes or ABAP programs are found, return empty arrays.
 
 6. Attachment handling:
-   - Analyze extracted attachment text and any directly accessible image or document content.
-   - If attachment content is unavailable, encrypted, corrupted, or unsupported, do not guess its contents.
-   - Binary or Base64 content must be decoded and parsed by the calling application or an explicitly available tool. Do not assume that text-only input provides access to the contents of binary files.
+   - Analyze only the attachment text that is explicitly provided in the input.
+   - Do not assume direct access to raw files, binary payloads, Base64 payloads, screenshots, or images.
+   - If attachment text is unavailable, encrypted, corrupted, truncated, or unsupported, do not guess its contents.
 
 ### REQUIRED OUTPUT FORMAT
 
