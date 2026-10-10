@@ -19,6 +19,9 @@ modules:
       buildpack: nodejs_buildpack
       env:
         STARTUP_DEFECT_IDS: "8000197596"
+        LLM_MODEL_NAME: "gpt-5.5"
+        MAX_TOKENS: 100000
+        RESOURCE_GROUP: "default"
     build-parameters:
       builder: npm-ci
     provides:
@@ -29,6 +32,7 @@ modules:
       - name: defectresolution-auth
       - name: defectresolution-destination
       - name: defectresolution-connectivity
+      - name: defectresolution-aicore
 
 resources:
   - name: defectresolution-auth
@@ -50,3 +54,9 @@ resources:
     parameters:
       service: connectivity
       service-plan: lite
+  - name: defectresolution-aicore
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: aicore
+      service-name: aria-aicore
+      service-plan: extended

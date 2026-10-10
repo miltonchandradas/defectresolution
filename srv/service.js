@@ -1,11 +1,20 @@
 import cds from '@sap/cds';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 
 const LOG = cds.log('defectresolution');
 const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
+const LLM_MODEL_NAME = String(process.env.LLM_MODEL_NAME || '').trim();
+const RESOURCE_GROUP = String(process.env.RESOURCE_GROUP || '').trim();
+const MAX_TOKENS = Number.parseInt(String(process.env.MAX_TOKENS || '512'), 10);
 const STARTUP_DEFECT_IDS = parseStartupDefectIds(
   process.env.STARTUP_DEFECT_IDS ?? '8000197596'
 );
+
+const orchestrationClient = createOrchestrationClient();
+let parseDefectPromptTemplate;
 
 export default cds.service.impl(async function () {
   const { DefectHeader, DefectNotes } = this.entities;
@@ -17,59 +26,33 @@ export default cds.service.impl(async function () {
     }
 
     for (const startupDefectId of STARTUP_DEFECT_IDS) {
-      try {
-        const defect = await fetchSolmanDefectDetails(startupDefectId);
-
-        if (defect) {
-          LOG.info('Startup defect fetch succeeded', {
-            guid: defect.Guid,
-            id: defect.Id,
-            typeId: defect.TypeId ?? 'S1DM',
-            status: defect.Status,
-            reporter: defect.Reporter,
-          });
-
-          try {
-            const notes = await fetchSolmanNotesByGuid(defect.Guid, defect.TypeId ?? 'S1DM');
-            LOG.info('Startup defect notes fetch succeeded', {
-              guid: defect.Guid,
-              defectId: defect.Id,
-              notesCount: notes.length,
-              notes,
-            });
-          } catch (error) {
-            LOG.error('Startup defect notes fetch failed', {
-              guid: defect.Guid,
-              defectId: defect.Id,
-              ...extractHttpErrorDetails(error),
-            });
-          }
-
-          try {
-            const attachments = await fetchSolmanDefectAttachments(defect.Guid);
-            LOG.info('Startup defect attachments fetch succeeded', {
-              guid: defect.Guid,
-              defectId: defect.Id,
-              attachmentCount: attachments.length,
-              attachments,
-            });
-          } catch (error) {
-            LOG.error('Startup defect attachments fetch failed', {
-              guid: defect.Guid,
-              defectId: defect.Id,
-              ...extractHttpErrorDetails(error),
-            });
-          }
-        } else {
-          LOG.warn('Startup defect fetch returned no rows', { defectId: startupDefectId });
-        }
-      } catch (error) {
-        LOG.error('Startup defect fetch failed', {
-          defectId: startupDefectId,
-          ...extractHttpErrorDetails(error),
-        });
-      }
+      await processDefectForOrchestration(startupDefectId, 'S1DM', 'Startup');
     }
+  });
+
+  this.on('triggerDefectOrchestration', async (req) => {
+    const defectIdsInput =
+      req.data?.defectIds ??
+      req.data?.DefectIds ??
+      req.data?.ids ??
+      req.data?.Ids ??
+      '';
+
+    const processType = String(req.data?.processType || req.data?.ProcessType || 'S1DM').trim() || 'S1DM';
+    const defectIds = parseStartupDefectIds(defectIdsInput);
+
+    if (!defectIds.length) {
+      req.reject(400, 'Provide defectIds as a comma-separated string.');
+      return;
+    }
+
+    const results = [];
+    for (const defectId of defectIds) {
+      const result = await processDefectForOrchestration(defectId, processType, 'On-demand');
+      results.push(result);
+    }
+
+    return results;
   });
 
   this.on('READ', DefectHeader, async (req) => {
@@ -271,6 +254,231 @@ async function fetchSolmanDefectAttachments(guid) {
   return downloadedAttachments;
 }
 
+async function runDefectPromptWithLlm({ defect, notes, attachments }) {
+  if (!orchestrationClient) {
+    LOG.warn('Skipping LLM call because orchestration client is not configured');
+    return '';
+  }
+
+  const promptTemplate = await getParseDefectPromptTemplate();
+  const placeholderValues = {
+    DEFECT_HEADER_INFO: formatDefectHeaderInfo(defect),
+    DEFECT_TEXT_INFO: formatDefectTextInfo(notes),
+    DEFECT_ATTACHMENTS: formatDefectAttachments(attachments),
+  };
+
+  const orchestrationResponse = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        content: promptTemplate,
+      },
+    ],
+    placeholderValues,
+  });
+
+  const llmResponse = orchestrationResponse.getContent() || '';
+  LOG.info('Startup defect LLM response', {
+    defectId: defect?.Id,
+    guid: defect?.Guid,
+    response: llmResponse,
+    tokenUsage: orchestrationResponse.getTokenUsage(),
+    requestId: orchestrationResponse.getRequestId(),
+  });
+
+  return llmResponse;
+}
+
+async function processDefectForOrchestration(defectId, processType = 'S1DM', mode = 'Startup') {
+  const normalizedDefectId = String(defectId || '').trim();
+  const result = {
+    defectId: normalizedDefectId,
+    guid: '',
+    typeId: processType,
+    status: 'FAILED',
+    notesCount: 0,
+    attachmentCount: 0,
+    llmResponse: '',
+    error: '',
+  };
+
+  if (!normalizedDefectId) {
+    result.error = 'Defect ID is empty.';
+    return result;
+  }
+
+  try {
+    const defect = await fetchSolmanDefectDetails(normalizedDefectId, processType);
+
+    if (!defect) {
+      result.status = 'NOT_FOUND';
+      result.error = 'No defect row returned.';
+      LOG.warn(`${mode} defect fetch returned no rows`, { defectId: normalizedDefectId });
+      return result;
+    }
+
+    result.guid = String(defect.Guid || '').trim();
+    result.typeId = String(defect.TypeId || processType).trim();
+
+    LOG.info(`${mode} defect fetch succeeded`, {
+      guid: defect.Guid,
+      id: defect.Id,
+      typeId: defect.TypeId ?? processType,
+      status: defect.Status,
+      reporter: defect.Reporter,
+    });
+
+    let notes = [];
+    let attachments = [];
+    let hadPartialFailure = false;
+
+    try {
+      notes = await fetchSolmanNotesByGuid(defect.Guid, defect.TypeId ?? processType);
+      result.notesCount = notes.length;
+      LOG.info(`${mode} defect notes fetch succeeded`, {
+        guid: defect.Guid,
+        defectId: defect.Id,
+        notesCount: notes.length,
+      });
+    } catch (error) {
+      hadPartialFailure = true;
+      appendResultError(result, `Notes fetch failed: ${error?.message ?? String(error)}`);
+      LOG.error(`${mode} defect notes fetch failed`, {
+        guid: defect.Guid,
+        defectId: defect.Id,
+        ...extractHttpErrorDetails(error),
+      });
+    }
+
+    try {
+      attachments = await fetchSolmanDefectAttachments(defect.Guid);
+      result.attachmentCount = attachments.length;
+      LOG.info(`${mode} defect attachments fetch succeeded`, {
+        guid: defect.Guid,
+        defectId: defect.Id,
+        attachmentCount: attachments.length,
+      });
+    } catch (error) {
+      hadPartialFailure = true;
+      appendResultError(result, `Attachments fetch failed: ${error?.message ?? String(error)}`);
+      LOG.error(`${mode} defect attachments fetch failed`, {
+        guid: defect.Guid,
+        defectId: defect.Id,
+        ...extractHttpErrorDetails(error),
+      });
+    }
+
+    try {
+      result.llmResponse = await runDefectPromptWithLlm({ defect, notes, attachments });
+    } catch (error) {
+      hadPartialFailure = true;
+      appendResultError(result, `LLM call failed: ${error?.message ?? String(error)}`);
+      LOG.error(`${mode} defect LLM call failed`, {
+        guid: defect.Guid,
+        defectId: defect.Id,
+        ...extractHttpErrorDetails(error),
+      });
+    }
+
+    result.status = hadPartialFailure ? 'PARTIAL' : 'SUCCESS';
+    return result;
+  } catch (error) {
+    result.status = 'FAILED';
+    appendResultError(result, error?.message ?? String(error));
+    LOG.error(`${mode} defect fetch failed`, {
+      defectId: normalizedDefectId,
+      ...extractHttpErrorDetails(error),
+    });
+    return result;
+  }
+}
+
+function createOrchestrationClient() {
+  if (!LLM_MODEL_NAME || !RESOURCE_GROUP) {
+    LOG.warn('Orchestration client not initialized because required env vars are missing', {
+      hasModelName: Boolean(LLM_MODEL_NAME),
+      hasResourceGroup: Boolean(RESOURCE_GROUP),
+    });
+    return null;
+  }
+
+  const maxTokens = Number.isFinite(MAX_TOKENS) && MAX_TOKENS > 0 ? MAX_TOKENS : 512;
+
+  return new OrchestrationClient(
+    {
+      promptTemplating: {
+        model: {
+          name: LLM_MODEL_NAME,
+          params: {
+            max_tokens: maxTokens,
+          },
+        },
+      },
+    },
+    {
+      resourceGroup: RESOURCE_GROUP,
+    }
+  );
+}
+
+async function getParseDefectPromptTemplate() {
+  if (parseDefectPromptTemplate) {
+    return parseDefectPromptTemplate;
+  }
+
+  const candidatePaths = [
+    new URL('./prompts/parse_defect_prompt.md', import.meta.url),
+    path.resolve(process.cwd(), 'srv', 'prompts', 'parse_defect_prompt.md'),
+  ];
+
+  for (const candidatePath of candidatePaths) {
+    try {
+      parseDefectPromptTemplate = await readFile(candidatePath, 'utf8');
+      return parseDefectPromptTemplate;
+    } catch {
+      // Try next path candidate.
+    }
+  }
+
+  throw new Error('Unable to load parse_defect_prompt.md from known locations');
+}
+
+function formatDefectHeaderInfo(defect) {
+  return JSON.stringify(defect || {}, null, 2);
+}
+
+function formatDefectTextInfo(notes) {
+  if (!Array.isArray(notes) || notes.length === 0) {
+    return 'No defect text entries found.';
+  }
+
+  return notes
+    .map((note, index) => {
+      const sender = String(note?.TextSender || '').trim() || 'Unknown';
+      const date = String(note?.TextDate || '').trim() || 'Unknown';
+      const type = String(note?.TextType || '').trim() || 'Unknown';
+      const value = String(note?.TextValue || '').trim();
+      return `#${index + 1} [${type}] ${sender} @ ${date}\n${value}`;
+    })
+    .join('\n\n');
+}
+
+function formatDefectAttachments(attachments) {
+  if (!Array.isArray(attachments) || attachments.length === 0) {
+    return 'No Solution Manager defect attachments returned.';
+  }
+
+  return attachments
+    .map((attachment, index) => {
+      const filename = String(attachment?.filename || 'attachment').trim();
+      const contentType = String(attachment?.contentType || 'application/octet-stream').trim();
+      const size = Number(attachment?.size || 0);
+      const textPreview = String(attachment?.textPreview || '').trim();
+      return `#${index + 1} ${filename} (${contentType}, ${size} bytes)\n${textPreview}`;
+    })
+    .join('\n\n');
+}
+
 function extractODataResults(payload) {
   if (!payload) {
     return [];
@@ -298,6 +506,15 @@ function parseStartupDefectIds(rawValue) {
     .split(',')
     .map((value) => value.trim())
     .filter(Boolean);
+}
+
+function appendResultError(result, message) {
+  const text = String(message || '').trim();
+  if (!text) {
+    return;
+  }
+
+  result.error = result.error ? `${result.error}; ${text}` : text;
 }
 
 function compactSolmanGuid(value) {

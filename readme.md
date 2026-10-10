@@ -20,3 +20,30 @@ File or Folder | Purpose
 ## Learn More
 
 Learn more at <https://cap.cloud.sap>.
+
+## Trigger Defect Orchestration Action
+
+Use this endpoint to trigger on-demand orchestration for one or more defect IDs.
+
+POST URL:
+
+```text
+/service/defects/triggerDefectOrchestration
+```
+
+Example request body:
+
+```json
+{
+	"defectIds": "8000197596,8000193368",
+	"processType": "S1DM"
+}
+```
+
+Example with local default host:
+
+```text
+POST http://localhost:4004/service/defects/triggerDefectOrchestration
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+```

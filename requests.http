@@ -40,3 +40,16 @@ grant_type=refresh_token&refresh_token=<REFRESH_TOKEN>
 ### 5) Decode Access Token (Optional)
 # Paste the access_token value from the token response here.
 GET https://jwt.ms/#{{access_token}}
+
+### 6) Trigger Defect Orchestration (On-demand)
+# Replace <APP_URL> with your app URL, for example:
+# https://defectresolution-srv.cfapps.us21.hana.ondemand.com
+# or use local: http://localhost:4004
+POST <APP_URL>/service/defects/triggerDefectOrchestration
+Content-Type: application/json
+Authorization: Bearer <ACCESS_TOKEN>
+
+{
+	"defectIds": "8000197596,8000193368",
+	"processType": "S1DM"
+}
