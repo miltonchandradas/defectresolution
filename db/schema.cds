@@ -31,6 +31,13 @@ entity DefectTransports  as
             previousSources
     }
 
+entity TcodePrograms     as
+    projection on ZGW_AI_SRV.TcodeProgramSet {
+        key tcode,
+            program,
+            description
+    }
+
 using {MC_SRV} from '../srv/external/MC_SRV';
 
 entity DefectHeader      as

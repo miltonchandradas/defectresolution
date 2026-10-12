@@ -8,6 +8,8 @@ const LOG = cds.log('defectresolution');
 const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
 const LLM_MODEL_NAME = String(process.env.LLM_MODEL_NAME || 'gpt-5.5').trim();
 const RESOURCE_GROUP = String(process.env.RESOURCE_GROUP || 'default').trim();
+const S4_DESTINATION_NAME = String(process.env.S4_DESTINATION_NAME || 'S4X_AI').trim();
+const ZGW_AI_SRV_PATH = String(process.env.ZGW_AI_SRV_PATH || '/sap/opu/odata/sap/ZGW_AI_SRV').trim();
 const MAX_TOKENS = Number.parseInt(String(process.env.MAX_TOKENS || '100000'), 10);
 const MAX_ATTACHMENT_TEXT_CHARS = Number.parseInt(String(process.env.MAX_ATTACHMENT_TEXT_CHARS || '4000'), 10);
 const STARTUP_DEFECT_IDS = parseStartupDefectIds(
@@ -394,6 +396,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
 
     try {
       result.llmResponse = await runDefectPromptWithLlm({ defect, notes, attachments });
+      result.llmResponse = await enrichLlmResponseWithTcodePrograms(result.llmResponse);
     } catch (error) {
       hadPartialFailure = true;
       appendResultError(result, `LLM call failed: ${error?.message ?? String(error)}`);
@@ -417,6 +420,86 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
   }
 }
 
+async function enrichLlmResponseWithTcodePrograms(llmResponse) {
+  const payload = parseLlmResponseJson(llmResponse);
+  if (!payload) {
+    return llmResponse;
+  }
+
+  const tcodes = Array.isArray(payload.tcodes)
+    ? payload.tcodes.map((item) => String(item || '').trim().toUpperCase()).filter(Boolean)
+    : [];
+
+  const abapPrograms = Array.isArray(payload.abap_programs)
+    ? payload.abap_programs.map((item) => String(item || '').trim().toUpperCase()).filter(Boolean)
+    : [];
+
+  const zTcodes = [...new Set(tcodes.filter((tcode) => tcode.startsWith('Z')))];
+  for (const tcode of zTcodes) {
+    try {
+      const program = await fetchProgramForTcode(tcode);
+      if (program && !abapPrograms.includes(program)) {
+        abapPrograms.push(program);
+      }
+    } catch (error) {
+      LOG.warn('Failed to resolve program for tcode from ZGW_AI_SRV', {
+        tcode,
+        ...extractHttpErrorDetails(error),
+      });
+    }
+  }
+
+  payload.tcodes = tcodes;
+  payload.abap_programs = abapPrograms;
+  return JSON.stringify(payload);
+}
+
+function parseLlmResponseJson(llmResponse) {
+  const text = String(llmResponse || '').trim();
+  if (!text) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    const fenced = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+    if (!fenced) {
+      LOG.warn('LLM response is not valid JSON; skipping tcode program enrichment');
+      return null;
+    }
+
+    try {
+      return JSON.parse(fenced[1]);
+    } catch {
+      LOG.warn('LLM fenced response is not valid JSON; skipping tcode program enrichment');
+      return null;
+    }
+  }
+}
+
+async function fetchProgramForTcode(tcode) {
+  const encodedTcode = encodeODataSingleQuotedValue(tcode);
+  const url = `${ZGW_AI_SRV_PATH}/TcodeProgramSet('${encodedTcode}')?$format=json`;
+
+  const response = await executeHttpRequest(
+    { destinationName: S4_DESTINATION_NAME },
+    {
+      method: 'get',
+      url,
+      headers: {
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  const program = String(response?.data?.d?.program || response?.data?.program || '').trim().toUpperCase();
+  return program || '';
+}
+
+function encodeODataSingleQuotedValue(value) {
+  return String(value ?? '').replace(/'/g, "''");
+}
 function createOrchestrationClient() {
   if (!process.env.LLM_MODEL_NAME || !process.env.RESOURCE_GROUP) {
     LOG.warn('Orchestration env vars are missing; using defaults', {

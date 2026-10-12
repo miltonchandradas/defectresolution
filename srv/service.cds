@@ -5,6 +5,7 @@ using {defectresolution as my} from '../db/schema.cds';
 service DefectService {
     entity DefectHeader as projection on my.DefectHeader;
     entity DefectNotes as projection on my.DefectNotes;
+    entity TcodePrograms as projection on my.TcodePrograms;
 
     type DefectOrchestrationResult {
         defectId        : String(40);
