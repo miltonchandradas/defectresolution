@@ -482,48 +482,23 @@ function parseLlmResponseJson(llmResponse) {
 }
 
 async function fetchProgramForTcode(tcode) {
-  const encodedTcode = encodeODataSingleQuotedValue(tcode);
-  // Always query a single entity by key from the service root path.
-  const serviceRoot = normalizeServiceRootPath(ZGW_AI_SRV_PATH);
-  const candidateUrls = [
-    `${serviceRoot}/TcodeProgramSet('${encodedTcode}')?$format=json`,
-    `${serviceRoot}/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
-  ];
+  const service = await cds.connect.to('ZGW_AI_SRV', {
+    credentials: {
+      ...cds.env.requires.ZGW_AI_SRV.credentials,
+      destination: S4_DESTINATION_NAME,
+      path: normalizeServiceRootPath(ZGW_AI_SRV_PATH),
+    },
+  });
+  const { TcodeProgramSet } = service.entities;
+  const query = cds.ql.SELECT.one.from(TcodeProgramSet, { tcode });
+  const { method, path: entityPath } = cds.odata.urlify(query, service);
+  const response = await service.send({
+    method,
+    path: `${entityPath}?$format=json`,
+    headers: { Accept: 'application/json' },
+  });
 
-  for (const url of candidateUrls) {
-    try {
-      const response = await executeHttpRequest(
-        { destinationName: S4_DESTINATION_NAME },
-        {
-          method: 'get',
-          url,
-          headers: {
-            Accept: 'application/json',
-          },
-        }
-      );
-
-      const program = extractProgramFromTcodeResponse(response?.data);
-      if (program) {
-        return program;
-      }
-
-      LOG.warn('Tcode program lookup returned payload without program', {
-        tcode,
-        url,
-        topLevelKeys: Object.keys(response?.data || {}),
-        dKeys: Object.keys(response?.data?.d || {}),
-      });
-    } catch (error) {
-      LOG.warn('Tcode program lookup request failed for candidate URL', {
-        tcode,
-        url,
-        ...extractHttpErrorDetails(error),
-      });
-    }
-  }
-
-  return '';
+  return extractProgramFromTcodeResponse(response);
 }
 
 function normalizeServiceRootPath(pathValue) {
@@ -556,9 +531,6 @@ function extractProgramFromTcodeResponse(data) {
   return '';
 }
 
-function encodeODataSingleQuotedValue(value) {
-  return String(value ?? '').replace(/'/g, "''");
-}
 function createOrchestrationClient() {
   if (!process.env.LLM_MODEL_NAME || !process.env.RESOURCE_GROUP) {
     LOG.warn('Orchestration env vars are missing; using defaults', {
