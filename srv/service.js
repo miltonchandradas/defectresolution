@@ -483,14 +483,12 @@ function parseLlmResponseJson(llmResponse) {
 
 async function fetchProgramForTcode(tcode) {
   const encodedTcode = encodeODataSingleQuotedValue(tcode);
-  // Always query a single entity by key, never the entity set collection.
-  const entityKeyUrls = [
-    `/TcodeProgramSet('${encodedTcode}')?$format=json`,
-    `/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
-    `${ZGW_AI_SRV_PATH}/TcodeProgramSet('${encodedTcode}')?$format=json`,
-    `${ZGW_AI_SRV_PATH}/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
+  // Always query a single entity by key from the service root path.
+  const serviceRoot = normalizeServiceRootPath(ZGW_AI_SRV_PATH);
+  const candidateUrls = [
+    `${serviceRoot}/TcodeProgramSet('${encodedTcode}')?$format=json`,
+    `${serviceRoot}/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
   ];
-  const candidateUrls = [...new Set(entityKeyUrls)];
 
   for (const url of candidateUrls) {
     try {
@@ -526,6 +524,16 @@ async function fetchProgramForTcode(tcode) {
   }
 
   return '';
+}
+
+function normalizeServiceRootPath(pathValue) {
+  const raw = String(pathValue || '').trim();
+  if (!raw) {
+    return '/sap/opu/odata/sap/ZGW_AI_SRV';
+  }
+
+  const withLeadingSlash = raw.startsWith('/') ? raw : `/${raw}`;
+  return withLeadingSlash.replace(/\/+$/, '');
 }
 
 function extractProgramFromTcodeResponse(data) {
