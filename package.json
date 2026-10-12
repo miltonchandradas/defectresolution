@@ -52,7 +52,19 @@
       },
       "DROP_DOC_SRV": {
         "kind": "odata-v2",
-        "model": "srv/external/DROP_DOC_SRV"
+        "model": "srv/external/DROP_DOC_SRV",
+        "[production]": {
+          "credentials": {
+            "destination": "Solman_Prod",
+            "path": "/sap/opu/odata/salm/MC_SRV"
+          }
+        },
+        "csrf": true,
+        "csrfInBatch": true
+      },
+      "ZGW_AI_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/ZGW_AI_SRV"
       }
     }
   }

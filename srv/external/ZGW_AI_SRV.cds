@@ -1,4 +1,4 @@
-/* checksum : 004a824da8c956b788d5607600d783ee */
+/* checksum : ccd40931d20b705fea6e7488910a6bfc */
 @cds.external : true
 @m.IsDefaultEntityContainer : 'true'
 @sap.supported.formats : 'atom json xlsx'
@@ -187,6 +187,35 @@ service ZGW_AI_SRV {
     @sap.sortable : 'false'
     @sap.filterable : 'false'
     previousSources : String not null;
+  };
+
+  @cds.external : true
+  @cds.persistence.skip : true
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.deletable : 'false'
+  @sap.pageable : 'false'
+  @sap.addressable : 'false'
+  @sap.content.version : '1'
+  entity TcodeProgramSet {
+    @sap.unicode : 'false'
+    @sap.creatable : 'false'
+    @sap.updatable : 'false'
+    @sap.sortable : 'false'
+    @sap.filterable : 'false'
+    key tcode : String not null;
+    @sap.unicode : 'false'
+    @sap.creatable : 'false'
+    @sap.updatable : 'false'
+    @sap.sortable : 'false'
+    @sap.filterable : 'false'
+    program : String not null;
+    @sap.unicode : 'false'
+    @sap.creatable : 'false'
+    @sap.updatable : 'false'
+    @sap.sortable : 'false'
+    @sap.filterable : 'false'
+    description : String not null;
   };
 };
 
