@@ -440,6 +440,9 @@ async function enrichLlmResponseWithTcodePrograms(llmResponse) {
       const program = await fetchProgramForTcode(tcode);
       if (program && !abapPrograms.includes(program)) {
         abapPrograms.push(program);
+        LOG.info('Resolved tcode to program from ZGW_AI_SRV', { tcode, program });
+      } else {
+        LOG.warn('No program mapping returned for tcode from ZGW_AI_SRV', { tcode });
       }
     } catch (error) {
       LOG.warn('Failed to resolve program for tcode from ZGW_AI_SRV', {
@@ -480,21 +483,58 @@ function parseLlmResponseJson(llmResponse) {
 
 async function fetchProgramForTcode(tcode) {
   const encodedTcode = encodeODataSingleQuotedValue(tcode);
-  const url = `${ZGW_AI_SRV_PATH}/TcodeProgramSet('${encodedTcode}')?$format=json`;
+  const candidateUrls = [
+    `${ZGW_AI_SRV_PATH}/TcodeProgramSet('${encodedTcode}')?$format=json`,
+    `${ZGW_AI_SRV_PATH}/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
+  ];
 
-  const response = await executeHttpRequest(
-    { destinationName: S4_DESTINATION_NAME },
-    {
-      method: 'get',
-      url,
-      headers: {
-        Accept: 'application/json',
-      },
+  for (const url of candidateUrls) {
+    try {
+      const response = await executeHttpRequest(
+        { destinationName: S4_DESTINATION_NAME },
+        {
+          method: 'get',
+          url,
+          headers: {
+            Accept: 'application/json',
+          },
+        }
+      );
+
+      const program = extractProgramFromTcodeResponse(response?.data);
+      if (program) {
+        return program;
+      }
+    } catch (error) {
+      LOG.warn('Tcode program lookup request failed for candidate URL', {
+        tcode,
+        url,
+        ...extractHttpErrorDetails(error),
+      });
     }
-  );
+  }
 
-  const program = String(response?.data?.d?.program || response?.data?.program || '').trim().toUpperCase();
-  return program || '';
+  return '';
+}
+
+function extractProgramFromTcodeResponse(data) {
+  const direct =
+    data?.d?.program ??
+    data?.d?.Program ??
+    data?.program ??
+    data?.Program;
+
+  if (direct) {
+    return String(direct).trim().toUpperCase();
+  }
+
+  const fromResults = data?.d?.results?.[0] ?? data?.results?.[0] ?? data?.value?.[0];
+  const resultProgram = fromResults?.program ?? fromResults?.Program;
+  if (resultProgram) {
+    return String(resultProgram).trim().toUpperCase();
+  }
+
+  return '';
 }
 
 function encodeODataSingleQuotedValue(value) {
