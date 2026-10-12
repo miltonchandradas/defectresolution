@@ -15,6 +15,7 @@ service DefectService {
         notesCount      : Integer;
         attachmentCount : Integer;
         llmResponse     : LargeString;
+        analysisResponse : LargeString;
         error           : LargeString;
     }
 

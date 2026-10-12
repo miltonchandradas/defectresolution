@@ -28,7 +28,7 @@ Base all conclusions on evidence available in the supplied material.
 
 <DEFECT_HEADER>
 
-[PASTE DEFECT HEADER DETAILS HERE]
+{{DEFECT_HEADER_INFO}}
 
 </DEFECT_HEADER>
 
@@ -36,7 +36,7 @@ Base all conclusions on evidence available in the supplied material.
 
 <DEFECT_NOTES>
 
-[PASTE DEFECT NOTES HERE]
+{{DEFECT_TEXT_INFO}}
 
 </DEFECT_NOTES>
 
@@ -44,7 +44,7 @@ Base all conclusions on evidence available in the supplied material.
 
 <DEFECT_ATTACHMENTS>
 
-[PASTE ATTACHMENT TEXT HERE]
+{{DEFECT_ATTACHMENTS}}
 
 </DEFECT_ATTACHMENTS>
 
@@ -56,7 +56,7 @@ Analyze each object independently and then investigate dependencies and interact
 
 <ABAP_SOURCE_CODE>
 
-[PASTE ABAP SOURCE CODE HERE]
+{{ABAP_SOURCE_CODE}}
 
 </ABAP_SOURCE_CODE>
 

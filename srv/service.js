@@ -18,6 +18,7 @@ const STARTUP_DEFECT_IDS = parseStartupDefectIds(
 
 const orchestrationClient = createOrchestrationClient();
 let parseDefectPromptTemplate;
+let defectResolutionPromptTemplate;
 
 export default cds.service.impl(async function () {
   const { DefectHeader, DefectNotes } = this.entities;
@@ -304,15 +305,40 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
   return llmResponse;
 }
 
-function renderPromptTemplate(template, placeholderValues) {
-  let rendered = String(template || '');
-
-  for (const [key, value] of Object.entries(placeholderValues || {})) {
-    const token = `{{${key}}}`;
-    rendered = rendered.replaceAll(token, String(value ?? ''));
+async function runDefectResolutionWithLlm({ defect, notes, attachments, sources }) {
+  if (!orchestrationClient) {
+    throw new Error('Orchestration client is not configured for defect analysis.');
   }
 
-  return rendered;
+  const promptTemplate = await getDefectResolutionPromptTemplate();
+  const renderedPrompt = renderPromptTemplate(promptTemplate, {
+    DEFECT_HEADER_INFO: formatDefectHeaderInfo(defect),
+    DEFECT_TEXT_INFO: formatDefectTextInfo(notes),
+    DEFECT_ATTACHMENTS: formatDefectAttachments(attachments),
+    ABAP_SOURCE_CODE: formatAbapSources(sources),
+  });
+  const response = await orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: renderedPrompt }],
+  });
+  const findings = response.getContent() || '';
+  if (!findings.trim()) {
+    throw new Error('Defect analysis returned no findings.');
+  }
+
+  LOG.info('Defect resolution LLM findings', {
+    defectId: defect?.Id,
+    guid: defect?.Guid,
+    response: findings,
+    tokenUsage: response.getTokenUsage(),
+    requestId: response.getRequestId(),
+  });
+  return findings;
+}
+
+function renderPromptTemplate(template, placeholderValues) {
+  return String(template || '').replace(/\{\{(\w+)\}\}/g, (token, key) =>
+    Object.hasOwn(placeholderValues || {}, key) ? String(placeholderValues[key] ?? '') : token
+  );
 }
 
 async function processDefectForOrchestration(defectId, processType = 'S1DM', mode = 'Startup') {
@@ -325,6 +351,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
     notesCount: 0,
     attachmentCount: 0,
     llmResponse: '',
+    analysisResponse: '',
     error: '',
   };
 
@@ -406,6 +433,28 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
         defectId: defect.Id,
         ...extractHttpErrorDetails(error),
       });
+    }
+
+    if (result.llmResponse) {
+      try {
+        const payload = parseLlmResponseJson(result.llmResponse);
+        if (!payload) {
+          throw new Error('Cannot analyze defect because extraction did not return valid JSON.');
+        }
+        result.analysisResponse = await runDefectResolutionWithLlm({
+          defect,
+          notes,
+          attachments,
+          sources: payload.abap_sources,
+        });
+      } catch (error) {
+        hadPartialFailure = true;
+        appendResultError(result, `Defect analysis failed: ${error?.message ?? String(error)}`);
+        LOG.error(`${mode} defect analysis failed`, {
+          defectId: defect.Id,
+          ...extractHttpErrorDetails(error),
+        });
+      }
     }
 
     result.status = hadPartialFailure ? 'PARTIAL' : 'SUCCESS';
@@ -599,25 +648,40 @@ function createOrchestrationClient() {
 }
 
 async function getParseDefectPromptTemplate() {
-  if (parseDefectPromptTemplate) {
-    return parseDefectPromptTemplate;
-  }
+  return parseDefectPromptTemplate ||= await loadPromptTemplate('parse_defect_prompt.md');
+}
 
+async function getDefectResolutionPromptTemplate() {
+  return defectResolutionPromptTemplate ||= await loadPromptTemplate('defect_resolution_prompt.md');
+}
+
+async function loadPromptTemplate(filename) {
   const candidatePaths = [
-    new URL('./prompts/parse_defect_prompt.md', import.meta.url),
-    path.resolve(process.cwd(), 'srv', 'prompts', 'parse_defect_prompt.md'),
+    new URL(`./prompts/${filename}`, import.meta.url),
+    path.resolve(process.cwd(), 'srv', 'prompts', filename),
   ];
 
   for (const candidatePath of candidatePaths) {
     try {
-      parseDefectPromptTemplate = await readFile(candidatePath, 'utf8');
-      return parseDefectPromptTemplate;
+      return await readFile(candidatePath, 'utf8');
     } catch {
       // Try next path candidate.
     }
   }
 
-  throw new Error('Unable to load parse_defect_prompt.md from known locations');
+  throw new Error(`Unable to load ${filename} from known locations`);
+}
+
+function formatAbapSources(sources) {
+  if (!Array.isArray(sources) || sources.length === 0) {
+    return 'No ABAP source code available.';
+  }
+
+  return sources.map((source) => {
+    const program = String(source?.program || 'Unknown');
+    const code = typeof source?.code === 'string' ? source.code : '';
+    return `ABAP Object: ${program}\n${code || `Source unavailable: ${source?.error || 'No source code returned.'}`}`;
+  }).join('\n\n');
 }
 
 function formatDefectHeaderInfo(defect) {
