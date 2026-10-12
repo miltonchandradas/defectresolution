@@ -397,6 +397,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
     try {
       result.llmResponse = await runDefectPromptWithLlm({ defect, notes, attachments });
       result.llmResponse = await enrichLlmResponseWithTcodePrograms(result.llmResponse);
+      result.llmResponse = await enrichLlmResponseWithAbapSources(result.llmResponse);
     } catch (error) {
       hadPartialFailure = true;
       appendResultError(result, `LLM call failed: ${error?.message ?? String(error)}`);
@@ -459,6 +460,41 @@ async function enrichLlmResponseWithTcodePrograms(llmResponse) {
   return JSON.stringify(payload);
 }
 
+async function enrichLlmResponseWithAbapSources(llmResponse) {
+  const payload = parseLlmResponseJson(llmResponse);
+  if (!payload) {
+    return llmResponse;
+  }
+
+  const programs = Array.isArray(payload.abap_programs)
+    ? payload.abap_programs.map((item) => String(item || '').trim().toUpperCase())
+    : [];
+  const zPrograms = [...new Set(programs.filter((program) => program.startsWith('Z')))];
+  const sources = [];
+
+  for (const program of zPrograms) {
+    try {
+      const response = await fetchZgwAiEntity('SourceSet', { program });
+      const code = response?.code ?? response?.d?.code;
+      if (typeof code !== 'string' || !code.trim()) {
+        throw new Error('No source code returned for program.');
+      }
+
+      sources.push({ program, code });
+      LOG.info('Fetched ABAP source code from ZGW_AI_SRV', { program, sourceLength: code.length });
+    } catch (error) {
+      sources.push({ program, code: '', error: error?.message ?? String(error) });
+      LOG.warn('Failed to fetch ABAP source code from ZGW_AI_SRV', {
+        program,
+        ...extractHttpErrorDetails(error),
+      });
+    }
+  }
+
+  payload.abap_sources = sources;
+  return JSON.stringify(payload);
+}
+
 function parseLlmResponseJson(llmResponse) {
   const text = String(llmResponse || '').trim();
   if (!text) {
@@ -484,6 +520,11 @@ function parseLlmResponseJson(llmResponse) {
 }
 
 async function fetchProgramForTcode(tcode) {
+  const response = await fetchZgwAiEntity('TcodeProgramSet', { tcode });
+  return extractProgramFromTcodeResponse(response);
+}
+
+async function fetchZgwAiEntity(entityName, key) {
   const service = await cds.connect.to('ZGW_AI_SRV', {
     credentials: {
       ...cds.env.requires.ZGW_AI_SRV.credentials,
@@ -491,16 +532,13 @@ async function fetchProgramForTcode(tcode) {
       path: normalizeServiceRootPath(ZGW_AI_SRV_PATH),
     },
   });
-  const { TcodeProgramSet } = service.entities;
-  const query = cds.ql.SELECT.one.from(TcodeProgramSet, { tcode });
+  const query = cds.ql.SELECT.one.from(service.entities[entityName], key);
   const { method, path: entityPath } = cds.odata.urlify(query, service);
-  const response = await service.send({
+  return service.send({
     method,
     path: `${entityPath}?$format=json`,
     headers: { Accept: 'application/json' },
   });
-
-  return extractProgramFromTcodeResponse(response);
 }
 
 function normalizeServiceRootPath(pathValue) {
