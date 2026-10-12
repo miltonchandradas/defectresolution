@@ -305,7 +305,7 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
   return llmResponse;
 }
 
-async function runDefectResolutionWithLlm({ defect, notes, attachments, sources }) {
+async function runDefectResolutionWithLlm({ defect, notes, attachments, sources, tcodePrograms }) {
   if (!orchestrationClient) {
     throw new Error('Orchestration client is not configured for defect analysis.');
   }
@@ -316,6 +316,7 @@ async function runDefectResolutionWithLlm({ defect, notes, attachments, sources 
     DEFECT_TEXT_INFO: formatDefectTextInfo(notes),
     DEFECT_ATTACHMENTS: formatDefectAttachments(attachments),
     ABAP_SOURCE_CODE: formatAbapSources(sources),
+    TCODE_PROGRAM_MAPPING: JSON.stringify(tcodePrograms || [], null, 2),
   });
   const response = await orchestrationClient.chatCompletion({
     messages: [{ role: 'user', content: renderedPrompt }],
@@ -446,6 +447,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
           notes,
           attachments,
           sources: payload.abap_sources,
+          tcodePrograms: payload.tcode_programs,
         });
       } catch (error) {
         hadPartialFailure = true;
@@ -485,10 +487,12 @@ async function enrichLlmResponseWithTcodePrograms(llmResponse) {
     : [];
 
   const zTcodes = [...new Set(tcodes.filter((tcode) => tcode.startsWith('Z')))];
+  const tcodePrograms = [];
   for (const tcode of zTcodes) {
     try {
       const program = await fetchProgramForTcode(tcode);
       if (program) {
+        tcodePrograms.push({ tcode, program });
         if (!abapPrograms.includes(program)) {
           abapPrograms.push(program);
         }
@@ -506,6 +510,7 @@ async function enrichLlmResponseWithTcodePrograms(llmResponse) {
 
   payload.tcodes = tcodes;
   payload.abap_programs = abapPrograms;
+  payload.tcode_programs = tcodePrograms;
   return JSON.stringify(payload);
 }
 
