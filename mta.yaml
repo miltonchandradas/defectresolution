@@ -18,7 +18,7 @@ modules:
       instances: 1
       buildpack: nodejs_buildpack
     properties:
-      STARTUP_DEFECT_IDS: "8000197596"
+      STARTUP_DEFECT_IDS: "8000197596,8000417926"
       LLM_MODEL_NAME: "gpt-5.5"
       MAX_TOKENS: "100000"
       MAX_ATTACHMENT_TEXT_CHARS: "100000"
