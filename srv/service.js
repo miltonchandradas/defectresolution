@@ -438,8 +438,10 @@ async function enrichLlmResponseWithTcodePrograms(llmResponse) {
   for (const tcode of zTcodes) {
     try {
       const program = await fetchProgramForTcode(tcode);
-      if (program && !abapPrograms.includes(program)) {
-        abapPrograms.push(program);
+      if (program) {
+        if (!abapPrograms.includes(program)) {
+          abapPrograms.push(program);
+        }
         LOG.info('Resolved tcode to program from ZGW_AI_SRV', { tcode, program });
       } else {
         LOG.warn('No program mapping returned for tcode from ZGW_AI_SRV', { tcode });
