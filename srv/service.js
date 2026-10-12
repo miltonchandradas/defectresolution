@@ -483,10 +483,14 @@ function parseLlmResponseJson(llmResponse) {
 
 async function fetchProgramForTcode(tcode) {
   const encodedTcode = encodeODataSingleQuotedValue(tcode);
-  const candidateUrls = [
+  // Always query a single entity by key, never the entity set collection.
+  const entityKeyUrls = [
+    `/TcodeProgramSet('${encodedTcode}')?$format=json`,
+    `/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
     `${ZGW_AI_SRV_PATH}/TcodeProgramSet('${encodedTcode}')?$format=json`,
     `${ZGW_AI_SRV_PATH}/TcodeProgramSet(tcode='${encodedTcode}')?$format=json`,
   ];
+  const candidateUrls = [...new Set(entityKeyUrls)];
 
   for (const url of candidateUrls) {
     try {
@@ -505,6 +509,13 @@ async function fetchProgramForTcode(tcode) {
       if (program) {
         return program;
       }
+
+      LOG.warn('Tcode program lookup returned payload without program', {
+        tcode,
+        url,
+        topLevelKeys: Object.keys(response?.data || {}),
+        dKeys: Object.keys(response?.data?.d || {}),
+      });
     } catch (error) {
       LOG.warn('Tcode program lookup request failed for candidate URL', {
         tcode,
