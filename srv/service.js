@@ -2,7 +2,10 @@ import cds from '@sap/cds';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import { readFile } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import path from 'node:path';
+import { emailDocxAttachmentsViaDestination } from './utils/notifications.js';
+import { uploadBufferToObjectStore } from './utils/objectstore.js';
 
 const LOG = cds.log('defectresolution');
 const SOLMAN_DESTINATION_NAME = 'Solman_Prod';
@@ -459,6 +462,16 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
       }
     }
 
+    if (result.analysisResponse) {
+      const deliveryErrors = await deliverDefectFindings(normalizedDefectId, result.analysisResponse);
+      if (deliveryErrors.length) {
+        hadPartialFailure = true;
+        for (const message of deliveryErrors) {
+          appendResultError(result, message);
+        }
+      }
+    }
+
     result.status = hadPartialFailure ? 'PARTIAL' : 'SUCCESS';
     return result;
   } catch (error) {
@@ -470,6 +483,39 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
     });
     return result;
   }
+}
+
+async function deliverDefectFindings(defectId, findings) {
+  const safeDefectId = defectId.replace(/[^A-Za-z0-9_-]/g, '_');
+  const filename = `defect-${safeDefectId}-findings-${randomUUID()}.md`;
+  const content = Buffer.from(findings, 'utf8');
+  const contentType = 'text/markdown; charset=utf-8';
+  const prefix = (process.env.OBJECTSTORE_PREFIX || 'llm-reports').replace(/\/+$/, '');
+  const errors = [];
+
+  try {
+    const stored = await uploadBufferToObjectStore(content, {
+      objectKey: `${prefix}/${filename}`,
+      contentType,
+    });
+    LOG.info('Saved defect findings to object store', { defectId, key: stored.key });
+  } catch (error) {
+    errors.push(`Findings upload failed: ${error?.message ?? String(error)}`);
+    LOG.error('Failed to save defect findings to object store', { defectId, ...extractHttpErrorDetails(error) });
+  }
+
+  try {
+    await emailDocxAttachmentsViaDestination([{ filename, content, contentType }], {
+      subject: process.env.EMAIL_SUBJECT || `SAP defect ${defectId} - LLM findings`,
+      body: process.env.EMAIL_BODY || `Please find the LLM analysis findings for SAP defect ${defectId} attached.`,
+    });
+    LOG.info('Emailed defect findings', { defectId, filename });
+  } catch (error) {
+    errors.push(`Findings email failed: ${error?.message ?? String(error)}`);
+    LOG.error('Failed to email defect findings', { defectId, ...extractHttpErrorDetails(error) });
+  }
+
+  return errors;
 }
 
 async function enrichLlmResponseWithTcodePrograms(llmResponse) {

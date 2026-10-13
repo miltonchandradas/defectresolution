@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
+    "@azure/storage-blob": "^12.34.0",
     "@sap-ai-sdk/orchestration": "^2.16.0",
     "@sap-cloud-sdk/connectivity": "^4",
     "@sap-cloud-sdk/http-client": "^4",
     "@sap-cloud-sdk/resilience": "^4",
     "@sap/cds": "^10",
     "@sap/xssec": "^4",
+    "archiver": "^8.0.0",
     "mammoth": "^1.13.0",
+    "nodemailer": "^10.1.0",
     "pdf-parse": "^2.4.5",
+    "socks": "^2.8.10",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

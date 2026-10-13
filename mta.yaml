@@ -23,6 +23,9 @@ modules:
       MAX_TOKENS: "100000"
       MAX_ATTACHMENT_TEXT_CHARS: "100000"
       RESOURCE_GROUP: "default"
+      EMAIL_DESTINATION: wbg_lmail
+      EMAIL_TO: mchandradas@worldbankgroup.org
+      EMAIL_FROM: mchandradas@worldbankgroup.org
     build-parameters:
       builder: npm-ci
     provides:
@@ -34,6 +37,7 @@ modules:
       - name: defectresolution-destination
       - name: defectresolution-connectivity
       - name: defectresolution-aicore
+      - name: defectresolution-objectstore
 
 resources:
   - name: defectresolution-auth
@@ -61,3 +65,9 @@ resources:
       service: aicore
       service-name: aria-aicore
       service-plan: extended
+  - name: defectresolution-objectstore
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: objectstore
+      service-name: azureobjectstore
+      service-plan: standard
