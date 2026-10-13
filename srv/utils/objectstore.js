@@ -68,7 +68,7 @@ function _readVcapServices() {
 }
 
 async function uploadFileToObjectStore(localFilePath, options = {}) {
-  const key = options.objectKey || `${process.env.OBJECTSTORE_PREFIX || "llm-reports"}/${path.basename(localFilePath)}`;
+  const key = options.objectKey || `${process.env.OBJECTSTORE_PREFIX || "defect-findings"}/${path.basename(localFilePath)}`;
   const body = await fs.readFile(localFilePath);
   return uploadBufferToObjectStore(body, { ...options, objectKey: key });
 }
@@ -89,7 +89,7 @@ async function listObjectStoreKeys(options = {}) {
   const c = _readObjectStoreCredentials();
   const container = _createContainerClient(c);
 
-  const prefix = (options.prefix || process.env.OBJECTSTORE_PREFIX || "llm-reports").replace(/\/?$/, "/");
+  const prefix = (options.prefix || process.env.OBJECTSTORE_PREFIX || "defect-findings").replace(/\/?$/, "/");
   const suffix = options.suffix || ".docx";
   const keys = [];
   for await (const b of container.listBlobsFlat({ prefix })) if (b.name.endsWith(suffix)) keys.push(b.name);
@@ -107,7 +107,7 @@ async function downloadObjectFromObjectStore(key) {
   return { bucket: c.container, key, contentType: props.contentType, content: Buffer.concat(chunks) };
 }
 
-async function clearObjectStorePrefix(prefix = process.env.OBJECTSTORE_PREFIX || "llm-reports") {
+async function clearObjectStorePrefix(prefix = process.env.OBJECTSTORE_PREFIX || "defect-findings") {
   const c = _readObjectStoreCredentials();
   const container = _createContainerClient(c);
 

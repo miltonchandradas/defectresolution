@@ -490,7 +490,7 @@ async function deliverDefectFindings(defectId, findings) {
   const filename = `defect-${safeDefectId}-findings-${randomUUID()}.md`;
   const content = Buffer.from(findings, 'utf8');
   const contentType = 'text/markdown; charset=utf-8';
-  const prefix = (process.env.OBJECTSTORE_PREFIX || 'llm-reports').replace(/\/+$/, '');
+  const prefix = (process.env.OBJECTSTORE_PREFIX || 'defect-findings').replace(/\/+$/, '');
   const errors = [];
 
   try {
