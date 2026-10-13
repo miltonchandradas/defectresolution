@@ -26,6 +26,7 @@ modules:
       EMAIL_DESTINATION: wbg_lmail
       EMAIL_TO: mchandradas@worldbankgroup.org
       EMAIL_FROM: mchandradas@worldbankgroup.org
+      EMAIL_TLS_REJECT_UNAUTHORIZED: "false"
     build-parameters:
       builder: npm-ci
     provides:

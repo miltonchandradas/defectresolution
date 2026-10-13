@@ -81,8 +81,8 @@ function getOptionalSmtpOptions(originalProperties) {
   );
   const tlsServername = originalProperties['mail.smtp.tls.servername'];
   const tlsRejectUnauthorized = parseOptionalBooleanProperty(
-    originalProperties['mail.smtp.tls.rejectUnauthorized'],
-    'mail.smtp.tls.rejectUnauthorized'
+    process.env.EMAIL_TLS_REJECT_UNAUTHORIZED ?? originalProperties['mail.smtp.tls.rejectUnauthorized'],
+    'EMAIL_TLS_REJECT_UNAUTHORIZED / mail.smtp.tls.rejectUnauthorized'
   );
   const connectionTimeout = parseOptionalNumberProperty(
     originalProperties['mail.smtp.connectionTimeout'],
@@ -124,6 +124,9 @@ function getOptionalSmtpOptions(originalProperties) {
 
     if (typeof tlsRejectUnauthorized === 'boolean') {
       smtpOptions.tls.rejectUnauthorized = tlsRejectUnauthorized;
+      if (!tlsRejectUnauthorized) {
+        LOG.warn('SMTP certificate verification is disabled. Use this setting only for non-production testing.');
+      }
     }
   }
 
