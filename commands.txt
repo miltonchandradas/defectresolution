@@ -24,8 +24,9 @@ git pull && mbt build && cf deploy mta_archives/defectresolution_1.0.0.mtar
 
 HOW TO RUN THIS ?
 ==============================================================
+cf login
 cf set-env defectresolution-srv STARTUP_DEFECT_IDS '8000420387'
 cf set-env defectresolution-srv ADDITIONAL_ABAP_PROGRAMS 'ZRMM_PO_EXPEDITING_REPORT'
-cf set-env defectresolution-srv EMAIL_TO 'mchandradas@worldbankgroup.org'
+cf set-env defectresolution-srv EMAIL_TO 'mchandradas@worldbankgroup.org,ksinha@worldbankgroup.org'
 cf restart defectresolution-srv
-
+cf logs defectresolution-srv
