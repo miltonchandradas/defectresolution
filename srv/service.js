@@ -569,10 +569,17 @@ async function enrichLlmResponseWithAbapSources(llmResponse) {
   const programs = Array.isArray(payload.abap_programs)
     ? payload.abap_programs.map((item) => String(item || '').trim().toUpperCase())
     : [];
-  const zPrograms = [...new Set(programs.filter((program) => program.startsWith('Z')))];
+  const additionalPrograms = [...new Set(String(process.env.ADDITIONAL_ABAP_PROGRAMS || '')
+    .split(',')
+    .map((program) => program.trim().toUpperCase())
+    .filter(Boolean))];
+  const sourcePrograms = [...new Set([
+    ...programs.filter((program) => program.startsWith('Z')),
+    ...additionalPrograms,
+  ])];
   const sources = [];
 
-  for (const program of zPrograms) {
+  for (const program of sourcePrograms) {
     try {
       const response = await fetchZgwAiEntity('SourceSet', { program });
       const code = response?.code ?? response?.d?.code;
@@ -591,6 +598,8 @@ async function enrichLlmResponseWithAbapSources(llmResponse) {
     }
   }
 
+  payload.abap_programs = [...new Set([...programs.filter(Boolean), ...additionalPrograms])];
+  payload.additional_abap_programs = additionalPrograms;
   payload.abap_sources = sources;
   return JSON.stringify(payload);
 }

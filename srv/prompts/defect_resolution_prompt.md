@@ -52,6 +52,8 @@ Base all conclusions on evidence available in the supplied material.
 
 The following section may contain multiple ABAP programs or objects concatenated together.
 
+It may also include additional programs explicitly supplied for investigation, not only programs identified from the defect. Do not assume that every supplied program was mentioned in the defect or is responsible for it.
+
 Analyze each object independently and then investigate dependencies and interactions between them.
 
 <ABAP_SOURCE_CODE>
