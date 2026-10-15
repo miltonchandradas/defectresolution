@@ -55,16 +55,41 @@ export default cds.service.impl(async function () {
 
     const config = parseReviewConfig(req.data);
     const client = createOrchestrationClient(config);
-    const results = [];
-    for (const defectId of defectIds) {
-      const result = await processDefectForOrchestration(defectId, processType, 'On-demand', {
-        client,
-        recipients: config.recipients,
+    const requestId = req.id;
+    req.on('succeeded', () => {
+      const job = cds.spawn({ after: 0 }, async () => {
+        for (const defectId of defectIds) {
+          const result = await processDefectForOrchestration(defectId, processType, 'On-demand', {
+            client,
+            recipients: config.recipients,
+          });
+          LOG.info('Background defect orchestration completed', {
+            requestId,
+            defectId,
+            status: result.status,
+            error: result.error,
+          });
+        }
       });
-      results.push(result);
-    }
+      job.on('failed', (error) => {
+        LOG.error('Background defect orchestration failed', {
+          requestId,
+          ...extractHttpErrorDetails(error),
+        });
+      });
+    });
 
-    return results;
+    return defectIds.map((defectId) => ({
+      defectId,
+      guid: '',
+      typeId: processType,
+      status: 'SUBMITTED',
+      notesCount: 0,
+      attachmentCount: 0,
+      llmResponse: '',
+      analysisResponse: '',
+      error: '',
+    }));
   });
 
   this.on('READ', DefectHeader, async (req) => {

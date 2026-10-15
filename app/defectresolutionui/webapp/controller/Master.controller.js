@@ -141,13 +141,13 @@ sap.ui.define([
                 if (!Array.isArray(results) || !results.length) {
                     throw new Error("No results returned for the submitted defects.");
                 }
-                const completed = results.filter((result) => result.status === "SUCCESS").length;
-                const issues = results.filter((result) => result.status !== "SUCCESS")
+                const submitted = results.filter((result) => result.status === "SUBMITTED").length;
+                const issues = results.filter((result) => result.status !== "SUBMITTED")
                     .map((result) => `${result.defectId}: ${result.error || result.status}`);
-                model.setProperty("/feedbackType", issues.length ? (completed ? "Warning" : "Error") : "Success");
+                model.setProperty("/feedbackType", issues.length ? (submitted ? "Warning" : "Error") : "Success");
                 model.setProperty("/feedback", issues.length
-                    ? `${completed} of ${results.length} completed successfully. ${issues.join("; ")}`
-                    : `${completed} ${completed === 1 ? "defect" : "defects"} analyzed successfully.`);
+                    ? `${submitted} of ${results.length} submitted. ${issues.join("; ")}`
+                    : `${submitted} ${submitted === 1 ? "defect" : "defects"} submitted. Findings will be emailed after processing.`);
             } catch (error) {
                 model.setProperty("/feedbackType", "Error");
                 model.setProperty("/feedback", error.message || "Unable to submit defects. Please try again.");
