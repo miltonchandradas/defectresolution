@@ -3,123 +3,158 @@ ID: defectresolution
 description: A simple CAP project.
 version: 1.0.0
 modules:
-- name: defectresolution-srv
-  type: nodejs
-  path: gen/srv
-  properties:
-    ADDITIONAL_ABAP_PROGRAMS: ""
-    EMAIL_DESTINATION: wbg_lmail
-    EMAIL_FROM: mchandradas@worldbankgroup.org
-    EMAIL_TLS_REJECT_UNAUTHORIZED: "false"
-    EMAIL_TO: mchandradas@worldbankgroup.org
-    LLM_MODEL_NAME: gpt-5.5
-    MAX_ATTACHMENT_TEXT_CHARS: "100000"
-    MAX_TOKENS: "100000"
-    RESOURCE_GROUP: default
-    STARTUP_DEFECT_IDS: "8000420387"
-  requires:
-  - name: defectresolution-auth
-  - name: defectresolution-destination
-  - name: defectresolution-connectivity
-  - name: defectresolution-aicore
-  - name: defectresolution-objectstore
-  provides:
-  - name: srv-api
+  - name: defectresolution-srv
+    type: nodejs
+    path: gen/srv
     properties:
-      srv-url: ${default-url}
-  parameters:
-    buildpack: nodejs_buildpack
-    instances: 1
-  build-parameters:
-    builder: npm-ci
-- name: defectresolution-app-content
-  type: com.sap.application.content
-  path: .
-  requires:
-  - name: defectresolution-repo-host
-    parameters:
-      content-target: true
-  build-parameters:
-    build-result: resources
+      ADDITIONAL_ABAP_PROGRAMS: ""
+      EMAIL_DESTINATION: wbg_lmail
+      EMAIL_FROM: mchandradas@worldbankgroup.org
+      EMAIL_TLS_REJECT_UNAUTHORIZED: "false"
+      EMAIL_TO: mchandradas@worldbankgroup.org
+      LLM_MODEL_NAME: gpt-5.5
+      MAX_ATTACHMENT_TEXT_CHARS: "100000"
+      MAX_TOKENS: "100000"
+      RESOURCE_GROUP: default
+      STARTUP_DEFECT_IDS: ""
     requires:
-    - artifacts:
-      - defectresolutionui.zip
-      name: defectresolutionui
-      target-path: resources/
-- name: defectresolutionui
-  type: html5
-  path: app/defectresolutionui
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
+      - name: defectresolution-auth
+      - name: defectresolution-destination
+      - name: defectresolution-connectivity
+      - name: defectresolution-aicore
+      - name: defectresolution-objectstore
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      instances: 1
+    build-parameters:
+      builder: npm-ci
+  - name: defectresolution-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: defectresolution-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - defectresolutionui.zip
+          name: defectresolutionui
+          target-path: resources/
+  - name: defectresolutionui
+    type: html5
+    path: app/defectresolutionui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms:
+        []
+  - name: defectresolution-approuter
+    type: approuter.nodejs
+    path: approuter
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: defectresolution-srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: defectresolution-auth
+      - name: defectresolution-destination
+      - name: defectresolution-repo-runtime
+      - name: defectresolution-connectivity
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
 resources:
-- name: defectresolution-auth
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      tenant-mode: dedicated
-      xsappname: defectresolution-${space}
-    path: ./xs-security.json
-    service: xsuaa
-    service-plan: application
-- name: defectresolution-destination
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      HTML5Runtime_enabled: false
-      init_data:
-        instance:
-          destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
-          - Authentication: NoAuthentication
-            HTML5.DynamicDestination: true
-            HTML5.ForwardAuthToken: true
-            Name: srv-api
-            ProxyType: Internet
-            Type: HTTP
-            URL: ~{srv-api/srv-url}
-          existing_destinations_policy: update
-    service: destination
-    service-plan: lite
-  requires:
-  - name: srv-api
-- name: defectresolution-connectivity
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: connectivity
-    service-plan: lite
-- name: defectresolution-aicore
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: aicore
-    service-name: aria-aicore
-    service-plan: extended
-- name: defectresolution-objectstore
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: objectstore
-    service-name: azureobjectstore
-    service-plan: standard
-- name: defectresolution-repo-host
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: html5-apps-repo
-    service-name: defectresolution-html5-service
-    service-plan: app-host
+  - name: defectresolution-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        tenant-mode: dedicated
+        xsappname: defectresolution-${space}
+        oauth2-configuration:
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+    requires:
+      - name: app-api
+  - name: defectresolution-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: srv-api
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+            existing_destinations_policy: update
+      service: destination
+      service-plan: lite
+    requires:
+      - name: srv-api
+  - name: defectresolution-connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: connectivity
+      service-plan: lite
+  - name: defectresolution-aicore
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: aicore
+      service-name: aria-aicore
+      service-plan: extended
+  - name: defectresolution-objectstore
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: objectstore
+      service-name: azureobjectstore
+      service-plan: standard
+  - name: defectresolution-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: defectresolution-html5-service
+      service-plan: app-host
+  - name: defectresolution-repo-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: defectresolution-html5-runtime
+      service-plan: app-runtime
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-  - builder: custom
-    commands:
-    - npm ci
-    - npx cds build --production
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
