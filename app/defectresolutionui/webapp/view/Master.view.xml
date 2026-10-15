@@ -11,8 +11,8 @@
             <VBox id="workspace" class="ariaWorkspace">
                 <HBox id="brandBanner" class="ariaBanner" alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap">
                     <VBox id="bannerContent" class="ariaBannerContent">
-                        <Text id="projectLabel" text="PROJECT ARIA" class="ariaEyebrow" />
-                        <Title id="pageHeading" text="Defect Resolution" level="H1" class="ariaHeading" />
+                        <Title id="pageHeading" text="Project Aria: Defect Resolution" level="H2" class="ariaHeading" />
+                        <Text text="AI-Driven Defect Investigation, Code Analysis and Remediation" class="sapUiTinyMarginTop ariaSubtitle" />
                         <Button id="editConfig" text="Edit Config" icon="sap-icon://action-settings" press=".onEditConfig"
                             type="Transparent" tooltip="Review configuration" enabled="{= !${ui>/busy} }" class="ariaConfigButton" />
                     </VBox>

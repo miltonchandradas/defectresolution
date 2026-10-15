@@ -52,6 +52,10 @@
 	flex: 1 1 16rem;
 }
 
+.ariaSubtitle {
+  color: #0a2e5c;
+}
+
 .ariaEyebrow.sapMText {
 	color: #496984;
 	font-size: 0.75rem;
@@ -70,14 +74,14 @@
 }
 
 .ariaConfigButton {
-	margin-top: 1rem;
+	margin-left: 0.75rem;
 }
 
 .ariaConfigButton .sapMBtnInner {
 	min-height: 2rem;
 	padding: 0 0.875rem;
-	border: 1px solid #96bbed;
-	border-radius: 6px;
+	border: 1px solid #94b5da;
+	border-radius: 0.5rem;
 	background: #f8fbff;
 	color: #0064d9;
 	font-weight: 600;
