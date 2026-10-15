@@ -3,7 +3,7 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^/service/(.*)$",
+      "source": "^/(?:defectresolutionui/)?service/(.*)$",
       "target": "/service/$1",
       "destination": "defectresolution-srv-api",
       "authenticationType": "xsuaa",
