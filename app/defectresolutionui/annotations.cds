@@ -1,0 +1,1 @@
+using DefectService as service from '../../srv/service';
