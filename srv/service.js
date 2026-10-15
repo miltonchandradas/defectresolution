@@ -53,9 +53,14 @@ export default cds.service.impl(async function () {
       return;
     }
 
+    const config = parseReviewConfig(req.data);
+    const client = createOrchestrationClient(config);
     const results = [];
     for (const defectId of defectIds) {
-      const result = await processDefectForOrchestration(defectId, processType, 'On-demand');
+      const result = await processDefectForOrchestration(defectId, processType, 'On-demand', {
+        client,
+        recipients: config.recipients,
+      });
       results.push(result);
     }
 
@@ -266,8 +271,8 @@ async function fetchSolmanDefectAttachments(guid) {
   return downloadedAttachments;
 }
 
-async function runDefectPromptWithLlm({ defect, notes, attachments }) {
-  if (!orchestrationClient) {
+async function runDefectPromptWithLlm({ defect, notes, attachments, client = orchestrationClient }) {
+  if (!client) {
     LOG.warn('Skipping LLM call because orchestration client is not configured');
     return '';
   }
@@ -287,7 +292,7 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
     prompt: renderedPrompt,
   });
 
-  const orchestrationResponse = await orchestrationClient.chatCompletion({
+  const orchestrationResponse = await client.chatCompletion({
     messages: [
       {
         role: 'user',
@@ -308,8 +313,8 @@ async function runDefectPromptWithLlm({ defect, notes, attachments }) {
   return llmResponse;
 }
 
-async function runDefectResolutionWithLlm({ defect, notes, attachments, sources, tcodePrograms }) {
-  if (!orchestrationClient) {
+async function runDefectResolutionWithLlm({ defect, notes, attachments, sources, tcodePrograms, client = orchestrationClient }) {
+  if (!client) {
     throw new Error('Orchestration client is not configured for defect analysis.');
   }
 
@@ -321,7 +326,7 @@ async function runDefectResolutionWithLlm({ defect, notes, attachments, sources,
     ABAP_SOURCE_CODE: formatAbapSources(sources),
     TCODE_PROGRAM_MAPPING: JSON.stringify(tcodePrograms || [], null, 2),
   });
-  const response = await orchestrationClient.chatCompletion({
+  const response = await client.chatCompletion({
     messages: [{ role: 'user', content: renderedPrompt }],
   });
   const findings = response.getContent() || '';
@@ -345,7 +350,7 @@ function renderPromptTemplate(template, placeholderValues) {
   );
 }
 
-async function processDefectForOrchestration(defectId, processType = 'S1DM', mode = 'Startup') {
+async function processDefectForOrchestration(defectId, processType = 'S1DM', mode = 'Startup', config = {}) {
   const normalizedDefectId = String(defectId || '').trim();
   const result = {
     defectId: normalizedDefectId,
@@ -426,7 +431,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
     }
 
     try {
-      result.llmResponse = await runDefectPromptWithLlm({ defect, notes, attachments });
+      result.llmResponse = await runDefectPromptWithLlm({ defect, notes, attachments, client: config.client });
       result.llmResponse = await enrichLlmResponseWithTcodePrograms(result.llmResponse);
       result.llmResponse = await enrichLlmResponseWithAbapSources(result.llmResponse);
     } catch (error) {
@@ -451,6 +456,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
           attachments,
           sources: payload.abap_sources,
           tcodePrograms: payload.tcode_programs,
+          client: config.client,
         });
       } catch (error) {
         hadPartialFailure = true;
@@ -463,7 +469,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
     }
 
     if (result.analysisResponse) {
-      const deliveryErrors = await deliverDefectFindings(normalizedDefectId, result.analysisResponse);
+      const deliveryErrors = await deliverDefectFindings(normalizedDefectId, result.analysisResponse, config.recipients);
       if (deliveryErrors.length) {
         hadPartialFailure = true;
         for (const message of deliveryErrors) {
@@ -485,7 +491,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
   }
 }
 
-async function deliverDefectFindings(defectId, findings) {
+async function deliverDefectFindings(defectId, findings, recipients) {
   const safeDefectId = defectId.replace(/[^A-Za-z0-9_-]/g, '_');
   const filename = `defect-${safeDefectId}-findings-${randomUUID()}.md`;
   const content = Buffer.from(findings, 'utf8');
@@ -506,6 +512,7 @@ async function deliverDefectFindings(defectId, findings) {
 
   try {
     await emailDocxAttachmentsViaDestination([{ filename, content, contentType }], {
+      overrideRecipients: recipients,
       subject: process.env.EMAIL_SUBJECT || `SAP defect ${defectId} - LLM findings`,
       body: process.env.EMAIL_BODY || `Please find the LLM analysis findings for SAP defect ${defectId} attached.`,
     });
@@ -680,7 +687,29 @@ function extractProgramFromTcodeResponse(data) {
   return '';
 }
 
-function createOrchestrationClient() {
+function parseReviewConfig(data = {}) {
+  const llmModel = String(data.llmModel ?? LLM_MODEL_NAME).trim();
+  const maxTokens = data.maxTokens ?? MAX_TOKENS;
+  if (!llmModel || llmModel.length > 128) {
+    throw cds.error('Provide a valid LLM model name.', { code: 400 });
+  }
+  if (!Number.isInteger(maxTokens) || maxTokens <= 0 || maxTokens > 2147483647) {
+    throw cds.error('Max Tokens must be a positive integer.', { code: 400 });
+  }
+
+  let recipients;
+  if (data.emailTo !== undefined && data.emailTo !== null) {
+    const addresses = String(data.emailTo).split(',').map((address) => address.trim());
+    if (!addresses.length || addresses.some((address) => !/^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(address))) {
+      throw cds.error('Provide valid comma-separated email recipients.', { code: 400 });
+    }
+    recipients = [...new Set(addresses)];
+  }
+
+  return { llmModel, maxTokens, recipients };
+}
+
+function createOrchestrationClient({ llmModel = LLM_MODEL_NAME, maxTokens: configuredMaxTokens = MAX_TOKENS } = {}) {
   if (!process.env.LLM_MODEL_NAME || !process.env.RESOURCE_GROUP) {
     LOG.warn('Orchestration env vars are missing; using defaults', {
       modelName: LLM_MODEL_NAME,
@@ -688,13 +717,13 @@ function createOrchestrationClient() {
     });
   }
 
-  const maxTokens = Number.isFinite(MAX_TOKENS) && MAX_TOKENS > 0 ? MAX_TOKENS : 100000;
+  const maxTokens = Number.isFinite(configuredMaxTokens) && configuredMaxTokens > 0 ? configuredMaxTokens : 100000;
 
   return new OrchestrationClient(
     {
       promptTemplating: {
         model: {
-          name: LLM_MODEL_NAME,
+          name: llmModel,
           params: {
             max_tokens: maxTokens,
           },

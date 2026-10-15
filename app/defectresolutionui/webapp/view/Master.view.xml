@@ -1,6 +1,69 @@
 <mvc:View controllerName="defectresolutionui.controller.Master"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    <Page id="page" showHeader="false" class="ariaPage">
+        <content>
+            <HBox id="brandShell" class="ariaShell" alignItems="Center" wrap="Wrap">
+                <Image id="wbgLogo" src="{ui>/wbgImage}" alt="World Bank Group" decorative="false" class="ariaWbgLogo" />
+                <Title id="shellTitle" text="Project Aria: Defect Resolution" level="H2" class="ariaShellTitle" />
+            </HBox>
+            <VBox id="workspace" class="ariaWorkspace">
+                <HBox id="brandBanner" class="ariaBanner" alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap">
+                    <VBox id="bannerContent" class="ariaBannerContent">
+                        <Text id="projectLabel" text="PROJECT ARIA" class="ariaEyebrow" />
+                        <Title id="pageHeading" text="Defect Resolution" level="H1" class="ariaHeading" />
+                        <Button id="editConfig" text="Edit Config" icon="sap-icon://action-settings" press=".onEditConfig"
+                            enabled="{= !${ui>/busy} }" class="ariaConfigButton" />
+                    </VBox>
+                    <Image id="ariaLogo" src="{ui>/ariaImage}" alt="Project Aria" decorative="false" class="ariaProjectLogo" />
+                </HBox>
+                <VBox id="defectForm" class="ariaForm" busy="{ui>/busy}" busyIndicatorDelay="0">
+                    <MessageStrip id="emailRecipientReminder" text="Set Email Recipients in Edit Config before submitting a defect."
+                        type="Warning" showIcon="true" visible="{= !${ui>/hasEmailRecipient} }" class="sapUiSmallMarginBottom" />
+                    <Label id="defectIdsLabel" text="Defect ID" labelFor="defectIds" required="true" class="ariaFieldLabel" />
+                    <Input id="defectIds" value="{ui>/defectIds}" placeholder="8000197596, 8000417926"
+                        valueState="{ui>/valueState}" valueStateText="Enter one or more numeric defect IDs, separated by commas."
+                        liveChange=".onDefectIdsChange" submit=".onSubmit" enabled="{= !${ui>/busy} }" width="100%" />
+                    <MessageStrip id="submissionFeedback" text="{ui>/feedback}" type="{ui>/feedbackType}" showIcon="true"
+                        visible="{= !!${ui>/feedback} }" class="ariaFeedback" />
+                    <Button id="submitDefects" text="{= ${ui>/busy} ? 'Analyzing...' : 'Submit' }" type="Emphasized"
+                        icon="sap-icon://paper-plane" press=".onSubmit" enabled="{= !${ui>/busy} &amp;&amp; ${ui>/hasEmailRecipient} }"
+                        width="100%" class="ariaSubmit" />
+                </VBox>
+            </VBox>
+        </content>
+        <dependents>
+            <Dialog id="configDialog" title="Review Configuration" contentWidth="30rem" stretch="{device>/system/phone}">
+                <content>
+                    <VBox id="configFields" class="sapUiMediumMargin">
+                        <Label id="llmModelLabel" text="LLM Model" labelFor="llmModel" />
+                        <ComboBox id="llmModel" value="{ui>/draftConfig/llmModel}" width="100%" maxLength="128"
+                            valueState="{ui>/llmValueState}" valueStateText="Enter an LLM model name.">
+                            <items>
+                                <core:Item id="modelGpt55" key="gpt-5.5" text="gpt-5.5" />
+                                <core:Item id="modelGpt54" key="gpt-5.4" text="gpt-5.4" />
+                            </items>
+                        </ComboBox>
+                        <Label id="maxTokensLabel" text="Max Tokens" labelFor="maxTokens" class="sapUiSmallMarginTop" />
+                        <Input id="maxTokens" value="{ui>/draftConfig/maxTokens}" type="Number"
+                            valueState="{ui>/tokensValueState}" valueStateText="Enter a positive whole number."
+                            submit=".onSaveConfig" />
+                        <Label id="emailToLabel" text="Email Recipients" labelFor="emailTo" class="sapUiSmallMarginTop" />
+                        <Input id="emailTo" value="{ui>/draftConfig/emailTo}" placeholder="name@example.org, another@example.org"
+                            valueState="{ui>/emailValueState}" valueStateText="Enter valid comma-separated email addresses."
+                            submit=".onSaveConfig" />
+                        <MessageStrip id="configStorageError" text="{ui>/storageError}" type="Error" showIcon="true"
+                            visible="{= !!${ui>/storageError} }" class="sapUiSmallMarginTop" />
+                    </VBox>
+                </content>
+                <beginButton>
+                    <Button id="saveConfig" text="Save" type="Emphasized" icon="sap-icon://save" press=".onSaveConfig" />
+                </beginButton>
+                <endButton>
+                    <Button id="cancelConfig" text="Cancel" press=".onCancelConfig" />
+                </endButton>
+            </Dialog>
+        </dependents>
     </Page>
 </mvc:View>

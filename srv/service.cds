@@ -21,6 +21,9 @@ service DefectService {
 
     action triggerDefectOrchestration(
         defectIds   : String,
-        processType : String
+        processType : String,
+        llmModel    : String(128),
+        maxTokens   : Integer,
+        emailTo     : String
     ) returns many DefectOrchestrationResult;
 }
