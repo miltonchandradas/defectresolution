@@ -14,7 +14,7 @@
                         <Text id="projectLabel" text="PROJECT ARIA" class="ariaEyebrow" />
                         <Title id="pageHeading" text="Defect Resolution" level="H1" class="ariaHeading" />
                         <Button id="editConfig" text="Edit Config" icon="sap-icon://action-settings" press=".onEditConfig"
-                            enabled="{= !${ui>/busy} }" class="ariaConfigButton" />
+                            type="Transparent" tooltip="Review configuration" enabled="{= !${ui>/busy} }" class="ariaConfigButton" />
                     </VBox>
                     <Image id="ariaLogo" src="{ui>/ariaImage}" alt="Project Aria" decorative="false" class="ariaProjectLogo" />
                 </HBox>

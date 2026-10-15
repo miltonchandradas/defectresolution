@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], (Controller, JSONModel) => {
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageToast"
+], (Controller, JSONModel, MessageToast) => {
     "use strict";
 
     const CONFIG_STORAGE_KEY = "defectresolutionui.reviewConfig.v1";
@@ -132,7 +133,9 @@ sap.ui.define([
                 action.setParameter("llmModel", config.llmModel);
                 action.setParameter("maxTokens", config.maxTokens);
                 action.setParameter("emailTo", config.emailTo);
-                await action.invoke();
+                const request = action.invoke("$direct");
+                MessageToast.show("The request has been submitted to the backend.");
+                await request;
                 const response = action.getBoundContext().getObject();
                 const results = Array.isArray(response) ? response : response?.value;
                 if (!Array.isArray(results) || !results.length) {
