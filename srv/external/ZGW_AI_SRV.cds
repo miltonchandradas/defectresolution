@@ -1,4 +1,4 @@
-/* checksum : ccd40931d20b705fea6e7488910a6bfc */
+/* checksum : 70caad496725a796333fda3695b63a5e */
 @cds.external : true
 @m.IsDefaultEntityContainer : 'true'
 @sap.supported.formats : 'atom json xlsx'
@@ -216,6 +216,29 @@ service ZGW_AI_SRV {
     @sap.sortable : 'false'
     @sap.filterable : 'false'
     description : String not null;
+  };
+
+  @cds.external : true
+  @cds.persistence.skip : true
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.deletable : 'false'
+  @sap.pageable : 'false'
+  @sap.addressable : 'false'
+  @sap.content.version : '1'
+  entity BatchProgramSet {
+    @sap.unicode : 'false'
+    @sap.creatable : 'false'
+    @sap.updatable : 'false'
+    @sap.sortable : 'false'
+    @sap.filterable : 'false'
+    key batch : String not null;
+    @sap.unicode : 'false'
+    @sap.creatable : 'false'
+    @sap.updatable : 'false'
+    @sap.sortable : 'false'
+    @sap.filterable : 'false'
+    programs : String not null;
   };
 };
 
