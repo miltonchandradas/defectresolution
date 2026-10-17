@@ -593,11 +593,24 @@ function createFindingsPdf(defectId, findings) {
 
     let inCodeBlock = false;
     const lines = toPdfCompatibleText(findings).split(/\r?\n/);
-    for (const line of lines) {
+    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+      const line = lines[lineIndex];
       const trimmedLine = line.trim();
       if (/^```/.test(trimmedLine)) {
         inCodeBlock = !inCodeBlock;
         document.moveDown(0.25);
+        continue;
+      }
+
+      if (!inCodeBlock && lineIndex + 1 < lines.length && isMarkdownTableSeparator(lines[lineIndex + 1])) {
+        const tableRows = [parseMarkdownTableRow(line)];
+        let tableEnd = lineIndex + 2;
+        while (tableEnd < lines.length && lines[tableEnd].trim() && lines[tableEnd].includes('|')) {
+          tableRows.push(parseMarkdownTableRow(lines[tableEnd]));
+          tableEnd++;
+        }
+        drawMarkdownTable(document, tableRows, parseMarkdownTableRow(lines[lineIndex + 1]));
+        lineIndex = tableEnd - 1;
         continue;
       }
 
@@ -649,6 +662,83 @@ function createFindingsPdf(defectId, findings) {
     }
     document.end();
   });
+}
+
+function parseMarkdownTableRow(line) {
+  return String(line || '')
+    .trim()
+    .replace(/^\|/, '')
+    .replace(/\|$/, '')
+    .split('|')
+    .map((cell) => stripMarkdownInline(cell.trim()));
+}
+
+function isMarkdownTableSeparator(line) {
+  const cells = parseMarkdownTableRow(line);
+  return cells.length > 1 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+
+function drawMarkdownTable(document, rows, separatorCells) {
+  if (!rows.length || !rows[0].length) {
+    return;
+  }
+
+  const columnCount = Math.max(rows[0].length, ...rows.slice(1).map((row) => row.length));
+  const availableWidth = document.page.width - document.page.margins.left - document.page.margins.right;
+  const columnWidth = availableWidth / columnCount;
+  const cellPadding = 5;
+  const fontSize = columnCount > 5 ? 7 : 8;
+  const alignments = Array.from({ length: columnCount }, (_, index) => {
+    const separator = separatorCells[index] || '';
+    if (separator.startsWith(':') && separator.endsWith(':')) return 'center';
+    if (separator.endsWith(':')) return 'right';
+    return 'left';
+  });
+
+  const drawRow = (cells, isHeader, rowIndex) => {
+    const normalizedCells = Array.from({ length: columnCount }, (_, index) => cells[index] || '');
+    document.font(isHeader ? 'Helvetica-Bold' : 'Helvetica').fontSize(fontSize);
+    const cellHeights = normalizedCells.map((cell) => document.heightOfString(cell || ' ', {
+      width: Math.max(1, columnWidth - cellPadding * 2),
+      lineGap: 1,
+    }));
+    const rowHeight = Math.max(20, ...cellHeights.map((height) => height + cellPadding * 2));
+    const bottomLimit = document.page.height - document.page.margins.bottom;
+
+    if (document.y + rowHeight > bottomLimit) {
+      document.addPage();
+    }
+
+    const rowTop = document.y;
+    for (let columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+      const cellX = document.page.margins.left + columnIndex * columnWidth;
+      document.save();
+      document.rect(cellX, rowTop, columnWidth, rowHeight)
+        .fillColor(isHeader ? '#eaf3fc' : rowIndex % 2 ? '#f6f9fc' : '#ffffff')
+        .fill();
+      document.rect(cellX, rowTop, columnWidth, rowHeight)
+        .lineWidth(0.5).strokeColor('#c7d5e2').stroke();
+      document.font(isHeader ? 'Helvetica-Bold' : 'Helvetica').fontSize(fontSize)
+        .fillColor(isHeader ? '#183b5b' : '#202a33')
+        .text(normalizedCells[columnIndex], cellX + cellPadding, rowTop + cellPadding, {
+          width: Math.max(1, columnWidth - cellPadding * 2),
+          lineGap: 1,
+          align: alignments[columnIndex],
+        });
+      document.restore();
+    }
+    document.y = rowTop + rowHeight;
+  };
+
+  drawRow(rows[0], true, 0);
+  for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+    if (document.y + 24 > document.page.height - document.page.margins.bottom) {
+      document.addPage();
+      drawRow(rows[0], true, 0);
+    }
+    drawRow(rows[rowIndex], false, rowIndex);
+  }
+  document.moveDown(0.6);
 }
 
 function stripMarkdownInline(value) {
