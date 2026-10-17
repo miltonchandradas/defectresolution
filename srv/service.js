@@ -727,6 +727,7 @@ function drawMarkdownTable(document, rows, separatorCells) {
         });
       document.restore();
     }
+    document.x = document.page.margins.left;
     document.y = rowTop + rowHeight;
   };
 
