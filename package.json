@@ -14,6 +14,7 @@
     "mammoth": "^1.13.0",
     "nodemailer": "^10.1.0",
     "pdf-parse": "^2.4.5",
+    "pdfkit": "^0.20.2",
     "socks": "^2.8.10",
     "xlsx": "^0.18.5"
   },
@@ -21,8 +22,8 @@
     "@cap-js/sqlite": "^3",
     "@sap/cds-dk": "^10",
     "cds-plugin-ui5": "^0.17.0",
-    "rimraf": "^5.0.5",
-    "mbt": "^1.2.49"
+    "mbt": "^1.2.49",
+    "rimraf": "^5.0.5"
   },
   "scripts": {
     "start": "cds-serve",

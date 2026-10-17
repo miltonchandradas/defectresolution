@@ -1,4 +1,5 @@
 import cds from '@sap/cds';
+import PDFDocument from 'pdfkit';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import { readFile } from 'node:fs/promises';
@@ -518,36 +519,84 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
 
 async function deliverDefectFindings(defectId, findings, recipients) {
   const safeDefectId = defectId.replace(/[^A-Za-z0-9_-]/g, '_');
-  const filename = `defect-${safeDefectId}-findings-${randomUUID()}.md`;
-  const content = Buffer.from(findings, 'utf8');
-  const contentType = 'text/markdown; charset=utf-8';
+  const baseFilename = `defect-${safeDefectId}-findings-${randomUUID()}`;
+  const markdownAttachment = {
+    filename: `${baseFilename}.md`,
+    content: Buffer.from(findings, 'utf8'),
+    contentType: 'text/markdown; charset=utf-8',
+  };
+  const attachments = [markdownAttachment];
   const prefix = (process.env.OBJECTSTORE_PREFIX || 'defect-findings').replace(/\/+$/, '');
   const errors = [];
 
   try {
-    const stored = await uploadBufferToObjectStore(content, {
-      objectKey: `${prefix}/${filename}`,
-      contentType,
+    attachments.push({
+      filename: `${baseFilename}.pdf`,
+      content: await createFindingsPdf(defectId, findings),
+      contentType: 'application/pdf',
     });
-    LOG.info('Saved defect findings to object store', { defectId, key: stored.key });
   } catch (error) {
-    errors.push(`Findings upload failed: ${error?.message ?? String(error)}`);
-    LOG.error('Failed to save defect findings to object store', { defectId, ...extractHttpErrorDetails(error) });
+    errors.push(`Findings PDF generation failed: ${error?.message ?? String(error)}`);
+    LOG.error('Failed to generate findings PDF', { defectId, ...extractHttpErrorDetails(error) });
+  }
+
+  for (const attachment of attachments) {
+    try {
+      const stored = await uploadBufferToObjectStore(attachment.content, {
+        objectKey: `${prefix}/${attachment.filename}`,
+        contentType: attachment.contentType,
+      });
+      LOG.info('Saved defect findings to object store', { defectId, key: stored.key });
+    } catch (error) {
+      errors.push(`Findings upload failed for ${attachment.filename}: ${error?.message ?? String(error)}`);
+      LOG.error('Failed to save defect findings to object store', {
+        defectId,
+        filename: attachment.filename,
+        ...extractHttpErrorDetails(error),
+      });
+    }
   }
 
   try {
-    await emailDocxAttachmentsViaDestination([{ filename, content, contentType }], {
+    await emailDocxAttachmentsViaDestination(attachments, {
       overrideRecipients: recipients,
       subject: process.env.EMAIL_SUBJECT || `SAP defect ${defectId} - LLM findings`,
       body: process.env.EMAIL_BODY || `Please find the LLM analysis findings for SAP defect ${defectId} attached.`,
     });
-    LOG.info('Emailed defect findings', { defectId, filename });
+    LOG.info('Emailed defect findings', { defectId, filenames: attachments.map(({ filename }) => filename) });
   } catch (error) {
     errors.push(`Findings email failed: ${error?.message ?? String(error)}`);
     LOG.error('Failed to email defect findings', { defectId, ...extractHttpErrorDetails(error) });
   }
 
   return errors;
+}
+
+function createFindingsPdf(defectId, findings) {
+  return new Promise((resolve, reject) => {
+    const document = new PDFDocument({ margin: 54, bufferPages: true });
+    const chunks = [];
+    document.on('data', (chunk) => chunks.push(chunk));
+    document.on('end', () => resolve(Buffer.concat(chunks)));
+    document.on('error', reject);
+
+    document.font('Helvetica-Bold').fontSize(18).fillColor('#183b5b')
+      .text(`SAP Defect ${defectId} - LLM Findings`, { width: document.page.width - 108 });
+    document.moveDown(0.5);
+    document.font('Helvetica').fontSize(9).fillColor('#607587')
+      .text(`Generated ${new Date().toISOString()}`, { width: document.page.width - 108 });
+    document.moveDown(1.5);
+    document.font('Helvetica').fontSize(10).fillColor('#202a33')
+      .text(toPdfCompatibleText(findings), { width: document.page.width - 108, lineGap: 3 });
+    document.end();
+  });
+}
+
+function toPdfCompatibleText(value) {
+  return String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\x09\x0a\x0d\x20-\x7e]/g, '?');
 }
 
 async function enrichLlmResponseWithTcodePrograms(llmResponse) {
