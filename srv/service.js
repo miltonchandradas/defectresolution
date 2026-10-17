@@ -459,6 +459,7 @@ async function processDefectForOrchestration(defectId, processType = 'S1DM', mod
     try {
       result.llmResponse = await runDefectPromptWithLlm({ defect, notes, attachments, client: config.client });
       result.llmResponse = await enrichLlmResponseWithTcodePrograms(result.llmResponse);
+      result.llmResponse = await enrichLlmResponseWithBatchPrograms(result.llmResponse);
       result.llmResponse = await enrichLlmResponseWithAbapSources(result.llmResponse);
     } catch (error) {
       hadPartialFailure = true;
@@ -682,6 +683,55 @@ async function enrichLlmResponseWithAbapSources(llmResponse) {
   payload.abap_programs = [...new Set([...programs.filter(Boolean), ...additionalPrograms])];
   payload.additional_abap_programs = additionalPrograms;
   payload.abap_sources = sources;
+  return JSON.stringify(payload);
+}
+
+async function enrichLlmResponseWithBatchPrograms(llmResponse) {
+  const payload = parseLlmResponseJson(llmResponse);
+  if (!payload) {
+    return llmResponse;
+  }
+
+  const batchJobs = Array.isArray(payload.batch_jobs) ? payload.batch_jobs : [];
+  const zBatchNames = [...new Set(batchJobs
+    .map((job) => String(job?.job_name || '').trim().toUpperCase())
+    .filter((jobName) => jobName.startsWith('Z')))];
+  const abapPrograms = Array.isArray(payload.abap_programs)
+    ? payload.abap_programs.map((program) => String(program || '').trim().toUpperCase()).filter(Boolean)
+    : [];
+  const batchPrograms = [];
+
+  for (const batch of zBatchNames) {
+    try {
+      const response = await fetchZgwAiEntity('BatchProgramSet', { batch });
+      const rawPrograms = response?.programs ?? response?.d?.programs;
+      const programs = [...new Set(String(rawPrograms || '')
+        .split(',')
+        .map((program) => program.trim().toUpperCase())
+        .filter(Boolean))];
+
+      if (!programs.length) {
+        LOG.warn('No programs returned for batch job from ZGW_AI_SRV', { batch });
+        continue;
+      }
+
+      batchPrograms.push({ batch, programs });
+      for (const program of programs) {
+        if (!abapPrograms.includes(program)) {
+          abapPrograms.push(program);
+        }
+      }
+      LOG.info('Resolved batch job programs from ZGW_AI_SRV', { batch, programs });
+    } catch (error) {
+      LOG.warn('Failed to resolve batch job programs from ZGW_AI_SRV', {
+        batch,
+        ...extractHttpErrorDetails(error),
+      });
+    }
+  }
+
+  payload.abap_programs = abapPrograms;
+  payload.batch_programs = batchPrograms;
   return JSON.stringify(payload);
 }
 

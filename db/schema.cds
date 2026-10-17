@@ -38,6 +38,13 @@ entity TcodePrograms     as
             description
     }
 
+
+entity BatchPrograms     as
+    projection on ZGW_AI_SRV.BatchProgramSet {
+        key batch,
+            programs
+    }
+
 using {MC_SRV} from '../srv/external/MC_SRV';
 
 entity DefectHeader      as

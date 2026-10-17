@@ -6,6 +6,7 @@ service DefectService {
     entity DefectHeader as projection on my.DefectHeader;
     entity DefectNotes as projection on my.DefectNotes;
     entity TcodePrograms as projection on my.TcodePrograms;
+    entity BatchPrograms as projection on my.BatchPrograms;
 
     type DefectOrchestrationResult {
         defectId        : String(40);
