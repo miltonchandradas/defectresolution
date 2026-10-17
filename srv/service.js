@@ -575,22 +575,90 @@ async function deliverDefectFindings(defectId, findings, recipients) {
 
 function createFindingsPdf(defectId, findings) {
   return new Promise((resolve, reject) => {
-    const document = new PDFDocument({ margin: 54, bufferPages: true });
+    const document = new PDFDocument({
+      margins: { top: 54, right: 54, bottom: 62, left: 54 },
+      bufferPages: true,
+    });
     const chunks = [];
     document.on('data', (chunk) => chunks.push(chunk));
     document.on('end', () => resolve(Buffer.concat(chunks)));
     document.on('error', reject);
 
-    document.font('Helvetica-Bold').fontSize(18).fillColor('#183b5b')
-      .text(`SAP Defect ${defectId} - LLM Findings`, { width: document.page.width - 108 });
+    document.font('Helvetica-Bold').fontSize(19).fillColor('#183b5b')
+      .text(`SAP Defect ${defectId}`, { width: document.page.width - 108 });
     document.moveDown(0.5);
-    document.font('Helvetica').fontSize(9).fillColor('#607587')
-      .text(`Generated ${new Date().toISOString()}`, { width: document.page.width - 108 });
-    document.moveDown(1.5);
-    document.font('Helvetica').fontSize(10).fillColor('#202a33')
-      .text(toPdfCompatibleText(findings), { width: document.page.width - 108, lineGap: 3 });
+    document.font('Helvetica').fontSize(10).fillColor('#607587')
+      .text('LLM Defect Analysis  |  Generated ' + new Date().toISOString(), { width: document.page.width - 108 });
+    document.moveDown(1.25);
+
+    let inCodeBlock = false;
+    const lines = toPdfCompatibleText(findings).split(/\r?\n/);
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (/^```/.test(trimmedLine)) {
+        inCodeBlock = !inCodeBlock;
+        document.moveDown(0.25);
+        continue;
+      }
+
+      if (inCodeBlock) {
+        document.font('Courier').fontSize(8).fillColor('#364152')
+          .text(line || ' ', { indent: 10, lineGap: 2, width: document.page.width - 128 });
+      } else if (!trimmedLine) {
+        document.moveDown(0.45);
+      } else if (/^\s*([-*_])(?:\s*\1){2,}\s*$/.test(line)) {
+        const ruleY = document.y + 3;
+        document.moveTo(document.page.margins.left, ruleY)
+          .lineTo(document.page.width - document.page.margins.right, ruleY)
+          .lineWidth(0.6).strokeColor('#d8e3ed').stroke();
+        document.moveDown(0.7);
+      } else {
+        const heading = /^(#{1,6})\s+(.+)$/.exec(trimmedLine);
+        const bullet = /^\s*(?:[-+*]|\d+[.)])\s+(.+)$/.exec(line);
+        const quote = /^\s*>\s?(.*)$/.exec(line);
+        if (heading) {
+          const fontSize = heading[1].length === 1 ? 16 : heading[1].length === 2 ? 13 : 11;
+          document.moveDown(heading[1].length === 1 ? 0.6 : 0.35);
+          document.font('Helvetica-Bold').fontSize(fontSize).fillColor('#183b5b')
+            .text(stripMarkdownInline(heading[2]), { lineGap: 2, width: document.page.width - 108 });
+          document.moveDown(0.25);
+        } else if (bullet) {
+          document.font('Helvetica').fontSize(10).fillColor('#202a33')
+            .text(`-  ${stripMarkdownInline(bullet[1])}`, { indent: 8, hanging: 4, lineGap: 3, width: document.page.width - 116 });
+        } else if (quote) {
+          document.font('Helvetica-Oblique').fontSize(10).fillColor('#52687c')
+            .text(stripMarkdownInline(quote[1]), { indent: 14, lineGap: 3, width: document.page.width - 122 });
+        } else {
+          document.font('Helvetica').fontSize(10).fillColor('#202a33')
+            .text(stripMarkdownInline(line), { lineGap: 3, width: document.page.width - 108 });
+        }
+      }
+    }
+
+    const pages = document.bufferedPageRange();
+    for (let pageIndex = pages.start; pageIndex < pages.start + pages.count; pageIndex++) {
+      document.switchToPage(pageIndex);
+      const footerY = document.page.height - 42;
+      document.moveTo(document.page.margins.left, footerY - 8)
+        .lineTo(document.page.width - document.page.margins.right, footerY - 8)
+        .lineWidth(0.5).strokeColor('#d8e3ed').stroke();
+      document.font('Helvetica').fontSize(8).fillColor('#607587')
+        .text(`SAP Defect ${defectId}  |  Page ${pageIndex + 1} of ${pages.count}`,
+          document.page.margins.left, footerY,
+          { width: document.page.width - document.page.margins.left - document.page.margins.right, align: 'right' });
+    }
     document.end();
   });
+}
+
+function stripMarkdownInline(value) {
+  return String(value || '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/__(.*?)__/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    .replace(/`([^`]+)`/g, '$1');
 }
 
 function toPdfCompatibleText(value) {
